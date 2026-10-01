@@ -110,6 +110,11 @@ code { font-family: var(--mono); }
   border-bottom: 1px solid var(--line);
 }
 .brand { display: flex; align-items: center; gap: 8px; margin-right: 6px; }
+a.brand-link { color: inherit; text-decoration: none; border-radius: 8px; }
+a.brand-link:hover .brand-mark, a.brand-link:focus-visible .brand-mark { outline: 2px solid var(--accent); outline-offset: 2px; }
+.site-nav { display: grid; gap: 2px; margin: 0 0 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.site-nav-link { display: block; padding: 8px 10px; border-radius: 8px; color: var(--accent); font: 600 14px var(--sans); text-decoration: none; }
+.site-nav-link:hover, .site-nav-link:focus-visible { background: var(--bg-sunken); }
 .brand-mark {
   display: grid; place-items: center;
   width: 30px; height: 30px;
@@ -3150,6 +3155,10 @@ const pl = {
   'ui.editorPlaceholder': 'Wpisz tutaj…',
   'ui.documents': 'dokumenty',
   'ui.documentsCount': '{n|dokument|dokumenty|dokumentów}',
+  'ui.siteHome': "Strona kursu",
+  'ui.site.home': "← Strona kursu",
+  'ui.site.chapter1': "Rozdział 1. Internet jako źródło danych",
+  'ui.site.trainer': "Trener. 13 lekcji z liczenia",
   'ui.dataNote': "Kliknij, by zobaczyć całą tabelę. Dane są fikcyjne i służą do ćwiczeń. Prawdziwe są tylko dwie tabele, sceny i opinie.",
   'ui.about': "Kurs do przedmiotu „Warsztat analityki internetowej”. Opracowali dr Ilya Sulzhytski i Claude (Anthropic). Dane i dokumenty są fikcyjne. Prawdziwe są dwie tabele. Tabela sceny pochodzi z badania Sulzhytski i Howanitz (2025). Tabela opinie to opinie z Allegro ze zbioru Allegro Reviews (licencja CC BY-SA 4.0). Postęp zapisuje się tylko w tej przeglądarce.",
 
@@ -6780,7 +6789,7 @@ function hasNode(code, test) {
 }
 var __default__ = {
   id: 'operatory',
-  module: 2,
+  module: 1,
   kind: 'query',
   title: 'Operatory wyszukiwarki',
 
@@ -7960,6 +7969,38 @@ function lessonsByModule() {
 __modules["src/lessons/index.js"] = { "LESSONS": LESSONS, "lessonById": lessonById, "lessonsByModule": lessonsByModule };
 })();
 
+/* ===== src/ui/site.js ===== */
+(function () {
+/**
+ * Links between the pages of the course site (GitHub Pages, D21).
+ *
+ * The same files are also downloaded and opened offline, where a link to the landing page or
+ * to the other page would lead nowhere. So the links exist only when the page is served over
+ * http(s); `siteLinks()` is null for file:// and in the tests.
+ */
+const { el } = __modules["src/ui/dom.js"];
+const { t } = __modules["src/i18n/index.js"];
+const SITE_PAGES = { home: './', chapter1: 'rozdzial-1-internet-jako-zrodlo-danych.html', trainer: 'liczby-z-internetu.html' };
+
+function siteLinks(loc = typeof location === 'undefined' ? null : location) {
+  return loc && /^https?:$/.test(loc.protocol) ? SITE_PAGES : null;
+}
+
+/** The brand mark: a link to the landing page on the site, plain text offline. */
+function brand(links = siteLinks()) {
+  const inner = [el('span.brand-mark', '%'), el('span.brand-name', t('ui.brand'))];
+  return links ? el('a.brand.brand-link', { href: links.home, title: t('ui.siteHome') }, ...inner) : el('div.brand', ...inner);
+}
+
+/** Navigation to the other pages, for a menu or a table of contents (empty offline). */
+function siteNav(pages, links = siteLinks()) {
+  if (!links) return null;
+  return el('div.site-nav', pages.map((p) => el('a.site-nav-link', { href: links[p] }, t(`ui.site.${p}`))));
+}
+
+__modules["src/ui/site.js"] = { "SITE_PAGES": SITE_PAGES, "siteLinks": siteLinks, "brand": brand, "siteNav": siteNav };
+})();
+
 /* ===== src/ui/app.js ===== */
 (function () {
 /**
@@ -7981,6 +8022,7 @@ const { LESSONS, lessonById, lessonsByModule } = __modules["src/lessons/index.js
 const { DATASET_NAMES } = __modules["src/data/datasets.js"];
 const { getProgress, savedPlace, savePlace } = __modules["src/ui/progress.js"];
 const { t } = __modules["src/i18n/index.js"];
+const { brand, siteNav } = __modules["src/ui/site.js"];
 const SANDBOX_CODE = `# Wszystkie dane kursu są tu dostępne.
 udział(sesje gdzie zakup)`;
 
@@ -8011,7 +8053,7 @@ class App {
     mount(this.host,
       el('div.app',
         el('header.top',
-          el('div.brand', el('span.brand-mark', '%'), el('span.brand-name', t('ui.brand'))),
+          brand(),
           menuBtn,
           el('button.top-sandbox', { type: 'button', onClick: () => this.openSandbox() }, t('ui.sandbox'))),
         el('main.main', this.left, this.right)),
@@ -8106,6 +8148,7 @@ class App {
       el('div.menu-backdrop', { onClick: () => this.toggleMenu(false) }),
       el('nav.menu-panel', { 'aria-label': t('ui.lessons') },
         el('div.menu-head', el('span', t('ui.lessons')), el('button.menu-close', { type: 'button', 'aria-label': t('ui.close'), onClick: () => this.toggleMenu(false) }, '×')),
+        siteNav(['home', 'chapter1']),
         lessonsByModule().map(([module, lessons]) => el('div.menu-module',
           el('div.menu-module-name', `${module}. ${t(`module.${module}`)}`),
           lessons.map((lesson) => {
