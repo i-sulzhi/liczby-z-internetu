@@ -12363,7 +12363,7 @@ class BookApp {
 
   renderSection(s) {
     const meta = s.meeting
-      ? [el('span.bk-meet', t('bk.plan.meeting', { m: s.meeting })), s.parts.map(([kind, min]) => el(`span.bk-kind.bk-kind-${kind}`, `${t(`bk.kind.${kind}`)} · ${min}′`))]
+      ? [el('span.bk-meet', t('bk.plan.meeting', { m: s.meeting })), s.parts.map(([kind, min]) => el(`span.bk-kind.bk-kind-${kind}`, this.chapter.minutes === false ? t(`bk.kind.${kind}`) : `${t(`bk.kind.${kind}`)} · ${min}′`))]
       : s.outside === false ? [] : [el('span.bk-kind.bk-kind-projekt', s.outside || t('bk.outside'))];
     return el('section.bk-section', { id: s.id },
       el('div.bk-sec-head',
@@ -12470,8 +12470,10 @@ __modules["src/book/book.js"] = { "FIGURES": FIGURES, "ANSWERS": ANSWERS, "EXERC
 const { CURRENT } = __modules["src/book/data/current.js"];
 const CHAPTER = {
   id: 'r1',
-  // no minutes on exercises and discussions (author, 2026-10-08); the plan of the meetings keeps its own
+  // no minutes anywhere on the page, no figure with the plan of the meetings, no labels that say
+  // where the work is done (author, 2026-10-08, D27). `parts` keep their minutes for the teacher's notes.
   minutes: false,
+  plan: false,
   number: 1,
   kicker: 'Warsztat analityki internetowej · Rozdział 1 z 5',
   title: 'Internet jako źródło danych o zachowaniach społecznych',
@@ -12605,7 +12607,7 @@ const CHAPTER = {
         { p: 'Jedna droga jest otwarta zawsze i dla każdego. To wyszukiwanie zaawansowane, nazywane też „Google hacking” (Hrabiec-Hojda, Trzeciakowska 2020). Operatory wyszukiwarki to podstawowe narzędzie infobrokera (Midera 2019) i białego wywiadu (Hassan, Hijazi 2018). Pozwalają znaleźć raporty, tabele i dokumenty, których nie widać w zwykłych wynikach.' },
         { note: 'Wyszukiwarka w ćwiczeniu szuka słów dokładnie w podanej formie, żeby było widać, co robi każdy operator. Google łapie też odmiany słów, więc w prawdziwych wynikach znajdziesz więcej dokumentów.', tone: 'info' },
         { lesson: 'operatory', num: 'Ćwiczenie 1.6', title: 'Operatory wyszukiwarki. Raporty z serwisów gov.pl', min: 20 },
-        { exercise: 'agent', num: 'Ćwiczenie 1.6b', title: 'Ślad agenta. Skąd wziął te liczby?', min: 15, who: 'w domu, przed spotkaniem 3' },
+        { exercise: 'agent', num: 'Ćwiczenie 1.6b', title: 'Ślad agenta. Skąd wziął te liczby?', min: 15 },
         { datasets: true },
         { terms: [
           ['API', 'interfejs, przez który program pobiera dane z serwisu na zasadach ustalonych przez jego właściciela'],
@@ -12656,11 +12658,11 @@ const CHAPTER = {
     },
 
     {
-      id: 's1-8', num: '1.9', title: 'Projekt, krok 1. Karta źródła', meeting: 0,
+      id: 's1-8', num: '1.9', title: 'Projekt, krok 1. Karta źródła', meeting: 0, outside: false,
       parts: [],
       blocks: [
         { p: 'Raport analityczny daje 80% oceny i zaczyna się od źródła. Wypełnij kartę dla źródła, którego chcesz użyć w projekcie. Karta zapisuje się w przeglądarce, a na końcu możesz ją pobrać jako plik tekstowy i dołączyć do projektu.' },
-        { exercise: 'karta', num: 'Projekt', title: 'Karta źródła', min: 90, who: 'poza zajęciami' },
+        { exercise: 'karta', num: 'Projekt', title: 'Karta źródła', min: 90 },
       ],
     },
   ],
@@ -12679,7 +12681,7 @@ const CHAPTER = {
 
   next: 'Przed spotkaniem 3 (rozdział 2) wejdź na trends.google.com i wpisz dwa hasła, które Cię ciekawią. Zapisz, w którym miesiącu każde z nich ma wartość 100. Co ta setka właściwie znaczy, zobaczymy na zajęciach.',
 
-  prep: 'Przygotowanie zajmie około 4 godzin z 24 przewidzianych w sylabusie. Obejmuje lekturę, rysunki i kartę źródła.',
+  prep: '',
 
   datasets: [
     { name: 'Wykorzystanie internetu według wieku (Eurostat)', url: 'https://ec.europa.eu/eurostat/databrowser/view/isoc_ci_ac_i/default/table?lang=en', what: 'Kto korzysta z internetu i do czego. Z tych danych pochodzi rysunek {rys:coverage}.', licence: 'Otwarta licencja Eurostatu.' },
