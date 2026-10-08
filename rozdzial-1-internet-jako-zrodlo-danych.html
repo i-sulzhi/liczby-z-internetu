@@ -957,6 +957,9 @@ textarea.rp-input { resize: vertical; font: 12.5px/1.5 var(--mono); white-space:
 .bk-toc-on { background: var(--accent-soft); color: var(--ink); }
 .bk-toc-num { font: 700 12px var(--mono); color: var(--accent); }
 .bk-toc-done { color: var(--ok); font-weight: 800; }
+.bk-toc-sub { padding-top: 3px; padding-bottom: 3px; font-size: 13px; }
+.bk-toc-sub .bk-toc-num { color: var(--ink-faint); text-align: right; padding-right: 6px; }
+.bk-ex[id] { scroll-margin-top: 60px; }
 .bk-toc-tag { display: block; margin-top: 2px; font-size: 11px; font-weight: 700; letter-spacing: .02em; color: var(--ink-faint); }
 .bk-toc-tag-before { color: var(--accent); }
 .bk-toc-tag-meeting { color: var(--ink-soft); }
@@ -12311,13 +12314,17 @@ class BookApp {
       ch.sections.map((s) => {
         const items = doneIn(s);
         const finished = items.length && items.every((it) => this.isItemDone(it));
-        return el('a', {
+        // An exercise may ask for its own line (`toc: 'Lab 2. ...'`): long ones are easy to scroll past.
+        const own = s.blocks.filter((b) => b.exercise && b.toc).map((b) => el('a.bk-toc-item.bk-toc-sub', {
+          href: `#ex-${b.exercise}`, onClick: () => this.toggleToc(false),
+        }, el('span.bk-toc-num', '›'), el('span.bk-toc-title', b.toc), isDone(b.exercise) ? el('span.bk-toc-done', '✓') : null));
+        return [el('a', {
           href: `#${s.id}`,
           class: ['bk-toc-item', this.active === s.id ? 'bk-toc-on' : ''].filter(Boolean).join(' '),
           onClick: () => this.toggleToc(false),
         }, el('span.bk-toc-num', s.num),
         // A course may say when a section is due (`toc: {tag, tone}`): before, at or after the meeting.
-        el('span.bk-toc-title', s.title, s.toc ? el(`span.bk-toc-tag.bk-toc-tag-${s.toc.tone}`, s.toc.tag) : null), finished ? el('span.bk-toc-done', '✓') : null);
+        el('span.bk-toc-title', s.title, s.toc ? el(`span.bk-toc-tag.bk-toc-tag-${s.toc.tone}`, s.toc.tag) : null), finished ? el('span.bk-toc-done', '✓') : null), own];
       }),
       el('a.bk-toc-item', { href: '#bk-end', onClick: () => this.toggleToc(false) }, el('span.bk-toc-num', '✓'), el('span.bk-toc-title', t('bk.summary'))));
   }
@@ -12349,17 +12356,18 @@ class BookApp {
         el('div.bk-box-title', t('bk.howTo')),
         el('ul.bk-howto', ch.howTo.map(([kind, text]) => el('li', el(`span.bk-kind.bk-kind-${kind}`, t(`bk.kind.${kind}`)), text)))),
       courseMap(ch.number, ch.course),
-      planFigure(ch.sections),
-      el('p.bk-prep', ch.prep));
+      // a course that does all its work in class has no split to draw (`plan: false`, no `prep`)
+      ch.plan === false ? null : planFigure(ch.sections),
+      ch.prep ? el('p.bk-prep', ch.prep) : null);
   }
 
   renderSection(s) {
     const meta = s.meeting
       ? [el('span.bk-meet', t('bk.plan.meeting', { m: s.meeting })), s.parts.map(([kind, min]) => el(`span.bk-kind.bk-kind-${kind}`, `${t(`bk.kind.${kind}`)} · ${min}′`))]
-      : [el('span.bk-kind.bk-kind-projekt', s.outside || t('bk.outside'))];
+      : s.outside === false ? [] : [el('span.bk-kind.bk-kind-projekt', s.outside || t('bk.outside'))];
     return el('section.bk-section', { id: s.id },
       el('div.bk-sec-head',
-        el('div.bk-sec-meta', meta),
+        meta.length ? el('div.bk-sec-meta', meta) : null,
         el('h2.bk-sec-title', el('span.bk-sec-num', s.num), ' ', s.title)),
       s.blocks.map((b) => this.renderBlock(b)));
   }
@@ -12369,18 +12377,18 @@ class BookApp {
     if (b.p) return el('p.bk-p', { html: rich(b.p) });
     if (b.figure) return el('div.bk-fig', FIGURES[b.figure]({ num: `${t('bk.figure')} ${this.figNums.get(b.figure)}` }));
     if (b.exercise) {
-      return el('div.bk-ex', exerciseHead(b), EXERCISES[b.exercise]({ onDone }));
+      return el('div.bk-ex', { id: b.toc ? `ex-${b.exercise}` : null }, exerciseHead(b, this.chapter.minutes !== false), EXERCISES[b.exercise]({ onDone }));
     }
     if (b.lesson) {
       const host = el('div.bk-wb');
-      const node = el('div.bk-ex.bk-ex-wide', exerciseHead(b), host);
+      const node = el('div.bk-ex.bk-ex-wide', exerciseHead(b, this.chapter.minutes !== false), host);
       this.workbenches.push(new Workbench(host, lessonById(b.lesson), { label: `${b.num} · ${t('bk.kind.cwiczenie')}`, onDone }));
       return node;
     }
     if (b.discuss) {
       const d = b.discuss;
       return el('aside.bk-discuss',
-        el('div.bk-discuss-head', el('span.bk-kind.bk-kind-dyskusja', `${t('bk.kind.dyskusja')} · ${d.min}′`), el('span', d.who)),
+        el('div.bk-discuss-head', el('span.bk-kind.bk-kind-dyskusja', d.min && this.chapter.minutes !== false ? `${t('bk.kind.dyskusja')} · ${d.min}′` : t('bk.kind.dyskusja')), el('span', d.who)),
         el('ol', d.prompts.map((q) => el('li', { html: rich(q) }))));
     }
     if (b.terms) {
@@ -12427,9 +12435,10 @@ class BookApp {
   }
 }
 
-function exerciseHead(b) {
+function exerciseHead(b, minutes = true) {
   return el('div.bk-ex-head',
-    el('span.bk-kind.bk-kind-cwiczenie', `${b.num} · ${b.min}′`),
+    // minutes show only when the block has `min` and the chapter did not switch them off (`minutes: false`)
+    el('span.bk-kind.bk-kind-cwiczenie', b.min && minutes ? `${b.num} · ${b.min}′` : b.num),
     b.who ? el('span.bk-ex-who', b.who) : null,
     el('h3.bk-ex-title', b.title));
 }
@@ -12461,6 +12470,8 @@ __modules["src/book/book.js"] = { "FIGURES": FIGURES, "ANSWERS": ANSWERS, "EXERC
 const { CURRENT } = __modules["src/book/data/current.js"];
 const CHAPTER = {
   id: 'r1',
+  // no minutes on exercises and discussions (author, 2026-10-08); the plan of the meetings keeps its own
+  minutes: false,
   number: 1,
   kicker: 'Warsztat analityki internetowej · Rozdział 1 z 5',
   title: 'Internet jako źródło danych o zachowaniach społecznych',
