@@ -8556,12 +8556,28 @@ function reload() {
 }
 
 /**
+ * A link to a section (page.html#s1-5) arrives before the page exists: the browser looks for
+ * the anchor while "Kim jesteś?" is on screen and finds nothing. So go there once the page is built.
+ */
+function toAnchor() {
+  try {
+    const id = decodeURIComponent(location.hash.slice(1));
+    if (id) document.getElementById(id)?.scrollIntoView?.();
+  } catch { /* no address (tests), or a hash that is not an id */ }
+}
+
+/**
  * Show "Kim jesteś?" in `host`, and call `start()` once someone is chosen.
  * @param {Element} host
  * @param {Function} start  builds the page into the same host
  */
 function gate(host, start) {
-  const go = (p) => { if (p) { mount(host); start(p); } };
+  const go = (p) => {
+    if (!p) return;
+    mount(host);
+    start(p);
+    toAnchor();
+  };
   const showWho = () => {
     const input = el('input.who-input', {
       type: 'text', maxlength: String(MAX_NAME), autocomplete: 'off', spellcheck: 'false',

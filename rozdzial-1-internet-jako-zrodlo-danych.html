@@ -957,6 +957,9 @@ textarea.rp-input { resize: vertical; font: 12.5px/1.5 var(--mono); white-space:
 .bk-toc-on { background: var(--accent-soft); color: var(--ink); }
 .bk-toc-num { font: 700 12px var(--mono); color: var(--accent); }
 .bk-toc-done { color: var(--ok); font-weight: 800; }
+.bk-toc-tag { display: block; margin-top: 2px; font-size: 11px; font-weight: 700; letter-spacing: .02em; color: var(--ink-faint); }
+.bk-toc-tag-before { color: var(--accent); }
+.bk-toc-tag-meeting { color: var(--ink-soft); }
 
 .bk-article { display: grid; justify-items: center; gap: 0; padding: 8px 28px 80px; min-width: 0; }
 .bk-article > section { width: 100%; max-width: 1180px; display: grid; justify-items: center; }
@@ -9289,12 +9292,28 @@ function reload() {
 }
 
 /**
+ * A link to a section (page.html#s1-5) arrives before the page exists: the browser looks for
+ * the anchor while "Kim jesteś?" is on screen and finds nothing. So go there once the page is built.
+ */
+function toAnchor() {
+  try {
+    const id = decodeURIComponent(location.hash.slice(1));
+    if (id) document.getElementById(id)?.scrollIntoView?.();
+  } catch { /* no address (tests), or a hash that is not an id */ }
+}
+
+/**
  * Show "Kim jesteś?" in `host`, and call `start()` once someone is chosen.
  * @param {Element} host
  * @param {Function} start  builds the page into the same host
  */
 function gate(host, start) {
-  const go = (p) => { if (p) { mount(host); start(p); } };
+  const go = (p) => {
+    if (!p) return;
+    mount(host);
+    start(p);
+    toAnchor();
+  };
   const showWho = () => {
     const input = el('input.who-input', {
       type: 'text', maxlength: String(MAX_NAME), autocomplete: 'off', spellcheck: 'false',
@@ -12296,7 +12315,9 @@ class BookApp {
           href: `#${s.id}`,
           class: ['bk-toc-item', this.active === s.id ? 'bk-toc-on' : ''].filter(Boolean).join(' '),
           onClick: () => this.toggleToc(false),
-        }, el('span.bk-toc-num', s.num), el('span.bk-toc-title', s.title), finished ? el('span.bk-toc-done', '✓') : null);
+        }, el('span.bk-toc-num', s.num),
+        // A course may say when a section is due (`toc: {tag, tone}`): before, at or after the meeting.
+        el('span.bk-toc-title', s.title, s.toc ? el(`span.bk-toc-tag.bk-toc-tag-${s.toc.tone}`, s.toc.tag) : null), finished ? el('span.bk-toc-done', '✓') : null);
       }),
       el('a.bk-toc-item', { href: '#bk-end', onClick: () => this.toggleToc(false) }, el('span.bk-toc-num', '✓'), el('span.bk-toc-title', t('bk.summary'))));
   }
