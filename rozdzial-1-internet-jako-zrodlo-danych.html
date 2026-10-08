@@ -856,6 +856,64 @@ tr.tb-tp td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
 .pc-agree-big .pc-agree-n { font-size: 15px; }
 .pc-agree-big .pc-agree-keys { font-size: 10px; }
 
+/* ===================== report for the teacher (reportbox.js) ===================== */
+
+.rp { display: grid; gap: 10px; min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-panel); }
+.rp-title { margin: 0; font-size: 16px; }
+.rp-label { font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+.rp-input { width: 100%; padding: 8px 10px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--code-bg); color: var(--ink); font: 14px/1.45 var(--sans); }
+.rp-input:focus { outline: 2px solid color-mix(in srgb, var(--accent) 50%, transparent); border-color: var(--accent); }
+.rp-name { max-width: 360px; }
+textarea.rp-input { resize: vertical; font: 12.5px/1.5 var(--mono); white-space: pre; overflow: auto; }
+.rp-out { display: grid; gap: 10px; min-width: 0; }
+.rp-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.rp-btn { padding: 7px 16px; border: 1px solid var(--line-strong); border-radius: 20px; background: transparent; color: var(--ink); font: inherit; cursor: pointer; }
+.rp-btn:hover { border-color: var(--accent); }
+.rp-status { font-size: 13px; color: var(--ink-soft); }
+.rp-say, .rp-need { margin: 0; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+.rp-check { border-top: 1px solid var(--line); padding-top: 10px; }
+.rp-check > summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+.rp-check[open] { display: grid; gap: 10px; }
+.rp-verdicts { display: grid; gap: 6px; }
+.rp-many { font-size: 13px; font-weight: 700; }
+.rp-verdict { padding: 8px 12px; border-radius: 8px; font-size: 14px; }
+.rp-ok { background: var(--ok-bg); border: 1px solid color-mix(in srgb, var(--ok) 40%, transparent); }
+.rp-bad { background: var(--warn-bg); border: 1px solid color-mix(in srgb, var(--warn) 40%, transparent); }
+.rp-verdict-sub { font-size: 12px; color: var(--ink-soft); }
+.rp-dialog { position: absolute; top: 4vh; left: 50%; transform: translateX(-50%); width: min(720px, 94vw); max-height: 92vh; overflow-y: auto; padding: 34px 14px 14px; border-radius: var(--radius); background: var(--bg); box-shadow: 0 18px 50px rgba(0, 0, 0, .35); }
+.rp-close { position: absolute; top: 6px; right: 8px; }
+.menu-report { margin-top: 12px; border-top: 1px solid var(--line); }
+.rp-checkbox { display: grid; gap: 10px; min-width: 0; }
+
+/* ===================== who is working (people.js) ===================== */
+
+.who { min-height: 100vh; display: grid; place-items: start center; padding: 8vh 16px 40px; background: var(--bg); }
+.who-card { width: min(460px, 100%); display: grid; gap: 12px; padding: 22px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-panel); box-shadow: var(--shadow); }
+.who-card-wide { width: min(720px, 100%); }
+.who-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--ink-soft); }
+.who-brand .brand-name { display: inline; }
+.who-title { margin: 0; font-size: 24px; letter-spacing: -.01em; }
+.who-say { margin: 0; line-height: 1.5; }
+.who-hint { margin: 0; font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+.who-form { display: flex; flex-wrap: wrap; gap: 8px; }
+.who-input { flex: 1 1 200px; min-width: 0; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--code-bg); color: var(--ink); font: 16px/1.4 var(--sans); }
+.who-input:focus { outline: 2px solid color-mix(in srgb, var(--accent) 50%, transparent); border-color: var(--accent); }
+.who-back { display: grid; gap: 8px; padding-top: 10px; border-top: 1px solid var(--line); }
+.who-back[hidden] { display: none; }
+.who-back-label { font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+.who-list { display: grid; gap: 6px; max-height: 40vh; overflow-y: auto; }
+.who-person { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.who-person[hidden] { display: none; }
+.who-person:hover { border-color: var(--accent); }
+.who-name { font-weight: 700; overflow-wrap: anywhere; }
+.who-meta { flex: none; font-size: 12px; color: var(--ink-soft); }
+.who-teacher, .who-link { padding: 0; border: 0; background: none; color: var(--ink-soft); font: inherit; font-size: 13px; text-decoration: underline; text-align: left; cursor: pointer; }
+.who-teacher:hover, .who-link:hover { color: var(--accent); }
+.who-close { justify-self: start; }
+.who-line, .who-box { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 8px 6px; font-size: 13px; color: var(--ink-soft); }
+.who-line-name { font-weight: 700; color: var(--ink); overflow-wrap: anywhere; }
+.who-danger { color: var(--err); font-weight: 700; }
+
 /*
  * The textbook: a long reading page on the trainer's visual language (same tokens,
  * same accent). Reading text sits in a 720 px column; figures slightly wider;
@@ -1429,6 +1487,22 @@ textarea.kc-input { resize: vertical; }
 .ag-right .ag-why { background: var(--ok-bg); }
 .ag-wrong .ag-why { background: var(--warn-bg); }
 .ag-meta { font-size: 12px; color: var(--ink-faint); }
+
+/* figure: is it anonymous? */
+.an { display: grid; gap: 12px; }
+.an-say { margin: 0; }
+.an-bins { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.an-bins-label { font-size: 13px; color: var(--ink-soft); }
+.an-rows { display: grid; gap: 8px; }
+.an-row { display: grid; grid-template-columns: 210px 1fr 56px; gap: 10px; align-items: center; font-size: 13px; }
+.an-track { height: 18px; border-radius: 5px; background: var(--bg-sunken); overflow: hidden; }
+.an-fill { height: 100%; border-radius: 5px; min-width: 0; }
+.an-unique { background: var(--err); }
+.an-small { background: var(--warn); }
+.an-safe { background: var(--ok); }
+.an-val { font-family: var(--mono); text-align: right; }
+.an-example { padding: 10px 12px; border-radius: var(--radius); background: var(--bg-sunken); font-size: 14px; }
+@media (max-width: 600px) { .an-row { grid-template-columns: 1fr 48px; } .an-label { grid-column: 1 / -1; } }
 
 </style>
 </head>
@@ -4025,6 +4099,8 @@ const pl = {
   'bk.plan.mapTitle': "24 godziny lekcyjne = 12 spotkań po 90 minut (propozycja podziału)",
   'bk.plan.meeting': "Spotkanie {m}",
   'bk.plan.topic': "Temat {k}. {title}. Spotkania {from}–{to}, czyli {h|godzina lekcyjna|godziny lekcyjne|godzin lekcyjnych}.",
+  'bk.plan.topicOne': "Temat {k}. {title}. Spotkanie {from}, czyli {h|godzina lekcyjna|godziny lekcyjne|godzin lekcyjnych}.",
+  'bk.plan.label': "Plan rozdziału",
   'bk.plan.final': "Spotkanie {m} to prezentacje projektów. Raport analityczny daje 80% oceny.",
   'bk.plan.chapterTitle': "Dwa spotkania po 90 minut",
   'bk.plan.minutes': "{minutes} min",
@@ -4131,6 +4207,25 @@ const pl = {
   'bk.ct.yes': "Tak",
   'bk.ct.no': "Nie",
   'bk.ct.reset': "Od nowa",
+  'bk.an.say': "To tabela wymyślonych profili zawodowych, razem {n}. Usunięto z niej nazwiska i adresy. Zaznacz pola, które publikujesz.",
+  'bk.an.fields': "Publikowane pola",
+  'bk.an.field.kraj': "kraj",
+  'bk.an.field.branza': "branża",
+  'bk.an.field.staz': "staż pracy",
+  'bk.an.bins': "Staż podajesz",
+  'bk.an.bin.1': "dokładnie",
+  'bk.an.bin.5': "w przedziałach 5 lat",
+  'bk.an.bin.10': "w przedziałach 10 lat",
+  'bk.an.unique': "jedyna taka osoba w tabeli",
+  'bk.an.small': "w grupie od 2 do {k}",
+  'bk.an.safe': "w grupie liczącej co najmniej {k}",
+  'bk.an.years': "{y|rok|lata|lat} stażu",
+  'bk.an.yearRange': "staż {from}–{to} lat",
+  'bk.an.example': "Na przykład {id} ({what}). Nikt inny w tabeli nie ma takiego zestawu. Kto zna tę osobę i wie, że jest w tabeli, rozpozna ją bez nazwiska.",
+  'bk.an.noExample': "Przy tych polach nikt nie jest jedyny w swojej grupie.",
+  'bk.an.caption': "Jedynych w swojej grupie jest {unique} z {n}. Wszystkich grup jest {groups}. Zasada k-anonimowości wymaga, żeby każdy był w grupie co najmniej k osób, tutaj k = {k}. Dane są wymyślone.",
+  'bk.an.captionSafe': "Przy tych polach każdy jest w grupie liczącej co najmniej k osób, tutaj k = {k}. Zasada k-anonimowości jest spełniona. Wszystkich grup jest {groups}. Dane są wymyślone.",
+  'bk.an.captionNone': "Bez żadnego pola wszyscy są w jednej grupie. Taka tabela nikogo nie wskazuje, ale też nic nie mówi.",
   'bk.ct.caption': "To pomoc do nauki, a nie porada prawna. W razie wątpliwości zapytaj prowadzącego albo uczelnianą komisję etyczną.",
   'bk.dc.share': "Jaka część została?",
   'bk.dc.counts': "Ile filmów?",
@@ -4179,9 +4274,53 @@ const pl = {
   'bk.card.missing': "Zostały pola do wypełnienia ({k}).",
   'bk.card.download': "Pobierz kartę (.txt)",
   'bk.card.fileTitle': "Karta źródła (projekt, krok 1). Warsztat analityki internetowej",
+  // --- who is working (ui/person.js, ui/people.js) ------------------------------------
+  'who.title': "Kim jesteś?",
+  'who.say': "Wpisz imię i nazwisko. Twój postęp zapisze się osobno, także na wspólnym komputerze.",
+  'who.start': "Zacznij",
+  'who.hint': "Imię zostaje w tej przeglądarce i nigdzie nie jest wysyłane. Trafi tylko do raportu, który sam przekażesz prowadzącemu.",
+  'who.back': "Wracasz? Kliknij swoje imię.",
+  'who.last': "ostatnio {date}",
+  'who.backToNames': "Wróć",
+  'who.working': "Pracuje:",
+  'who.switch': "Zmień osobę",
+  'who.forget': "Usuń moje dane z tego komputera",
+  'who.forgetAsk': "Usunąć postęp i odpowiedzi osoby {name}? Tego nie da się cofnąć.",
+  'who.forgetYes': "Tak, usuń",
+  'who.forgetNo': "Zostaw",
+  // --- the report for the teacher (ui/report.js, ui/reportbox.js) ---------------------
+  'rep.title': "Raport dla prowadzącego",
+  'rep.nameLabel': "Imię i nazwisko",
+  'rep.namePlaceholder': "np. Anna Kowalska",
+  'rep.needName': "Wpisz imię i nazwisko, a pojawi się raport.",
+  'rep.say': "Skopiuj cały tekst razem z ostatnią linią albo pobierz plik. Wyślij go tam, gdzie prosi prowadzący, np. w UPeL, w Teams albo e-mailem. Strona sama niczego nie wysyła.",
+  'rep.copy': "Kopiuj",
+  'rep.copied': "Skopiowano.",
+  'rep.copyFailed': "Zaznacz tekst i skopiuj go ręcznie (Ctrl+C).",
+  'rep.download': "Pobierz plik (.txt)",
+  'rep.checkTitle': "Prowadzący? Sprawdź raporty studentów",
+  'rep.checkSay': "Wklej raport albo kilka raportów, jeden pod drugim. Kod kontrolny wykryje ręczne poprawki, ale nie zatrzyma kogoś, kto zna JavaScript.",
+  'rep.pastePlaceholder': "Wklej tu raport studenta albo raporty całej grupy",
+  'rep.ok': "Raport jest nienaruszony. Wykonane {done} z {total}.",
+  'rep.bad': "Kod się nie zgadza. Raport ktoś zmienił albo jest niepełny.",
+  'rep.noCode': "Brak linii z kodem kontrolnym.",
+  'rep.noName': "(bez nazwiska)",
+  'rep.sumStarted': "rozpoczęte, nieukończone:",
+  'rep.many': "Liczba wklejonych raportów to {n}, a nienaruszonych {ok}.",
+  'rep.head': "Raport postępu dla prowadzącego",
+  'rep.course': "Kurs:",
+  'rep.person': "Osoba:",
+  'rep.date': "Data:",
+  'rep.total': "Wykonane ćwiczenia:",
+  'rep.of': "{n} z {total}",
+  'rep.done': "wykonane",
+  'rep.started': "rozpoczęte",
+  'rep.notDone': "niewykonane",
+  'rep.attempts': "sprawdzenia:",
+  'rep.hints': "podpowiedzi:",
+  'rep.code': "Kod kontrolny:",
+  'rep.trainerCourse': "Warsztat analityki internetowej · Trener",
   'bk.sum.count': "Wykonane {k} z {n}.",
-  'bk.sum.download': "Pobierz podsumowanie z kartą (.txt)",
-  'bk.sum.fileTitle': "Rozdział 1, podsumowanie ćwiczeń. Warsztat analityki internetowej",
 };
 
 __modules["src/i18n/pl.js"] = { "pl": pl };
@@ -4203,7 +4342,10 @@ __modules["src/i18n/pl.js"] = { "pl": pl };
  *   that does not go through this. (Plural logic taken from the R trainer.)
  */
 const { pl } = __modules["src/i18n/pl.js"];
-const DICT = pl;
+const DICT = { ...pl };
+
+/** Add or replace strings: a second course built on this engine has its own titles and texts. */
+function extend(more) { Object.assign(DICT, more); }
 
 /**
  * Look up a key and fill in placeholders.
@@ -4264,7 +4406,7 @@ function plural(n, forms) {
 const referenceKeys = () => Object.keys(DICT);
 const dictionary = () => DICT;
 
-__modules["src/i18n/index.js"] = { "t": t, "has": has, "plural": plural, "referenceKeys": referenceKeys, "dictionary": dictionary };
+__modules["src/i18n/index.js"] = { "extend": extend, "t": t, "has": has, "plural": plural, "referenceKeys": referenceKeys, "dictionary": dictionary };
 })();
 
 /* ===== src/ui/codebox.js ===== */
@@ -5803,6 +5945,109 @@ function rowsTable(goal, mine, d) {
 __modules["src/ui/pics/compare.js"] = { "renderCompare": renderCompare };
 })();
 
+/* ===== src/ui/person.js ===== */
+(function () {
+/**
+ * Who is working: the people of this browser and the one chosen now (D26).
+ *
+ * The course runs in a computer lab, where the browser remembers the last student. So the
+ * page asks "Kim jesteś?" every time it opens, and everything a person does is saved under
+ * keys that end with that person's id: progress, the place in the trainer, the chapter's
+ * answers, the name on the report. The chosen person is NOT saved: a reload asks again, and
+ * that is also how "Zmień osobę" works.
+ *
+ * Without a chosen person (the tests, and code that runs before the screen) the keys are the
+ * plain ones, as before names existed. Data saved before names existed belongs to nobody in
+ * particular; it is left where it is and never shown.
+ *
+ * The same design as the R trainer's names (r_visual_trainer, D17).
+ */
+
+const MAX_NAME = 80;
+
+let PREFIX = 'liczby-z-internetu';
+let current = null;
+let memory = null;   // the list, when localStorage is unavailable
+
+const listKey = () => `${PREFIX}.people.v1`;
+const tidy = (name) => String(name ?? '').replace(/\s+/g, ' ').trim().slice(0, MAX_NAME);
+const same = (a, b) => a.toLocaleLowerCase('pl') === b.toLocaleLowerCase('pl');
+
+function readList() {
+  if (memory) return memory;
+  try {
+    const list = JSON.parse(localStorage.getItem(listKey()) || '[]');
+    return Array.isArray(list) ? list : [];
+  } catch {
+    memory = [];
+    return memory;
+  }
+}
+
+function writeList(list) {
+  if (memory) { memory = list; return; }
+  try { localStorage.setItem(listKey(), JSON.stringify(list)); } catch { memory = list; }
+}
+
+/** Another course on the same site origin keeps its own people (called by useProgressStore). */
+function usePeoplePrefix(prefix) { PREFIX = prefix; current = null; memory = null; }
+
+/** The person working now: {id, name}, or null before the screen. */
+const person = () => current;
+
+/** A storage key of the person working now. */
+const personKey = (key) => (current ? `${key}.p.${current.id}` : key);
+
+/** Everyone who worked in this browser, the latest first: [{id, name, lastAt}]. */
+const people = () => readList()
+  .map((p, at) => [p, at])
+  // Same moment (two quick switches): whoever was written last is at the end of the saved list.
+  .sort((a, b) => ((b[0].lastAt || 0) - (a[0].lastAt || 0)) || (b[1] - a[1]))
+  .map(([p]) => p);
+
+function touch(p) {
+  const list = readList().filter((x) => x.id !== p.id);
+  const next = { ...p, lastAt: Date.now() };
+  writeList([...list, next]);
+  current = { id: next.id, name: next.name };
+  return current;
+}
+
+/** Continue as someone from the list. */
+function choose(id) {
+  const found = readList().find((p) => p.id === id);
+  return found ? touch(found) : null;
+}
+
+/** Start under a name. A name already on the list (letter case aside) is that person, not a twin. */
+function enter(name) {
+  const clean = tidy(name);
+  if (!clean) return null;
+  const found = readList().find((p) => same(p.name, clean));
+  if (found) return touch(found);
+  const id = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  return touch({ id, name: clean });
+}
+
+/** Stop being anyone (the tests; the page itself reloads). */
+function leave() { current = null; }
+
+/** Remove a person and everything saved under their keys from this browser. */
+function forget(id = current?.id) {
+  if (!id) return;
+  const suffix = `.p.${id}`;
+  try {
+    const keys = [];
+    for (let i = 0; i < localStorage.length; i++) keys.push(localStorage.key(i));
+    for (const k of keys) if (k && k.endsWith(suffix)) localStorage.removeItem(k);
+  } catch { /* nothing was saved there */ }
+  writeList(readList().filter((p) => p.id !== id));
+  if (current?.id === id) current = null;
+}
+
+__modules["src/ui/person.js"] = { "MAX_NAME": MAX_NAME, "usePeoplePrefix": usePeoplePrefix, "person": person, "personKey": personKey, "people": people, "choose": choose, "enter": enter, "leave": leave, "forget": forget };
+})();
+
 /* ===== src/ui/progress.js ===== */
 (function () {
 /**
@@ -5816,15 +6061,15 @@ __modules["src/ui/pics/compare.js"] = { "renderCompare": renderCompare };
  * every access degrades to an in-memory store rather than throwing. Progress is a
  * convenience; it must never be the reason the trainer fails to open.
  */
-
-const KEY = 'liczby-z-internetu.progress.v1';
+const { person, personKey, usePeoplePrefix } = __modules["src/ui/person.js"];
+let KEY = 'liczby-z-internetu.progress.v1';
 
 let memory = null;   // fallback when localStorage is unavailable
 
 function readAll() {
   if (memory) return memory;
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = localStorage.getItem(personKey(KEY));
     return raw ? JSON.parse(raw) : {};
   } catch {
     memory = {};
@@ -5835,7 +6080,7 @@ function readAll() {
 function writeAll(data) {
   if (memory) { memory = data; return; }
   try {
-    localStorage.setItem(KEY, JSON.stringify(data));
+    localStorage.setItem(personKey(KEY), JSON.stringify(data));
   } catch {
     memory = data;
   }
@@ -5858,8 +6103,9 @@ const markSeen = (lessonId) => {
 };
 
 // solvedCode keeps the accepted answer; lastCode follows later attempts.
+// doneAt is the first success and stays: the report gives the day the work was done.
 const markDone = (lessonId, { code = null } = {}) =>
-  setProgress(lessonId, { status: 'done', lastCode: code, solvedCode: code });
+  setProgress(lessonId, { status: 'done', lastCode: code, solvedCode: code, doneAt: getProgress(lessonId)?.doneAt || Date.now() });
 
 const noteAttempt = (lessonId, { code = null } = {}) => {
   const current = getProgress(lessonId);
@@ -5873,19 +6119,58 @@ const noteHint = (lessonId, index) => {
 
 function resetProgress() {
   memory = null;
-  try { localStorage.removeItem(KEY); } catch { memory = {}; }
+  try { localStorage.removeItem(personKey(KEY)); } catch { memory = {}; }
 }
 
 /** Where the student was: reopening the file lands on the same lesson and step. */
-const PLACE_KEY = 'liczby-z-internetu.place.v1';
+let PLACE_KEY = 'liczby-z-internetu.place.v1';
+
+/** Another course on the same site origin keeps its own progress and people (call before anything is read). */
+function useProgressStore(prefix) {
+  KEY = `${prefix}.progress.v1`; PLACE_KEY = `${prefix}.place.v1`; NAME_KEY = `${prefix}.name.v1`; memory = null;
+  usePeoplePrefix(prefix);
+}
 const savedPlace = () => {
-  try { return JSON.parse(localStorage.getItem(PLACE_KEY) || 'null'); } catch { return null; }
+  try { return JSON.parse(localStorage.getItem(personKey(PLACE_KEY)) || 'null'); } catch { return null; }
 };
 const savePlace = (place) => {
-  try { localStorage.setItem(PLACE_KEY, JSON.stringify(place)); } catch { /* ignore */ }
+  try { localStorage.setItem(personKey(PLACE_KEY), JSON.stringify(place)); } catch { /* ignore */ }
 };
 
-__modules["src/ui/progress.js"] = { "getProgress": getProgress, "setProgress": setProgress, "markSeen": markSeen, "markDone": markDone, "noteAttempt": noteAttempt, "noteHint": noteHint, "resetProgress": resetProgress, "savedPlace": savedPlace, "savePlace": savePlace };
+/**
+ * A lesson as a line of the report. "Started" means the student checked an answer or took a
+ * hint: a lesson is marked seen as soon as it is drawn, which in a chapter is on opening the page.
+ */
+function reportFacts(lessonId) {
+  const p = getProgress(lessonId);
+  const done = p?.status === 'done';
+  return {
+    status: done ? 'done' : (p?.attempts || p?.hintsUsed) ? 'seen' : null,
+    doneAt: done ? p.doneAt || p.updatedAt : null,
+    attempts: p?.attempts,
+    hintsUsed: p?.hintsUsed,
+    answer: p?.solvedCode || null,
+  };
+}
+
+/**
+ * The name on the report for the teacher. It starts as the name given on "Kim jesteś?" and can
+ * be corrected where the report is made (a nickname there, the full name here). It stays in
+ * this browser until the student sends the report.
+ */
+let NAME_KEY = 'liczby-z-internetu.name.v1';
+let nameMemory = '';
+const reportName = () => {
+  const fallback = person()?.name || nameMemory;
+  try { return localStorage.getItem(personKey(NAME_KEY)) ?? fallback; } catch { return fallback; }
+};
+const saveReportName = (name) => {
+  if (!person()) nameMemory = name;
+  // An emptied name is kept as empty: the report then waits, it does not fall back to the nickname.
+  try { if (name || person()) localStorage.setItem(personKey(NAME_KEY), name); else localStorage.removeItem(NAME_KEY); } catch { /* ignore */ }
+};
+
+__modules["src/ui/progress.js"] = { "getProgress": getProgress, "setProgress": setProgress, "markSeen": markSeen, "markDone": markDone, "noteAttempt": noteAttempt, "noteHint": noteHint, "resetProgress": resetProgress, "useProgressStore": useProgressStore, "savedPlace": savedPlace, "savePlace": savePlace, "reportFacts": reportFacts, "reportName": reportName, "saveReportName": saveReportName };
 })();
 
 /* ===== src/ui/lesson.js ===== */
@@ -8643,14 +8928,17 @@ __modules["src/lessons/index.js"] = { "LESSONS": LESSONS, "lessonById": lessonBy
  * blocked localStorage must never stop the chapter from opening). Embedded lessons
  * keep using the trainer's own progress store, so a task solved here is solved there.
  */
-
-const KEY = 'liczby-z-internetu.book.v1';
+const { personKey } = __modules["src/ui/person.js"];
+let KEY = 'liczby-z-internetu.book.v1';
 let memory = null;
+
+/** Another course on the same site origin keeps its own state (call before anything is read). */
+function useStore(key) { KEY = key; memory = null; }
 
 function readAll() {
   if (memory) return memory;
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = localStorage.getItem(personKey(KEY));
     return raw ? JSON.parse(raw) : {};
   } catch {
     memory = {};
@@ -8660,7 +8948,7 @@ function readAll() {
 
 function writeAll(data) {
   if (memory) { memory = data; return; }
-  try { localStorage.setItem(KEY, JSON.stringify(data)); } catch { memory = data; }
+  try { localStorage.setItem(personKey(KEY), JSON.stringify(data)); } catch { memory = data; }
 }
 
 const getItem = (id) => readAll()[id] ?? null;
@@ -8677,10 +8965,10 @@ const markDone = (id) => setItem(`done:${id}`, Date.now());
 
 function resetBook() {
   memory = null;
-  try { localStorage.removeItem(KEY); } catch { memory = {}; }
+  try { localStorage.removeItem(personKey(KEY)); } catch { memory = {}; }
 }
 
-__modules["src/book/store.js"] = { "getItem": getItem, "setItem": setItem, "isDone": isDone, "markDone": markDone, "resetBook": resetBook };
+__modules["src/book/store.js"] = { "useStore": useStore, "getItem": getItem, "setItem": setItem, "isDone": isDone, "markDone": markDone, "resetBook": resetBook };
 })();
 
 /* ===== src/ui/site.js ===== */
@@ -8713,6 +9001,366 @@ function siteNav(pages, links = siteLinks()) {
 }
 
 __modules["src/ui/site.js"] = { "SITE_PAGES": SITE_PAGES, "siteLinks": siteLinks, "brand": brand, "siteNav": siteNav };
+})();
+
+/* ===== src/ui/report.js ===== */
+(function () {
+/**
+ * "Raport dla prowadzącego": a student's work as text they hand in themselves (D25).
+ *
+ * The course has no server, so the teacher sees progress only when a student sends it:
+ * copied or downloaded here and passed on through the university's channels. Plain text
+ * survives all of them. The report says, per exercise, whether it was done and when, how
+ * many checks and hints it took, and it carries the accepted answers (formulas, queries,
+ * code) and, in a chapter, the source card.
+ *
+ * The last line is a check code computed from the rest. It catches a report edited by hand,
+ * not a programmer: the code that makes it ships in this file, and the teacher's text says
+ * so. Verification ignores what pasting does to text (line ends, repeated or non-breaking
+ * spaces, indentation, a greeting above the report). The first line and the salt are the
+ * same on every page of every course on this engine, so any page checks any report.
+ *
+ * The same design as the R trainer's report (r_visual_trainer, D17), without its names
+ * screen: here the name is asked where the report is made.
+ */
+const { t } = __modules["src/i18n/index.js"];
+const SALT = 'lzi-report-1';
+
+/** Two FNV-1a rounds: 8 hex digits, enough to make hand edits show. */
+function hash(text) {
+  let a = 0x811c9dc5;
+  let b = 0x01000193 ^ 0x5bd1e995;
+  const s = `${SALT}\n${text}`;
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charCodeAt(i);
+    a = Math.imul(a ^ c, 0x01000193) >>> 0;
+    b = Math.imul(b ^ c, 0x01000193 ^ 0x2f) >>> 0;
+  }
+  const hex = ((a ^ (b >>> 7)) >>> 0).toString(16).padStart(8, '0').toUpperCase();
+  return `${hex.slice(0, 4)}-${hex.slice(4)}`;
+}
+
+/** What pasting may change, undone: the check sees words, not layout. */
+const normalise = (text) => String(text)
+  .replace(/\r\n?/g, '\n')
+  .replace(/[\u00a0\u2007\u202f\t]/g, ' ')
+  .split('\n')
+  .map((line) => line.replace(/ +/g, ' ').trim())
+  .filter(Boolean)
+  .join('\n');
+
+const pad = (n) => String(n).padStart(2, '0');
+const day = (ms) => { const d = new Date(ms); return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}`; };
+const stamp = (ms) => { const d = new Date(ms); return `${day(ms)} ${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+
+/**
+ * @param {Object} a
+ * @param {string} a.course   what the report is about ("Warsztat ... · Rozdział 1 z 5")
+ * @param {string} a.name     who hands it in
+ * @param {Array} a.items     [{label, status: 'done'|'seen'|null, doneAt, attempts, hintsUsed, answer}]
+ * @param {Array} [a.extra]   further sections, each [title, text] (the source card)
+ * @returns {string}  the report, check code last
+ */
+function buildReport({ course, name, items, extra = [], now = Date.now() }) {
+  const done = items.filter((it) => it.status === 'done').length;
+  const lines = [
+    t('rep.head'),
+    `${t('rep.course')} ${course}`,
+    `${t('rep.person')} ${String(name).replace(/\s+/g, ' ').trim()}`,
+    `${t('rep.date')} ${stamp(now)}`,
+    `${t('rep.total')} ${t('rep.of', { n: done, total: items.length })}`,
+    '',
+    ...items.flatMap((it, i) => {
+      const facts = [
+        it.attempts ? `${t('rep.attempts')} ${it.attempts}` : null,
+        it.hintsUsed ? `${t('rep.hints')} ${it.hintsUsed}` : null,
+      ].filter(Boolean);
+      const state = it.status === 'done'
+        ? `${t('rep.done')} ${it.doneAt ? day(it.doneAt) : '?'}`
+        : it.status === 'seen' ? t('rep.started') : t('rep.notDone');
+      // An arrow, not a colon: the labels have full stops and colons of their own.
+      const line = `${i + 1}. ${it.label} → ${state}${facts.length ? ` (${facts.join(', ')})` : ''}`;
+      return it.answer ? [line, ...String(it.answer).trimEnd().split('\n').map((l) => `    ${l}`)] : [line];
+    }),
+    ...extra.filter(([, text]) => text).flatMap(([title, text]) => ['', title, ...String(text).trimEnd().split('\n')]),
+  ];
+  const body = lines.join('\n');
+  return `${body}\n\n${t('rep.code')} ${hash(normalise(body))}`;
+}
+
+const after = (body, key) => {
+  const p = t(key);
+  return body.find((l) => l.startsWith(p))?.slice(p.length).trim();
+};
+
+/** What a checked report says, read back from its lines. */
+function readFacts(body) {
+  const total = (after(body, 'rep.total') || '').match(/(\d+)\D+(\d+)/);
+  const started = [];
+  for (const line of body) {
+    const m = line.match(/^(\d+)\. .+ → (.+)$/);
+    if (m && m[2].startsWith(t('rep.started'))) started.push(Number(m[1]));
+  }
+  return {
+    course: after(body, 'rep.course'),
+    date: after(body, 'rep.date'),
+    done: total ? Number(total[1]) : null,
+    total: total ? Number(total[2]) : null,
+    started,
+  };
+}
+
+/**
+ * Check pasted text holding one report or several, one under another.
+ * @returns {Array<{ok: boolean, reason?: 'noCode'|'mismatch', name?: string, course?: string,
+ *   date?: string, done?: number, total?: number, started?: number[]}>}
+ *   one entry per report, in the order pasted; empty for empty text
+ */
+function verifyReports(text) {
+  const lines = normalise(text).split('\n').filter(Boolean);
+  const codePrefix = t('rep.code');
+  const head = t('rep.head');
+  const out = [];
+  let from = 0;
+  lines.forEach((line, at) => {
+    if (!line.startsWith(codePrefix)) return;
+    const given = line.slice(codePrefix.length).trim().toUpperCase();
+    // From the report's own first line: a greeting above it in an e-mail is not part of it.
+    const above = lines.slice(from, at);
+    const body = above.slice(Math.max(above.lastIndexOf(head), 0));
+    from = at + 1;
+    const name = after(body, 'rep.person');
+    out.push(hash(body.join('\n')) === given
+      ? { ok: true, name, ...readFacts(body) }
+      : { ok: false, reason: 'mismatch', name });
+  });
+  // A report pasted without its last line: say so instead of skipping it.
+  const rest = lines.slice(from);
+  const start = rest.indexOf(head);
+  if (start >= 0 || (!out.length && lines.length)) {
+    out.push({ ok: false, reason: 'noCode', name: after(rest.slice(Math.max(start, 0)), 'rep.person') });
+  }
+  return out;
+}
+
+__modules["src/ui/report.js"] = { "buildReport": buildReport, "verifyReports": verifyReports };
+})();
+
+/* ===== src/ui/download.js ===== */
+(function () {
+/** Save a text as a file from the page (false where the browser cannot). */
+const { el } = __modules["src/ui/dom.js"];
+function download(name, text) {
+  if (typeof Blob === 'undefined' || typeof URL?.createObjectURL !== 'function') return false;
+  const url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
+  const a = el('a', { href: url, download: name });
+  document.body.append(a);
+  a.click?.();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  return true;
+}
+
+__modules["src/ui/download.js"] = { "download": download };
+})();
+
+/* ===== src/ui/reportbox.js ===== */
+(function () {
+/**
+ * The report panel: the student's side (name, text, copy, file) and the teacher's check.
+ *
+ * Used at the end of a chapter and in the trainer's menu. The name is kept in this browser
+ * only and goes nowhere by itself; the student sends the text. Without a name there is no
+ * report, because a report nobody signed is of no use to the teacher.
+ *
+ * The teacher's check sits under the report, folded: it needs no name, takes the reports of
+ * a whole group pasted one under another, and answers as the text is pasted.
+ */
+const { el, mount } = __modules["src/ui/dom.js"];
+const { t } = __modules["src/i18n/index.js"];
+const { buildReport, verifyReports } = __modules["src/ui/report.js"];
+const { download } = __modules["src/ui/download.js"];
+const { reportName, saveReportName } = __modules["src/ui/progress.js"];
+/** Copy with the clipboard API, then the older command; false when neither works. */
+async function copyText(text, area) {
+  try {
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); return true; }
+  } catch { /* fall through to the older way */ }
+  try {
+    area.focus?.();
+    area.select?.();
+    return !!document.execCommand?.('copy');
+  } catch { return false; }
+}
+
+function verdictNodes(results) {
+  if (!results.length) return [];
+  const one = (r) => {
+    if (!r.ok) {
+      return el('div.rp-verdict.rp-bad',
+        el('b', r.name || t('rep.noName')), ' ',
+        t(r.reason === 'noCode' ? 'rep.noCode' : 'rep.bad'));
+    }
+    return el('div.rp-verdict.rp-ok',
+      el('b', r.name || t('rep.noName')), ' ',
+      t('rep.ok', { done: r.done ?? '?', total: r.total ?? '?' }),
+      el('div.rp-verdict-sub', [r.course, r.date, r.started.length ? `${t('rep.sumStarted')} ${r.started.join(', ')}` : null].filter(Boolean).join(' · ')));
+  };
+  return [
+    results.length > 1 ? el('div.rp-many', t('rep.many', { n: results.length, ok: results.filter((r) => r.ok).length })) : null,
+    ...results.map(one),
+  ];
+}
+
+/**
+ * @param {Object} a
+ * @param {string} a.course        the "Kurs:" line
+ * @param {Function} a.items       () => the items of buildReport
+ * @param {Function} [a.extra]     () => further sections, [[title, text]]
+ * @param {string} [a.fileName]    name of the downloaded file
+ * @returns {Element}  with `.refresh()` to redraw the text after progress changed
+ */
+function reportPanel({ course, items, extra = () => [], fileName = 'raport.txt' }) {
+  const out = el('div.rp-out');
+  const nameInput = el('input.rp-input.rp-name', { type: 'text', id: 'rp-name', autocomplete: 'name', maxlength: '80', placeholder: t('rep.namePlaceholder') });
+  nameInput.value = reportName();
+
+  const draw = () => {
+    const name = nameInput.value.replace(/\s+/g, ' ').trim();
+    if (!name) { mount(out, el('p.rp-need', t('rep.needName'))); return; }
+    const text = buildReport({ course, name, items: items(), extra: extra() });
+    const area = el('textarea.rp-input.rp-text', { readonly: true, rows: '12', 'aria-label': t('rep.title'), spellcheck: 'false' });
+    area.value = text;
+    const status = el('span.rp-status', { 'aria-live': 'polite' });
+    mount(out,
+      area,
+      el('div.rp-bar',
+        el('button.ls-check', { type: 'button', onClick: async () => { status.textContent = t((await copyText(text, area)) ? 'rep.copied' : 'rep.copyFailed'); } }, t('rep.copy')),
+        el('button.rp-btn', { type: 'button', onClick: () => { if (!download(fileName, `${text}\n`)) status.textContent = t('rep.copyFailed'); } }, t('rep.download')),
+        status),
+      el('p.rp-say', t('rep.say')));
+  };
+  nameInput.addEventListener('input', () => { saveReportName(nameInput.value.replace(/\s+/g, ' ').trim()); draw(); });
+
+  const host = el('div.rp',
+    el('h3.rp-title', t('rep.title')),
+    el('label.rp-label', { for: 'rp-name' }, t('rep.nameLabel')),
+    nameInput,
+    out,
+    el('details.rp-check', el('summary', t('rep.checkTitle')), checkPanel()));
+  host.refresh = draw;
+  draw();
+  return host;
+}
+
+/** The teacher's check by itself: the paste box and the verdicts that follow it. */
+function checkPanel() {
+  const verdict = el('div.rp-verdicts', { 'aria-live': 'polite' });
+  const paste = el('textarea.rp-input.rp-paste', { rows: '5', placeholder: t('rep.pastePlaceholder'), 'aria-label': t('rep.checkTitle'), spellcheck: 'false' });
+  paste.addEventListener('input', () => mount(verdict, verdictNodes(verifyReports(paste.value))));
+  return el('div.rp-checkbox', el('p.rp-say', t('rep.checkSay')), paste, verdict);
+}
+
+__modules["src/ui/reportbox.js"] = { "reportPanel": reportPanel, "checkPanel": checkPanel };
+})();
+
+/* ===== src/ui/people.js ===== */
+(function () {
+/**
+ * The screens around a person: "Kim jesteś?" before the page, and the small box that says
+ * who is working, with "Zmień osobę" and "Usuń moje dane z tego komputera".
+ *
+ * "Kim jesteś?" opens every time the page does (person.js). One click on your own name is
+ * cheap; continuing as the previous student on a lab computer is not. The teacher, on their
+ * own computer, reaches the check of reports from here without becoming a student.
+ *
+ * All of it is page elements, not browser dialogs: those are not available everywhere.
+ */
+const { el, mount } = __modules["src/ui/dom.js"];
+const { t } = __modules["src/i18n/index.js"];
+const { MAX_NAME, people, enter, choose, forget, person } = __modules["src/ui/person.js"];
+const { checkPanel } = __modules["src/ui/reportbox.js"];
+const pad = (n) => String(n).padStart(2, '0');
+const shortDate = (ms) => { const d = new Date(ms); return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}`; };
+
+/** Ask again who is working: the chosen person is never saved, so a reload does it. */
+function reload() {
+  try { location.reload(); } catch { /* no page to reload (tests) */ }
+}
+
+/**
+ * Show "Kim jesteś?" in `host`, and call `start()` once someone is chosen.
+ * @param {Element} host
+ * @param {Function} start  builds the page into the same host
+ */
+function gate(host, start) {
+  const go = (p) => { if (p) { mount(host); start(p); } };
+  const showWho = () => {
+    const input = el('input.who-input', {
+      type: 'text', maxlength: String(MAX_NAME), autocomplete: 'off', spellcheck: 'false',
+      placeholder: t('rep.namePlaceholder'), 'aria-label': t('who.title'),
+    });
+    const list = people();
+    const buttons = list.map((p) => el('button.who-person', {
+      type: 'button',
+      dataset: { name: p.name.toLocaleLowerCase('pl') },
+      onClick: () => go(choose(p.id)),
+    }, el('span.who-name', p.name), p.lastAt ? el('span.who-meta', t('who.last', { date: shortDate(p.lastAt) })) : null));
+    const back = list.length ? el('div.who-back', el('div.who-back-label', t('who.back')), el('div.who-list', buttons)) : null;
+    // Typing narrows the list: on a computer used by a whole group your name is a few letters away.
+    input.addEventListener('input', () => {
+      const typed = input.value.trim().toLocaleLowerCase('pl');
+      for (const b of buttons) b.hidden = !!typed && !b.dataset.name.includes(typed);
+      if (back) back.hidden = buttons.every((b) => b.hidden);
+    });
+    mount(host, el('div.who',
+      el('div.who-card', { role: 'dialog', 'aria-label': t('who.title') },
+        el('div.who-brand', el('span.brand-mark', '%'), el('span.brand-name', t('ui.brand'))),
+        el('h1.who-title', t('who.title')),
+        el('p.who-say', t('who.say')),
+        el('form.who-form', {
+          onSubmit: (e) => { e.preventDefault(); if (input.value.trim()) go(enter(input.value)); else input.focus(); },
+        }, input, el('button.ls-check.who-start', { type: 'submit' }, t('who.start'))),
+        el('p.who-hint', t('who.hint')),
+        back,
+        el('button.who-teacher', { type: 'button', onClick: showCheck }, t('rep.checkTitle')))));
+    setTimeout(() => { try { input.focus(); } catch { /* not on the page yet */ } }, 0);
+  };
+  const showCheck = () => mount(host, el('div.who',
+    el('div.who-card.who-card-wide', { role: 'dialog', 'aria-label': t('rep.checkTitle') },
+      el('h1.who-title', t('rep.checkTitle')),
+      checkPanel(),
+      el('button.rp-btn.who-close', { type: 'button', onClick: showWho }, t('who.backToNames')))));
+  showWho();
+}
+
+/** One line for a menu or a table of contents: who is working, and the way to change it. */
+function personLine() {
+  const p = person();
+  if (!p) return null;
+  return el('div.who-line',
+    el('span.who-line-name', `${t('who.working')} ${p.name}`),
+    el('button.who-link', { type: 'button', onClick: reload }, t('who.switch')));
+}
+
+/** The same with "Usuń moje dane z tego komputera", confirmed in the page. */
+function personBox() {
+  const p = person();
+  if (!p) return null;
+  const host = el('div.who-box');
+  const calm = () => mount(host,
+    el('span.who-line-name', `${t('who.working')} ${p.name}`),
+    el('button.who-link', { type: 'button', onClick: reload }, t('who.switch')),
+    el('button.who-link', { type: 'button', onClick: ask }, t('who.forget')));
+  const ask = () => mount(host,
+    el('span.who-line-name', t('who.forgetAsk', { name: p.name })),
+    el('button.who-link.who-danger', { type: 'button', onClick: () => { forget(p.id); reload(); } }, t('who.forgetYes')),
+    el('button.who-link', { type: 'button', onClick: calm }, t('who.forgetNo')));
+  calm();
+  return host;
+}
+
+__modules["src/ui/people.js"] = { "gate": gate, "personLine": personLine, "personBox": personBox };
 })();
 
 /* ===== src/book/figures/common.js ===== */
@@ -10826,6 +11474,111 @@ function consentFigure({ num = 'Rysunek' } = {}) {
 __modules["src/book/figures/consent.js"] = { "NODES": NODES, "LEAVES": LEAVES, "START": START, "consentFigure": consentFigure };
 })();
 
+/* ===== src/book/data/profiles.js ===== */
+(function () {
+// Generated by tools/make_profiles.py. Invented people: no real data. Do not edit.
+const PROFILES = {"seed":20261007,"invented":true,"countries":["Polska","Niemcy","Hiszpania","Wielka Brytania","Francja","Holandia","Włochy","Czechy","Portugalia","Szwecja","Irlandia","Austria","Belgia","Dania","Litwa","Norwegia","Finlandia","Szwajcaria","Słowacja","Estonia","Łotwa","Rumunia","Węgry","Grecja"],"industries":["informatyka","marketing","edukacja","finanse","handel internetowy","doradztwo","media","ochrona zdrowia","administracja publiczna","produkcja","logistyka","badania i rozwój","kultura","turystyka","budownictwo","energetyka","prawo","organizacje pozarządowe","gry wideo","telekomunikacja"],"rows":[[0,12,3],[7,5,4],[0,5,22],[2,19,16],[0,19,5],[7,19,15],[0,2,21],[0,0,16],[16,6,2],[3,2,21],[0,4,13],[0,0,14],[21,1,11],[10,2,21],[2,0,14],[0,0,13],[5,0,7],[0,0,23],[0,6,8],[21,2,12],[1,2,5],[0,0,14],[0,17,3],[4,3,17],[3,0,19],[7,2,20],[0,0,21],[7,6,10],[6,2,5],[4,4,17],[0,4,3],[3,1,5],[0,1,23],[6,0,9],[9,0,5],[2,3,6],[0,10,27],[21,12,13],[7,4,4],[1,2,7],[12,0,21],[0,19,1],[2,1,2],[7,0,12],[19,7,9],[11,4,11],[0,3,34],[2,0,23],[7,4,7],[3,1,11],[11,10,5],[1,0,12],[0,1,28],[1,0,8],[0,9,30],[4,0,10],[0,0,10],[13,5,23],[8,1,7],[0,1,9],[3,8,17],[4,3,9],[0,2,23],[0,12,2],[11,3,15],[8,1,21],[6,5,1],[10,6,10],[0,8,5],[0,1,37],[0,9,12],[11,0,3],[2,9,4],[6,14,3],[0,4,9],[6,0,6],[9,0,2],[0,2,10],[1,3,4],[22,4,15],[6,13,28],[7,1,29],[1,15,16],[10,10,6],[13,0,17],[19,4,15],[19,5,2],[19,0,17],[1,4,14],[5,1,4],[23,14,13],[0,3,12],[1,0,9],[2,11,34],[0,4,12],[1,4,12],[0,5,12],[12,16,23],[0,1,1],[2,1,6],[1,19,7],[9,13,9],[7,10,5],[20,14,13],[18,4,15],[0,17,20],[9,0,23],[2,0,3],[16,1,15],[0,17,4],[6,5,23],[17,1,10],[10,5,13],[0,5,24],[2,7,2],[19,5,15],[0,3,11],[0,10,11],[2,5,9],[3,5,2],[10,6,5],[6,2,11],[3,16,11],[0,6,7],[7,18,14],[0,2,8],[2,0,17],[6,2,10],[2,8,9],[4,1,14],[0,2,5],[3,5,6],[0,5,3],[4,10,5],[5,3,14],[0,8,11],[4,10,18],[0,0,11],[1,2,5],[14,1,18],[9,11,5],[0,19,8],[0,7,19],[1,8,9],[9,1,9],[3,10,11],[1,13,8],[14,11,17],[1,2,27],[0,1,15],[1,4,18],[0,7,5],[4,0,10],[5,9,22],[3,0,11],[2,8,2],[7,3,11],[15,0,14],[1,0,18],[0,1,4],[7,2,8],[22,0,35],[3,0,10],[0,4,8],[0,0,11],[18,10,11],[17,1,9],[12,8,10],[6,4,13],[2,5,9],[0,17,13],[6,7,8],[21,9,5],[2,6,7],[23,0,6],[3,4,2],[10,15,5],[10,0,7],[0,5,4],[1,16,11],[2,10,3],[5,8,8],[3,1,22],[3,6,13],[0,9,13],[5,0,11],[4,8,14],[0,11,10],[2,1,2],[3,18,6],[4,0,10],[0,9,10],[6,13,40],[3,3,12],[0,1,7],[5,1,6],[0,9,8],[2,1,27],[12,2,15],[7,17,4],[7,11,14],[5,0,7],[5,6,16],[0,0,5],[0,1,9],[4,0,13],[1,0,11],[0,2,22],[5,15,14],[2,5,7],[3,1,16],[14,1,7],[0,1,7],[7,2,9],[1,0,9],[5,2,5],[17,3,14],[1,12,13],[9,3,8],[5,0,10],[20,2,20],[1,2,1],[23,0,7],[2,13,4],[0,2,33],[8,0,3],[2,15,12],[0,4,28],[15,5,17],[3,9,6],[0,7,23],[1,10,6],[6,1,11],[0,19,3],[0,12,25],[2,6,6],[1,16,3],[22,8,11],[6,4,11],[3,14,7],[0,3,5],[5,5,6],[9,6,10],[0,15,28],[1,3,19],[0,2,21],[6,2,9],[21,2,7],[17,1,9],[1,0,13],[12,6,11],[6,1,20],[23,15,13],[2,0,7],[10,3,7],[1,0,22],[7,10,25],[1,16,5],[3,6,11],[10,0,8],[2,4,23],[4,0,12],[0,1,22],[18,0,8],[11,16,5],[1,14,10],[2,1,27],[3,14,3],[2,1,4],[11,14,5],[1,15,3],[4,0,18],[1,2,13],[18,8,17],[4,11,3],[0,0,10],[1,5,7],[18,2,6],[13,6,32],[1,0,23],[2,3,4],[0,16,5],[0,10,31],[0,0,17],[0,2,4],[10,4,4],[18,7,13],[0,5,6],[7,5,13],[2,0,11],[0,0,20],[13,19,21],[8,1,5],[8,9,9],[1,0,9],[0,1,18],[1,14,22],[0,17,4],[9,12,12],[17,0,6],[4,15,10],[1,1,6],[7,7,3],[0,10,27],[0,1,9],[0,3,8],[0,10,3],[9,0,19],[1,1,13],[11,11,15],[5,8,4],[4,0,9],[15,16,2],[1,5,9],[12,2,16],[1,1,25],[11,3,16],[8,0,9],[8,16,14],[0,12,17],[0,1,8],[9,6,7],[2,2,8],[1,13,3],[2,9,21],[1,0,7],[0,1,24],[9,0,12],[18,9,20],[13,0,8],[1,3,5],[1,18,13],[8,0,10],[10,0,3],[0,5,7],[0,0,23],[4,10,16],[3,12,2],[12,11,14],[1,4,14],[9,4,5],[2,1,9],[12,19,10],[10,14,11],[0,6,7],[8,11,10],[2,0,17],[3,1,15],[0,8,17],[1,3,9],[1,5,20],[21,1,29],[6,8,7],[0,0,31],[0,4,5],[18,12,14],[0,0,25],[19,3,36],[0,14,33],[1,12,6],[0,15,7],[15,1,10],[0,5,9],[1,7,38],[7,2,29],[1,3,19],[16,6,19],[0,15,6],[0,3,10],[0,5,8],[0,9,16],[0,2,9],[0,8,11],[1,1,13],[1,1,4],[1,15,4],[2,9,10],[0,15,4],[17,3,10],[5,4,9],[0,15,11],[0,0,17],[1,0,5],[0,8,37],[9,12,19],[1,1,9],[4,0,9],[18,4,2],[4,0,12],[4,0,25],[1,1,13],[1,3,13],[0,2,2],[1,2,5],[2,2,12],[0,1,1],[7,17,19],[18,16,16],[3,1,2],[21,4,25],[0,2,12],[2,13,4],[1,0,10],[3,0,31],[20,7,9],[2,13,15],[0,8,16],[0,0,10],[0,2,9],[0,3,25],[4,0,22],[13,0,29],[2,0,19],[1,0,15],[2,0,7],[2,0,10],[1,12,6],[0,10,16],[6,13,21],[20,9,12],[8,17,16],[4,13,7],[0,4,4],[0,11,24],[2,14,16],[11,5,18],[1,16,6],[2,8,20],[2,4,10],[0,6,10],[2,2,12],[10,0,32],[2,16,3],[6,9,6],[0,0,8],[13,6,33],[3,2,6],[0,3,12],[7,8,18],[7,8,14],[2,6,11],[2,10,4],[2,4,31],[8,14,6],[3,0,6],[2,0,4],[0,6,15],[6,2,30],[1,0,7],[2,19,16],[4,3,9],[3,1,5],[8,3,9],[10,0,12],[0,2,9],[18,0,9],[1,0,5],[1,13,8],[1,15,31],[19,0,1],[12,10,14],[10,15,4],[1,1,7],[0,3,15],[5,12,14],[0,6,5],[1,0,27],[0,2,8],[2,14,7],[8,6,13],[0,1,7],[15,8,16],[14,3,8],[2,0,16],[7,12,4],[1,6,32],[4,2,14],[16,10,1],[0,8,4],[6,2,3],[5,0,5],[1,1,29],[16,2,7],[3,1,15],[2,7,7],[23,6,16],[0,4,9],[17,10,18],[1,2,20],[17,0,21],[7,5,5],[2,5,16],[1,16,24],[0,0,2],[0,4,9],[17,0,3],[3,11,8],[0,1,11],[10,1,14],[18,1,37],[2,0,12],[5,0,7],[0,5,34],[2,1,22],[13,8,17],[2,0,27],[0,1,24],[4,13,12],[12,0,16],[1,0,15],[0,12,8],[1,9,28],[0,1,18],[0,11,9],[2,3,12],[5,1,12],[4,10,8],[3,0,5],[1,0,12],[1,13,5],[22,0,12],[0,14,4],[6,18,16],[4,0,8],[1,3,14],[5,11,7],[4,0,9],[1,7,13],[8,4,4],[0,13,21],[10,0,4],[4,6,14],[3,11,21],[23,8,9],[1,10,15],[4,0,11],[1,9,5],[0,1,2],[3,0,7],[0,0,26],[0,15,18],[8,0,3],[12,8,22],[8,1,2],[4,0,5],[6,1,17],[9,11,6],[1,0,7],[1,3,4],[15,19,10],[1,9,16],[3,10,4],[1,0,12],[0,10,12],[0,0,5],[3,10,22],[4,9,16],[20,4,7],[0,7,6],[6,5,11],[6,2,14],[1,0,26],[4,0,8],[0,10,8],[5,15,3],[0,13,16],[2,2,16],[0,9,12],[12,12,10],[3,6,8],[0,8,20],[3,3,7],[23,10,3],[4,19,12],[22,0,17],[3,0,7],[6,5,13],[0,17,9],[8,15,10],[0,4,21],[9,2,14],[6,0,16],[4,1,5],[1,2,8],[18,8,7],[11,11,18],[23,2,10],[14,5,16],[0,19,11],[0,5,19],[1,0,1],[3,0,11],[0,16,2],[9,19,15],[2,5,11],[1,10,2],[0,2,27],[4,7,27],[2,4,17],[0,8,8],[8,5,11],[6,3,3],[0,0,15],[0,0,9],[12,3,7],[6,1,2],[9,0,13],[1,5,10],[14,0,24],[1,2,7],[2,3,14],[0,3,2],[2,2,3],[4,9,7],[20,18,9],[0,2,6],[2,10,19],[0,5,17],[5,0,15],[6,9,10],[10,19,16],[0,15,27],[4,6,9],[0,2,8],[0,11,13],[1,0,5],[0,3,18],[2,1,7],[0,5,12],[0,2,6],[0,0,20],[22,7,20],[0,3,6],[23,2,24],[0,15,13],[4,18,14],[4,18,16],[23,2,16],[4,0,14],[0,14,13],[10,2,7],[7,0,11],[2,18,5],[3,10,7],[2,3,12],[1,3,7],[3,9,7],[1,1,6],[0,12,15],[2,13,2],[4,0,10],[2,0,9],[3,2,8],[17,16,20],[3,2,19],[7,6,4],[2,12,10],[0,4,5],[3,10,7],[0,2,21],[10,6,1],[11,0,6],[0,10,2],[1,19,7],[4,3,13],[8,4,9],[15,16,12],[1,11,9],[0,17,15],[0,0,4],[0,8,5],[1,0,38],[5,7,4],[0,13,11],[3,19,2],[5,4,19],[0,0,3],[0,0,40],[0,2,4],[0,0,4],[2,1,11],[10,0,27],[0,1,11],[8,1,13],[3,9,18],[14,0,15],[1,0,15],[1,8,36],[2,2,25],[0,8,13],[11,4,16],[9,1,7],[0,2,6],[12,2,5],[16,18,8],[8,5,10],[19,18,38],[3,0,13],[3,0,7],[1,18,5],[1,5,5],[19,4,40],[1,18,3],[5,3,2],[7,14,27],[6,11,9],[21,9,14],[0,0,14],[7,3,13],[0,7,3],[0,0,1],[0,11,1],[3,13,17],[0,4,4],[23,15,2],[5,0,18],[0,0,10],[3,2,12],[10,15,5],[1,10,10],[1,3,11],[0,2,3],[11,3,8],[1,13,4],[17,18,17],[19,2,14],[10,19,14],[2,16,5],[0,1,19],[15,0,28],[1,3,5],[8,1,12],[0,0,2],[19,3,16],[16,1,8],[22,3,15],[0,7,11],[3,16,7],[5,3,4],[1,1,7],[0,16,6],[11,5,10],[0,0,2],[9,0,20],[23,6,17],[0,9,22],[2,9,9],[10,4,14],[0,2,5],[14,3,8],[0,7,11],[0,3,17],[0,5,7],[1,14,3],[1,8,11],[10,3,36],[1,9,1],[0,10,19],[1,6,2],[9,10,3],[1,0,17],[2,3,17],[0,3,28],[3,8,14],[0,2,2],[1,1,6],[3,2,7],[0,4,33],[0,4,15],[0,0,16],[3,16,21],[5,1,17],[2,1,2],[0,4,10],[23,1,8],[6,2,38],[2,0,8],[0,3,16],[0,3,11],[2,3,7],[16,1,3],[4,10,11],[7,11,22],[6,2,22],[3,0,10],[15,9,15],[8,5,2],[11,2,9],[0,2,2],[4,3,10],[0,12,8],[0,5,8],[9,14,27],[11,11,27],[2,0,6],[0,0,14],[0,2,11],[10,0,7],[7,3,6],[0,5,40],[0,0,12],[0,0,15],[18,16,26],[1,6,6],[1,13,14],[0,6,6],[2,12,9],[18,3,14],[2,9,22],[1,0,9],[10,5,39],[11,11,19],[0,0,25],[1,7,6],[0,10,5],[10,6,15],[8,7,10],[10,9,2],[0,2,6],[2,2,26],[0,16,18],[0,18,13],[14,1,8],[22,12,2],[10,12,22],[3,11,6],[0,6,9],[0,3,10],[0,2,7],[21,3,13],[0,2,2],[7,19,18],[4,3,10],[0,0,14],[0,12,19],[0,16,23],[1,0,7],[5,3,11],[6,0,11],[18,8,3],[3,0,14],[4,5,2],[10,0,14],[9,1,14],[2,2,10],[0,13,27],[0,0,3],[0,19,19],[11,11,6],[1,1,13],[2,3,6],[1,2,12],[0,4,9],[10,12,6],[3,2,21],[1,2,16],[1,6,11],[1,4,20],[1,0,24],[1,13,9],[12,10,6],[8,5,5],[8,0,9],[9,1,11],[0,1,13],[0,3,17],[2,12,24],[0,0,22],[13,14,4],[10,5,5],[1,0,7],[15,8,14],[5,4,11],[2,17,1],[0,0,15],[1,13,20],[0,14,3],[0,16,30],[6,0,20],[7,17,7],[0,11,11],[2,0,37],[13,0,8],[1,18,5],[6,0,5],[18,0,31],[3,0,5],[2,6,7],[5,12,16],[5,0,5],[0,0,11],[0,17,14],[19,0,10],[0,4,8],[2,17,4],[17,1,7],[0,15,3],[0,12,14],[0,2,9],[2,11,19],[6,0,3],[1,3,3],[1,2,16],[0,6,5],[2,1,16],[6,12,15],[0,3,7],[22,0,15],[1,2,2],[3,6,20],[2,15,13],[0,9,6],[3,0,21],[0,15,21],[4,0,8],[2,0,11],[0,10,8],[9,2,5],[1,18,4],[3,5,10],[4,1,4],[12,0,13],[0,12,15],[13,8,3],[6,14,2],[13,9,18],[1,2,10],[4,18,22],[0,3,18],[10,0,22],[12,10,6],[0,3,18],[11,1,7],[1,2,9],[0,7,27],[0,0,3],[17,18,6],[15,0,7],[1,0,8],[11,6,14],[21,10,13],[0,13,10],[0,5,12],[0,10,19],[1,1,22],[4,4,15],[7,8,12],[3,1,17],[19,1,11],[1,0,4],[4,8,11],[23,0,12],[13,4,14],[0,4,7],[0,1,27],[9,19,23],[0,2,10],[1,12,10],[3,15,8],[19,10,10],[5,6,4],[1,8,11],[11,1,2],[3,0,12],[3,8,6],[3,16,6],[5,12,16],[14,1,7],[12,7,16],[7,0,3],[3,19,1],[7,12,8],[7,4,14],[0,15,4],[3,3,12],[3,10,2],[0,0,1],[8,7,12],[11,12,26],[10,8,4],[0,13,4],[3,4,16],[11,3,15],[0,0,7],[1,5,2],[0,4,9],[3,13,24],[0,16,32],[3,5,10],[9,19,21],[3,3,20],[0,11,11],[11,6,4],[1,0,40],[0,9,9],[8,0,26],[10,2,9],[1,9,30],[2,4,15],[0,13,7]]};
+
+__modules["src/book/data/profiles.js"] = { "PROFILES": PROFILES };
+})();
+
+/* ===== src/book/figures/anonymity.js ===== */
+(function () {
+/**
+ * Figure (section 1.8) -- "Czy to jest anonimowe?": removing names is not anonymisation.
+ *
+ * A table of 1000 INVENTED professional profiles (data/profiles.js, made by
+ * tools/make_profiles.py; no real people) with the names already removed. The reader chooses
+ * which of three harmless-looking fields to publish -- country, industry, years of experience --
+ * and how coarse the years are. The figure counts how many people are then the only one in
+ * their group, how many share a group with fewer than five, and names one of the unique people.
+ *
+ * The point for a project: a table without names is pseudonymised, not anonymous, as long as a
+ * combination of its fields singles people out (k-anonymity; Sweeney 2000). Under the GDPR such
+ * a table is still personal data.
+ */
+const { el, mount } = __modules["src/ui/dom.js"];
+const { frame, toggles } = __modules["src/book/figures/common.js"];
+const { t } = __modules["src/i18n/index.js"];
+const { fmtNum } = __modules["src/core/format.js"];
+const { PROFILES } = __modules["src/book/data/profiles.js"];
+const FIELDS = ['kraj', 'branza', 'staz'];
+const BINS = [1, 5, 10];          // years of experience: exact, or in ranges of 5 or 10
+const K = 5;                      // the usual threshold: at least five people in every group
+
+/** Years 14 with bin 5 -> [11, 15]; with bin 1 -> [14, 14]. */
+function yearRange(years, bin) {
+  const from = Math.floor((years - 1) / bin) * bin + 1;
+  return [from, from + bin - 1];
+}
+
+/**
+ * Who can be singled out when these fields are published.
+ * @param {string[]} fields  subset of FIELDS
+ * @param {number} bin       one of BINS (used only when 'staz' is published)
+ * @returns {{n, groups, unique, small, safe, example}}  small = in a group of 2 to K-1
+ */
+function anonymityModel(fields, bin = 1, data = PROFILES) {
+  const on = new Set(fields);
+  const key = ([c, i, y]) => [on.has('kraj') ? c : '', on.has('branza') ? i : '', on.has('staz') ? yearRange(y, bin)[0] : ''].join('|');
+  const size = new Map();
+  for (const row of data.rows) size.set(key(row), (size.get(key(row)) || 0) + 1);
+  let unique = 0; let small = 0; let example = null;
+  data.rows.forEach((row, k) => {
+    const s = size.get(key(row));
+    if (s === 1) { unique += 1; if (!example) example = { id: `P-${String(k + 1).padStart(4, '0')}`, kraj: data.countries[row[0]], branza: data.industries[row[1]], staz: yearRange(row[2], bin) }; }
+    else if (s < K) small += 1;
+  });
+  const n = data.rows.length;
+  return { n, groups: size.size, unique, small, safe: n - unique - small, example };
+}
+
+function anonymityFigure({ num = 'Rysunek' } = {}) {
+  const state = { fields: new Set(FIELDS), bin: 1 };
+  const host = el('div.an');
+  const draw = () => {
+    const fields = FIELDS.filter((f) => state.fields.has(f));
+    const m = anonymityModel(fields, state.bin);
+    const share = (x) => `${((x / m.n) * 100).toFixed(1)}%`;
+    const seg = (cls, value, label) => el('div.an-row',
+      el('span.an-label', label),
+      el('div.an-track', el(`div.an-fill.${cls}`, { style: { width: share(value) } })),
+      el('span.an-val', fmtNum(value)));
+    const ex = m.example;
+    const shown = ex && [
+      state.fields.has('kraj') ? ex.kraj : null,
+      state.fields.has('branza') ? ex.branza : null,
+      state.fields.has('staz') ? (ex.staz[0] === ex.staz[1] ? t('bk.an.years', { y: ex.staz[0] }) : t('bk.an.yearRange', { from: ex.staz[0], to: ex.staz[1] })) : null,
+    ].filter(Boolean).join(', ');
+    mount(host,
+      el('p.an-say', t('bk.an.say', { n: fmtNum(m.n) })),
+      el('div.fg-toggles', { role: 'group', 'aria-label': t('bk.an.fields') }, FIELDS.map((f) => el('button', {
+        type: 'button',
+        class: ['fg-toggle', state.fields.has(f) ? 'fg-toggle-on' : ''].filter(Boolean).join(' '),
+        'aria-pressed': state.fields.has(f) ? 'true' : 'false',
+        onClick: () => { if (state.fields.has(f)) state.fields.delete(f); else state.fields.add(f); draw(); },
+      }, t(`bk.an.field.${f}`)))),
+      state.fields.has('staz')
+        ? el('div.an-bins', el('span.an-bins-label', t('bk.an.bins')), toggles(BINS.map((b) => [b, t(`bk.an.bin.${b}`)]), state.bin, (b) => { state.bin = b; draw(); }))
+        : null,
+      el('div.an-rows',
+        seg('an-unique', m.unique, t('bk.an.unique')),
+        seg('an-small', m.small, t('bk.an.small', { k: K - 1 })),
+        seg('an-safe', m.safe, t('bk.an.safe', { k: K }))),
+      el('div.an-example', ex ? t('bk.an.example', { id: ex.id, what: shown }) : t('bk.an.noExample')),
+      el('div.fg-caption', !fields.length
+        ? t('bk.an.captionNone', { n: fmtNum(m.n) })
+        : m.safe === m.n
+          ? t('bk.an.captionSafe', { groups: fmtNum(m.groups), k: K })
+          : t('bk.an.caption', { unique: fmtNum(m.unique), n: fmtNum(m.n), groups: fmtNum(m.groups), k: K })));
+  };
+  draw();
+  return frame(num, 'Czy to jest anonimowe? Tabela bez nazwisk', host);
+}
+
+__modules["src/book/figures/anonymity.js"] = { "FIELDS": FIELDS, "BINS": BINS, "K": K, "yearRange": yearRange, "anonymityModel": anonymityModel, "anonymityFigure": anonymityFigure };
+})();
+
 /* ===== src/book/figures/decay.js ===== */
 (function () {
 /**
@@ -11235,6 +11988,9 @@ __modules["src/book/figures/ethics.js"] = { "CHOICES": CHOICES, "SCENARIOS": SCE
  */
 const { el, mount } = __modules["src/ui/dom.js"];
 const { getItem, setItem, isDone, markDone } = __modules["src/book/store.js"];
+const { download } = __modules["src/ui/download.js"];
+const { reportPanel } = __modules["src/ui/reportbox.js"];
+const { personBox } = __modules["src/ui/people.js"];
 const { ROUTES } = __modules["src/book/figures/routes.js"];
 const { QUADRANTS } = __modules["src/book/figures/quadrants.js"];
 const { TRAITS } = __modules["src/book/figures/traits.js"];
@@ -11258,17 +12014,6 @@ function cardText(card) {
 }
 
 /** Offer a text file to save (no-op where the browser cannot). */
-function download(name, text) {
-  if (typeof Blob === 'undefined' || typeof URL?.createObjectURL !== 'function') return false;
-  const url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
-  const a = el('a', { href: url, download: name });
-  document.body.append(a);
-  a.click?.();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  return true;
-}
-
 function sourceCard({ onDone } = {}) {
   const card = { ...(getItem('karta') || {}) };
   const host = el('div.kc');
@@ -11317,36 +12062,34 @@ function sourceCard({ onDone } = {}) {
   return host;
 }
 
-/** The exercises of the chapter, for the summary: [id, label, isDone()]. */
-function summaryBlock(items, { onRefresh } = {}) {
+/**
+ * The exercises of the chapter, for the summary, and under them the report for the teacher.
+ * Items: {label, section, done(), facts(), answer()}; `course` is the report's "Kurs:" line.
+ */
+function summaryBlock(items, { onRefresh, course = '', fileName = 'raport.txt' } = {}) {
   const host = el('div.sm');
+  const list = el('div.sm-top');
+  const report = reportPanel({
+    course,
+    fileName,
+    items: () => items.map((it) => ({ label: it.label, ...(it.facts?.() || { status: it.done() ? 'done' : null }), answer: it.answer?.() || null })),
+    extra: () => [[t('bk.card.fileTitle'), cardText(getItem('karta') || {})]],
+  });
   const draw = () => {
     const done = items.filter((it) => it.done()).length;
-    mount(host,
+    mount(list,
       el('ul.sm-list', items.map((it) => el('li', { class: it.done() ? 'sm-done' : '' },
         el('span.sm-mark', it.done() ? '✓' : '○'), el('a', { href: `#${it.section}` }, it.label)))),
-      el('div.fg-caption', t('bk.sum.count', { k: done, n: items.length })),
-      el('div.qx-bar',
-        el('button.ls-check', {
-          type: 'button',
-          onClick: () => download('rozdzial-1-podsumowanie.txt', [
-            t('bk.sum.fileTitle'),
-            '',
-            ...items.flatMap((it) => [`${it.done() ? '[x]' : '[ ]'} ${it.label}`, ...(it.answer?.() ? [`    ${it.answer().replace(/\n/g, '\n    ')}`] : [])]),
-            '',
-            t('bk.card.fileTitle'),
-            '',
-            cardText(getItem('karta') || {}),
-            '',
-          ].join('\n')),
-        }, t('bk.sum.download'))));
+      el('div.fg-caption', t('bk.sum.count', { k: done, n: items.length })));
+    report.refresh();
   };
+  mount(host, list, report, personBox());
   draw();
   onRefresh?.(draw);
   return host;
 }
 
-__modules["src/book/figures/project.js"] = { "CARD_FIELDS": CARD_FIELDS, "cardText": cardText, "download": download, "sourceCard": sourceCard, "summaryBlock": summaryBlock };
+__modules["src/book/figures/project.js"] = { "CARD_FIELDS": CARD_FIELDS, "cardText": cardText, "sourceCard": sourceCard, "summaryBlock": summaryBlock };
 })();
 
 /* ===== src/book/figures/plan.js ===== */
@@ -11370,13 +12113,13 @@ const COURSE = [
   { topic: 0, meetings: [12], title: 'Prezentacje projektów' },
 ];
 
-function courseMap(current = 1) {
+function courseMap(current = 1, course = COURSE) {
   const state = { at: current };
   const host = el('div.cm');
   const draw = () => {
-    const block = COURSE.find((c) => c.topic === state.at);
+    const block = course.find((c) => c.topic === state.at);
     mount(host,
-      el('div.cm-row', COURSE.flatMap((c) => c.meetings.map((m) => el('button', {
+      el('div.cm-row', course.flatMap((c) => c.meetings.map((m) => el('button', {
         type: 'button',
         class: ['cm-meet', `cm-t${c.topic}`, c.topic === state.at ? 'cm-on' : '', c.topic === current ? 'cm-here' : ''].filter(Boolean).join(' '),
         title: `${t('bk.plan.meeting', { m })}: ${c.title}`,
@@ -11384,7 +12127,7 @@ function courseMap(current = 1) {
         onClick: () => { state.at = c.topic; draw(); },
       }, String(m))))),
       el('div.fg-caption', block.topic
-        ? t('bk.plan.topic', { k: block.topic, title: block.title, from: block.meetings[0], to: block.meetings[block.meetings.length - 1], h: block.meetings.length * 2 })
+        ? t(block.meetings.length > 1 ? 'bk.plan.topic' : 'bk.plan.topicOne', { k: block.topic, title: block.title, from: block.meetings[0], to: block.meetings[block.meetings.length - 1], h: block.meetings.length * 2 })
         : t('bk.plan.final', { m: block.meetings[0] })));
   };
   draw();
@@ -11404,7 +12147,7 @@ function meetingPlan(sections) {
 
 function planFigure(sections) {
   const plan = meetingPlan(sections);
-  return frame('Plan rozdziału', t('bk.plan.chapterTitle'),
+  return frame(t('bk.plan.label'), t('bk.plan.chapterTitle'),
     el('div.pl', plan.map((m) => el('div.pl-meet',
       el('div.pl-head', el('b', t('bk.plan.meeting', { m: m.meeting })), el('span', t('bk.plan.minutes', { minutes: m.total }))),
       el('div.pl-bar', m.parts.map((p) => el('a', {
@@ -11434,9 +12177,10 @@ const { el, mount } = __modules["src/ui/dom.js"];
 const { rich, setFigureNumbers } = __modules["src/book/rich.js"];
 const { Workbench } = __modules["src/book/workbench.js"];
 const { lessonById } = __modules["src/lessons/index.js"];
-const { getProgress } = __modules["src/ui/progress.js"];
-const { isDone } = __modules["src/book/store.js"];
+const { getProgress, reportFacts } = __modules["src/ui/progress.js"];
+const { isDone, getItem } = __modules["src/book/store.js"];
 const { brand, siteNav } = __modules["src/ui/site.js"];
+const { personLine } = __modules["src/ui/people.js"];
 const { tracesFigure } = __modules["src/book/figures/traces.js"];
 const { quadrantsFigure, quadrantsExercise } = __modules["src/book/figures/quadrants.js"];
 const { coverageFigure } = __modules["src/book/figures/coverage.js"];
@@ -11449,6 +12193,7 @@ const { errorsFigure } = __modules["src/book/figures/errors.js"];
 const { participationFigure } = __modules["src/book/figures/participation.js"];
 const { usesFigure } = __modules["src/book/figures/uses.js"];
 const { consentFigure } = __modules["src/book/figures/consent.js"];
+const { anonymityFigure } = __modules["src/book/figures/anonymity.js"];
 const { decayFigure } = __modules["src/book/figures/decay.js"];
 const { agentExercise } = __modules["src/book/figures/agent.js"];
 const { traitsFigure, traitsExercise } = __modules["src/book/figures/traits.js"];
@@ -11469,9 +12214,13 @@ const FIGURES = {
   participation: participationFigure,
   uses: usesFigure,
   consent: consentFigure,
+  anonymity: anonymityFigure,
   decay: decayFigure,
   traits: traitsFigure,
 };
+
+/** What an exercise puts into the report as its answer, by id: () => text or null. Lessons give their accepted code. */
+const ANSWERS = {};
 
 const EXERCISES = {
   mapa: quadrantsExercise,
@@ -11537,7 +12286,8 @@ class BookApp {
     const done = ch.summary.filter((it) => this.isItemDone(it)).length;
     this.progressLabel.textContent = t('bk.progress', { k: done, n: ch.summary.length });
     mount(this.tocHost,
-      siteNav(['home', 'trainer']),
+      siteNav(ch.siteNav || ['home', 'trainer']),
+      personLine(),
       el('a.bk-toc-item.bk-toc-top', { href: '#bk-start', onClick: () => this.toggleToc(false) }, t('bk.tocStart')),
       ch.sections.map((s) => {
         const items = doneIn(s);
@@ -11577,7 +12327,7 @@ class BookApp {
       el('div.bk-box',
         el('div.bk-box-title', t('bk.howTo')),
         el('ul.bk-howto', ch.howTo.map(([kind, text]) => el('li', el(`span.bk-kind.bk-kind-${kind}`, t(`bk.kind.${kind}`)), text)))),
-      courseMap(ch.number),
+      courseMap(ch.number, ch.course),
       planFigure(ch.sections),
       el('p.bk-prep', ch.prep));
   }
@@ -11585,7 +12335,7 @@ class BookApp {
   renderSection(s) {
     const meta = s.meeting
       ? [el('span.bk-meet', t('bk.plan.meeting', { m: s.meeting })), s.parts.map(([kind, min]) => el(`span.bk-kind.bk-kind-${kind}`, `${t(`bk.kind.${kind}`)} · ${min}′`))]
-      : [el('span.bk-kind.bk-kind-projekt', t('bk.outside'))];
+      : [el('span.bk-kind.bk-kind-projekt', s.outside || t('bk.outside'))];
     return el('section.bk-section', { id: s.id },
       el('div.bk-sec-head',
         el('div.bk-sec-meta', meta),
@@ -11635,10 +12385,16 @@ class BookApp {
     const summary = summaryBlock(ch.summary.map((it) => ({
       ...it,
       done: () => this.isItemDone(it),
-      // The accepted formula or query goes into the file, so a teacher can read the work.
-      answer: () => (it.lesson ? getProgress(it.lesson)?.solvedCode || null : null),
+      facts: () => {
+        if (!it.lesson) return { status: isDone(it.id) ? 'done' : null, doneAt: getItem(`done:${it.id}`) };
+        return reportFacts(it.lesson);
+      },
+      // The accepted formula, query or code goes into the report, so a teacher can read the work.
+      answer: () => (it.lesson ? getProgress(it.lesson)?.solvedCode || null : ANSWERS[it.id]?.() || null),
     })), {
       onRefresh: (fn) => this.refreshers.push(fn),
+      course: ch.kicker,
+      fileName: `raport-${ch.id}.txt`,
     });
     return el('section.bk-section.bk-end', { id: 'bk-end' },
       el('div.bk-sec-head', el('h2.bk-sec-title', t('bk.summary'))),
@@ -11657,7 +12413,7 @@ function exerciseHead(b) {
     el('h3.bk-ex-title', b.title));
 }
 
-__modules["src/book/book.js"] = { "FIGURES": FIGURES, "EXERCISES": EXERCISES, "figureNumbers": figureNumbers, "BookApp": BookApp };
+__modules["src/book/book.js"] = { "FIGURES": FIGURES, "ANSWERS": ANSWERS, "EXERCISES": EXERCISES, "figureNumbers": figureNumbers, "BookApp": BookApp };
 })();
 
 /* ===== src/book/chapter1.js ===== */
@@ -11853,8 +12609,17 @@ const CHAPTER = {
         { p: 'Dane osobowe chroni RODO, także wtedy, gdy ktoś je opublikował. Przejdź drzewo decyzji z postem, którego chcesz użyć w projekcie.' },
         { figure: 'consent' },
         { exercise: 'etyka', num: 'Ćwiczenie 1.8', title: 'Osiem decyzji badacza', min: 10 },
+        { p: 'Usunięcie nazwisk to jeszcze nie anonimizacja. L. Sweeney (2000) policzyła, że 87% mieszkańców USA ma jedyny w kraju zestaw trzech cech. To kod pocztowy, płeć i data urodzenia. Tabela bez nazwisk, w której zestaw pól wskazuje jedną osobę, jest tylko **spseudonimizowana**. Dla RODO to nadal dane osobowe.' },
+        { p: 'Na rysunku jest tabela 1000 wymyślonych profili zawodowych. Wybierz pola, które chcesz opublikować, i zobacz, ile osób zostaje jedynych w swojej grupie.' },
+        { figure: 'anonymity' },
+        { p: 'Pomagają dwie rzeczy. Można publikować mniej pól albo podawać je mniej dokładnie, na przykład staż w przedziałach. Obie kosztują, bo dane mówią wtedy mniej. Najbezpieczniej jest pokazywać w raporcie tylko wyniki zbiorcze.' },
+        { terms: [
+          ['pseudonimizacja', 'zastąpienie nazwisk numerami, po którym osobę nadal da się wskazać z pomocą innych danych'],
+          ['anonimizacja', 'takie przekształcenie danych, po którym nikogo nie da się już wskazać'],
+          ['k-anonimowość', 'własność tabeli, w której każdy zestaw opublikowanych pól ma co najmniej k osób'],
+        ] },
         { note: 'W 2012 r. badacze zmienili 689 tys. użytkownikom Facebooka proporcje pozytywnych i negatywnych postów w aktualnościach. Użytkownicy o tym nie wiedzieli (Kramer i in. 2014). Publikacja wywołała spór o zgodę w badaniach na platformach.', tone: 'warn' },
-        { read: ['zimmer2010'] },
+        { read: ['zimmer2010', 'sweeney2000'] },
       ],
     },
 
@@ -11906,6 +12671,7 @@ const CHAPTER = {
     lazer2014: 'Lazer, D., Kennedy, R., King, G., Vespignani, A. (2014). The Parable of Google Flu: Traps in Big Data Analysis. *Science*, 343(6176), 1203–1205.',
     freelon2018: 'Freelon, D. (2018). Computational Research in the Post-API Age. *Political Communication*, 35(4), 665–668.',
     kramer2014: 'Kramer, A. D. I., Guillory, J. E., Hancock, J. T. (2014). Experimental evidence of massive-scale emotional contagion through social networks. *PNAS*, 111(24), 8788–8790.',
+    sweeney2000: 'Sweeney, L. (2000). *Simple Demographics Often Identify People Uniquely*. Data Privacy Working Paper 3. Carnegie Mellon University.',
     zimmer2010: 'Zimmer, M. (2010). „But the data is already public”: on the ethics of research in Facebook. *Ethics and Information Technology*, 12(4), 313–325.',
     franzke2020: 'franzke, a. s., Bechmann, A., Zimmer, M., Ess, C., AoIR (2020). *Internet Research: Ethical Guidelines 3.0*. Association of Internet Researchers.',
     midera2019: 'Midera, D. (red.) (2019). *Infobrokering – sztuka pozyskiwania, analizy i ewaluacji*. Warszawa: Dom Wydawniczy ELIPSA.',
@@ -11921,13 +12687,15 @@ __modules["src/book/chapter1.js"] = { "CHAPTER": CHAPTER };
 /* ===== src/book/main.js ===== */
 (function () {
 /**
- * Entry point of the chapter-1 file: the textbook shell with chapter 1.
+ * Entry point of the chapter-1 file: "Kim jesteś?" first (D26), then the textbook shell
+ * with chapter 1 for that person.
  */
 const { BookApp } = __modules["src/book/book.js"];
 const { CHAPTER } = __modules["src/book/chapter1.js"];
+const { gate } = __modules["src/ui/people.js"];
 class ChapterApp {
   constructor(host) {
-    this.book = new BookApp(host, CHAPTER);
+    gate(host, () => { this.book = new BookApp(host, CHAPTER); });
   }
 }
 
