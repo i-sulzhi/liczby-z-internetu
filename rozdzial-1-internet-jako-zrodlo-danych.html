@@ -1573,6 +1573,31 @@ textarea.kc-input { resize: vertical; }
 .sq-url-missing { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-soft); }
 .sq-url-field { margin-top: 6px; font-weight: 600; }
 @media (max-width: 600px) { .sq-units { gap: 2px; } }
+/* 2.6 the path from queries to a conclusion: four checks, a card per check, lines that move */
+.sq-path { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.sq-path li { display: flex; align-items: center; gap: 6px; }
+.sq-path li + li::before { content: "→"; color: var(--ink-faint); }
+.sq-path-start { font-size: 13px; color: var(--ink-soft); }
+.sq-gate { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 3px; border: 1px solid var(--line); border-radius: 999px; background: none; color: var(--ink); font: inherit; font-size: 13px; cursor: pointer; }
+.sq-gate-num { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--bg-sunken); font-weight: 700; font-size: 12px; }
+.sq-gate-on { border-color: var(--accent); background: var(--accent-soft); }
+.sq-gate-on .sq-gate-num { background: var(--accent); color: var(--bg, #fff); }
+.sq-gate-done .sq-gate-num { background: var(--ok-bg); color: var(--ok); }
+.sq-path-card { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; animation: sq-card-in 0.35s ease; }
+.sq-path-q { font-weight: 700; font-size: 16px; }
+.sq-path-text { margin: 0; font-size: 14px; line-height: 1.5; }
+.sq-path-svg { max-height: 220px; }
+.sq-path-card > .fg-toggle { align-self: flex-start; }
+.sq-draw-in { stroke-dasharray: 1; stroke-dashoffset: 1; animation: sq-draw 1.4s ease 0.3s forwards; }
+.sq-fade-out { animation: sq-fade 0.6s ease 0.4s forwards; }
+@keyframes sq-draw { to { stroke-dashoffset: 0; } }
+@keyframes sq-fade { to { opacity: 0; } }
+@keyframes sq-card-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .sq-draw-in { animation: none; stroke-dashoffset: 0; }
+  .sq-fade-out { animation: none; opacity: 0; }
+  .sq-path-card { animation: none; }
+}
 
 </style>
 </head>
@@ -4019,6 +4044,7 @@ const pl = {
   'fx.arith.pairs': "Działanie idzie wiersz po wierszu, w {n|parze|parach|parach}.",
   'fx.arith.broadcast': 'Ta sama liczba {s} w każdym z {n} wierszy.',
   'fx.peak': "Najwyżej wypada {key}.",
+  'fx.months': 'styczeń|luty|marzec|kwiecień|maj|czerwiec|lipiec|sierpień|wrzesień|październik|listopad|grudzień',
   'fx.logic.i': "„i” wymaga obu warunków naraz. Prawda w {k} z {n}.",
   'fx.logic.lub': "Przy „lub” wystarczy jeden warunek. Prawda w {k} z {n}.",
   'fx.logic.nie': "„nie” odwraca warunek. Prawda w {k} z {n}.",
@@ -4291,6 +4317,19 @@ const pl = {
   'bk.s2.dr.readOne': "Jedno wymyślone hasło ma r = {a} na pierwszych dwóch latach, na lewo od kreski. Na kolejnych dwóch latach r = {b}. Sprawdź więcej haseł.",
   'bk.s2.dr.read': "Spośród {k|wymyślonego hasła|wymyślonych haseł|wymyślonych haseł} najlepsze ma r = {a} na pierwszych dwóch latach, na lewo od kreski. Na kolejnych dwóch latach r = {b}.",
   'bk.s2.dr.caption': "Dane wymyślone. Wszystkie szeregi to czysty przypadek, nic ich nie łączy. Im więcej haseł sprawdzisz, tym lepsze dopasowanie znajdziesz. Na nowych danych znika.",
+  'bk.s2.path.start': "Zapytania",
+  'bk.s2.path.steps': "Droga od zapytań do wniosku",
+  'bk.s2.path.prev': "‹ Wstecz",
+  'bk.s2.path.next': "Dalej ›",
+  'bk.s2.path.play': "▶ Cała droga",
+  'bk.s2.path.pause': "❚❚ Zatrzymaj",
+  'bk.s2.path.again': "↺ Jeszcze raz",
+  'bk.s2.path.aria': "Wykres liniowy. Wyszukiwania z Google Trends i stopa bezrobocia w Polsce, miesiąc po miesiącu.",
+  'bk.s2.path.ariaDredge': "Wykres liniowy. Szereg do przewidzenia i najlepiej dopasowane z wymyślonych haseł, 48 miesięcy.",
+  'bk.s2.path.pair': "Hasło „{q}” i stopa bezrobocia, miesiąc po miesiącu od {a} do {b} r. Na oko oba wykresy idą podobnie. Sprawdzają to kolejne kroki.",
+  'bk.s2.path.yoy': "Na surowych wartościach r = {a}. Na zmianach rok do roku r = {b}. Prawie cały związek brał się ze wspólnego sezonu i trendu.",
+  'bk.s2.path.model': "Hasło „{q}” przechodzi drugi sprawdzian. Na surowych wartościach r = {raw}, a na zmianach rok do roku zostaje r = {r}. W prognozach polskiego bezrobocia rejestrowanego poprawiło jednak wynik tylko trochę (Malinowski 2021).",
+  'bk.s2.path.dredge': "Najlepsze z {k|wymyślonego hasła|wymyślonych haseł|wymyślonych haseł} ma r = {a} na pierwszych dwóch latach, na lewo od kreski. Na kolejnych dwóch latach r = {b}.",
   'bk.s2.tool.caption': "Stan na październik 2026 r. Szczegóły i źródła w tekście tego podrozdziału.",
   'bk.s2.cl.without': "Bez streszczenia AI",
   'bk.s2.cl.with': "Ze streszczeniem AI",
@@ -6741,7 +6780,7 @@ function member(entry) {
   // A series over time: light its peak, so the next scene can say "the peak moved".
   const peak = v.type === 'num' && v.ordered ? maxIndex(v.values) : -1;
   let caption = t('fx.member', { col: v.column, table: tb.name, n: v.values.length });
-  if (peak >= 0) caption += ` ${t('fx.peak', { key: v.keys[peak] })}`;
+  if (peak >= 0) caption += ` ${peakText(v.keys[peak])}`;
   return {
     pic: el('div.pc-stack',
       renderSeries(v, { height: 110, lit: peak >= 0 ? (_, i) => i === peak : null }),
@@ -6886,7 +6925,7 @@ function binary(entry, ctx) {
   if (v.type === 'num' && v.values.length <= 40) {
     const best = maxIndex(v.values);
     chart = renderSeries(v, { lit: (_, i) => i === best, height: 90 });
-    caption += ` ${t('fx.peak', { key: v.keys[best] })}`;
+    caption += ` ${peakText(v.keys[best])}`;
   }
   return { pic: el('div.pc-stack', table, chart), caption };
 }
@@ -6897,6 +6936,13 @@ function scalarText(v) {
   if (v.kind === 'str') return `„${v.v}”`;
   if (v.kind === 'bool') return v.v ? 'tak' : 'nie';
   return '—';
+}
+
+// Month keys in the data are short ('cze'); a sentence needs the full name.
+const SHORT_MONTHS = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'];
+function peakText(key) {
+  const i = SHORT_MONTHS.indexOf(String(key));
+  return t('fx.peak', { key: i >= 0 ? t('fx.months').split('|')[i] : key });
 }
 
 const maxIndex = (xs) => xs.reduce((best, x, i) => (x != null && (best === -1 || x > xs[best]) ? i : best), -1);
@@ -7127,7 +7173,7 @@ function roundPic(v) {
   if (isVec(v) && v.ordered) {
     const best = maxIndex(v.values);
     chart = renderSeries(v, { lit: (_, i) => i === best, height: 90 });
-    caption += ` ${t('fx.peak', { key: v.keys[best] })}`;
+    caption += ` ${peakText(v.keys[best])}`;
   }
   return { pic: el('div.pc-stack', chart, table), caption };
 }
@@ -12307,6 +12353,8 @@ const CHAPTER = {
       parts: [['teoria', 10], ['dyskusja', 15]],
       blocks: [
         { p: 'Czy zapytania mówią coś o świecie? Sprawdza się to na danych z innego źródła, na przykład z urzędu statystycznego. Najprostsza miara to korelacja r. Bliska 1 znaczy, że oba szeregi rosną i maleją razem. Bliska 0 znaczy, że nie ma między nimi takiego związku.' },
+        { p: 'Rysunek {rys:path} prowadzi od zapytań do wniosku przez cztery sprawdziany. Kliknij każdy z nich albo przejdź całą drogę. Niżej omawiamy je po kolei.' },
+        { figure: 'path' },
         { p: 'Tu łatwo o pułapkę. Gdy oba szeregi mają ten sam sezon albo ten sam długi spadek, korelacja wychodzi wysoka, nawet jeśli poza tym nic ich nie łączy. Dlatego porównuje się zmiany rok do roku, czyli ten sam miesiąc z miesiącem rok wcześniej.' },
         { p: 'Polskie badania studzą entuzjazm. Wyszukiwania pomogły szacować bezrobocie w Czechach i na Węgrzech, ale w Polsce wyniki były niejednoznaczne (Pavlicek, Kristoufek 2015). Hasła popularne w literaturze anglojęzycznej nie poprawiły prognoz polskiego bezrobocia rejestrowanego. Trochę pomogło tylko hasło „praca za granicą”, i to niewiele (Malinowski 2021).' },
         { p: 'Podobnie wyszło w USA. Zapytania dobrze przewidywały wpływy kin w pierwszy weekend, sprzedaż gier i miejsca piosenek na liście przebojów. Ale prosty model na innych dostępnych danych też przewidywał dobrze. Zapytania dodawały do niego od niewiele do dużo, zależnie od dziedziny, a przy grypie niewiele. Zapytania najbardziej pomagają tam, gdzie innych danych brak (Goel i in. 2010).' },
@@ -13377,6 +13425,7 @@ __modules["src/book/figures/trendsreal.js"] = { "num": num, "dayText": dayText, 
  * More figures of chapter 2 (asked by the author on 2026-10-14: a picture for every section).
  *
  *   resolutionFigure  2.4 the window decides the resolution: our own downloads, day / week / month
+ *   pathFigure        2.6 four checks on the way from queries to a conclusion (a stepper with motion)
  *   dredgingFigure    2.6 choosing keywords after the fact: the best of N invented series
  *   toolFigure        2.7 which route to Trends data fits the study
  *   clicksFigure      2.8 Pew 2025: clicks per 100 visits with and without an AI summary
@@ -13390,7 +13439,7 @@ const { frame, toggles } = __modules["src/book/figures/common.js"];
 const { t } = __modules["src/i18n/index.js"];
 const { fmtNum } = __modules["src/core/format.js"];
 const { TRENDS } = __modules["src/book/data/trends.js"];
-const { pearson } = __modules["src/book/figures/trendsreal.js"];
+const { pearson, validationPair } = __modules["src/book/figures/trendsreal.js"];
 const { QUERY_FIELDS } = __modules["src/book/chapter2.js"];
 const { plain } = __modules["src/book/rich.js"];
 const S = TRENDS.sets;
@@ -13494,6 +13543,173 @@ function dredgingFigure({ num: n = 'Rysunek' } = {}) {
   return frame(n, 'Dane wymyślone. Szukanie hasła, które pasuje', host);
 }
 
+// ---------------------------------------------------------------- 2.6 the path to a conclusion
+
+/**
+ * The four checks of section 2.6, then the conclusion. The numbers in the readouts come from
+ * pathNumbers(): real Trends and Eurostat series (as in the validation figure) and the invented
+ * dredging search (as in the dredging figure), so all three figures say the same r.
+ */
+const PATH_GATES = [
+  { id: 'druga', short: 'Druga seria', question: 'Czy jest z czym porównać?',
+    text: 'Sam wykres z Trends niczego nie dowodzi. Potrzebna jest druga seria z innego źródła, która mierzy to samo zjawisko. Tu to stopa bezrobocia w Polsce z Eurostatu.',
+    rule: 'Znajdź drugą serię z innego źródła.' },
+  { id: 'rokdoroku', short: 'Rok do roku', question: 'Czy związek przetrwa zmiany rok do roku?',
+    text: 'Wspólny sezon i wspólny długi spadek podbijają korelację. Zmiana rok do roku porównuje miesiąc z tym samym miesiącem rok wcześniej i usuwa jedno i drugie.',
+    rule: 'Licz korelację na zmianach rok do roku.' },
+  { id: 'model', short: 'Prosty model', question: 'Czy zapytania dodają coś do prostego modelu?',
+    text: 'Prosty model na innych danych często przewiduje równie dobrze. Zapytania najbardziej pomagają tam, gdzie innych danych brak (Goel i in. 2010).',
+    rule: 'Porównaj z prostym modelem bez zapytań.' },
+  { id: 'przed', short: 'Hasła z góry', question: 'Czy hasła wybrano przed sprawdzeniem?',
+    text: 'Kto przejrzy dużo haseł, zawsze znajdzie takie, które pasuje. Strategia oparta na słowie „debt” dawała zysk na danych z przeszłości (Preis i in. 2013). Zysk zależał jednak głównie od wyboru haseł (Challet, Bel Hadj Ayed 2014).',
+    rule: 'Zapisz hasła w karcie zapytań, zanim zobaczysz wynik.' },
+  { id: 'wniosek', short: 'Wniosek', question: 'Kiedy wniosek z zapytań jest mocny?',
+    text: 'Gdy przejdzie wszystkie cztery sprawdziany. Każdy z nich odsiewa inny błąd.',
+    rule: null },
+];
+
+const PATH = { item: 'urząd pracy', strong: 'praca za granicą', tries: 1000 };
+
+function pathNumbers() {
+  return {
+    raw: validationPair(PATH.item, 'raw'),
+    yoy: validationPair(PATH.item, 'yoy'),
+    strong: validationPair(PATH.strong, 'yoy'),
+    unemp: validationPair(PATH.strong, 'raw'),
+    dr: dredge(PATH.tries),
+  };
+}
+
+const reducedMotion = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const pointsText = (pts) => pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+
+/** Ease the points of a polyline from `from` to `to`. Without frames (tests, reduced motion) it stays at `to`. */
+function morph(poly, from, to, ms = 1100, hold = 500) {
+  if (typeof requestAnimationFrame !== 'function' || reducedMotion()) return;
+  poly.setAttribute('points', pointsText(from));
+  let t0 = null;
+  const step = (now) => {
+    if (!poly.isConnected) return;
+    if (t0 == null) t0 = now;
+    const k = Math.max(0, Math.min(1, (now - t0 - hold) / ms));
+    const e = k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
+    poly.setAttribute('points', pointsText(from.map(([x, y], i) => [x, y + (to[i][1] - y) * e])));
+    if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/** Month series on one shared time axis. Raw values to 0-100 of their maximum, changes around the middle. */
+function pathPlot(axis) {
+  const W = 640; const H = 150; const L = 8; const R = 8; const T = 8; const B = 20;
+  const x = (m) => L + (axis.indexOf(m) / (axis.length - 1)) * (W - L - R);
+  const y = (v) => T + (1 - v / 100) * (H - T - B);
+  const rawPts = (months, xs) => { const m = Math.max(...xs); return months.map((mo, i) => [x(mo), y((100 * xs[i]) / m)]); };
+  const yoyPts = (months, xs) => { const m = Math.max(...xs.map(Math.abs)); return months.map((mo, i) => [x(mo), y(50 + (50 * xs[i]) / m)]); };
+  const years = axis.filter((m) => m.endsWith('-01') && Number(m.slice(0, 4)) % 4 === 0);
+  const box = (...kids) => svg('svg', { viewBox: `0 0 ${W} ${H}`, class: 'sq-svg sq-path-svg', role: 'img', 'aria-label': t('bk.s2.path.aria') },
+    years.map((m) => svg('text', { x: x(m), y: H - 4, class: 'sq-tick', 'text-anchor': m === axis[0] ? 'start' : 'middle' }, m.slice(0, 4))), ...kids);
+  const zero = () => svg('line', { x1: L, x2: W - R, y1: y(50), y2: y(50), class: 'sq-grid' });
+  return { rawPts, yoyPts, box, zero };
+}
+
+function pathFigure({ num: n = 'Rysunek' } = {}) {
+  const state = { at: 0, timer: null };
+  const host = el('div.sq-win');
+  const nums = pathNumbers();
+  const plot = pathPlot(nums.raw.months);
+  const stop = () => { if (state.timer) { clearInterval(state.timer); state.timer = null; } };
+  const go = (k) => { state.at = Math.max(0, Math.min(PATH_GATES.length - 1, k)); draw(); };
+  const play = () => {
+    if (state.timer) { stop(); draw(); return; }
+    state.at = 0;
+    state.timer = setInterval(() => { if (!host.isConnected || state.at >= PATH_GATES.length - 1) { stop(); draw(); return; } state.at++; draw(); }, 4500);
+    state.timer?.unref?.();
+    draw();
+  };
+  const line = (pts, cls, drawIn = false) => svg('polyline', { points: pointsText(pts), class: `${cls}${drawIn ? ' sq-draw-in' : ''}`, pathLength: drawIn ? 1 : null });
+  const legend = (...items) => el('div.sq-legend', items.map(([cls, label]) => el(`span.sq-leg.${cls}`, label)));
+
+  const body = (g) => {
+    const { raw, yoy, strong, unemp, dr } = nums;
+    if (g.id === 'druga') {
+      return [
+        legend(['sq-leg-a', t('bk.tr.val.trends', { q: PATH.item })], ['sq-leg-b', t('bk.tr.val.une')]),
+        el('div.sq-wrap', plot.box(line(plot.rawPts(raw.months, raw.a), 'sq-line'), line(plot.rawPts(raw.months, raw.b), 'sq-line2', true))),
+        el('div.sq-read', t('bk.s2.path.pair', { q: PATH.item, a: raw.months[0].slice(0, 4), b: raw.months.at(-1).slice(0, 4) })),
+        el('div.fg-caption', t('bk.tr.val.caption', { d: TRENDS.une.updated }))];
+    }
+    if (g.id === 'rokdoroku') {
+      // the year 2004 has no year before it: it fades, the rest moves to the changes
+      const head = raw.months.filter((m) => !yoy.months.includes(m));
+      const atYoy = (months, xs) => { const all = plot.rawPts(raw.months, xs); return months.map((m) => all[raw.months.indexOf(m)]); };
+      const fromA = atYoy(yoy.months, raw.a); const toA = plot.yoyPts(yoy.months, yoy.a);
+      const fromB = atYoy(yoy.months, raw.b); const toB = plot.yoyPts(yoy.months, yoy.b);
+      const polyA = line(toA, 'sq-line'); const polyB = line(toB, 'sq-line2');
+      const fade = [line(plot.rawPts(raw.months, raw.a).slice(0, head.length + 1), 'sq-line sq-fade-out'), line(plot.rawPts(raw.months, raw.b).slice(0, head.length + 1), 'sq-line2 sq-fade-out')];
+      const run = () => { morph(polyA, fromA, toA); morph(polyB, fromB, toB); };
+      queueMicrotask(run);
+      return [
+        legend(['sq-leg-a', t('bk.tr.val.trends', { q: PATH.item })], ['sq-leg-b', t('bk.tr.val.une')]),
+        el('div.sq-wrap', plot.box(plot.zero(), fade, polyA, polyB)),
+        el('div.sq-read.sq-read-warn', t('bk.s2.path.yoy', { a: two(raw.r), b: two(yoy.r) })),
+        el('button.fg-toggle', { type: 'button', onClick: () => { stop(); draw(); } }, t('bk.s2.path.again')),
+        el('div.fg-caption', t('bk.tr.val.caption', { d: TRENDS.une.updated }))];
+    }
+    if (g.id === 'model') {
+      return [
+        legend(['sq-leg-a', t('bk.tr.val.trends', { q: PATH.strong })], ['sq-leg-b', t('bk.tr.val.une')]),
+        el('div.sq-wrap', plot.box(plot.zero(), line(plot.yoyPts(strong.months, strong.a), 'sq-line', true), line(plot.yoyPts(strong.months, strong.b), 'sq-line2'))),
+        el('div.sq-read', t('bk.s2.path.model', { q: PATH.strong, r: two(strong.r), raw: two(unemp.r) })),
+        el('div.fg-caption', t('bk.tr.val.caption', { d: TRENDS.une.updated }))];
+    }
+    if (g.id === 'przed') {
+      return [
+        legend(['sq-leg-a', t('bk.s2.dr.target')], ['sq-leg-b', t('bk.s2.dr.best')]),
+        el('div.sq-wrap', pathDredge(dr)),
+        el('div.sq-read.sq-read-warn', t('bk.s2.path.dredge', { k: PATH.tries, a: two(dr.rFit), b: two(dr.rNext) })),
+        el('div.fg-caption', t('bk.s2.dr.caption'))];
+    }
+    return [el('ol.sq-steps', PATH_GATES.filter((x) => x.rule).map((x) => el('li', el('b', `${x.short}. `), x.rule)))];
+  };
+
+  const draw = () => {
+    const g = PATH_GATES[state.at];
+    mount(host,
+      el('ol.sq-path', { 'aria-label': t('bk.s2.path.steps') },
+        el('li.sq-path-start', t('bk.s2.path.start')),
+        PATH_GATES.map((x, i) => el('li', el('button', {
+          type: 'button',
+          class: ['sq-gate', i === state.at ? 'sq-gate-on' : '', i < state.at ? 'sq-gate-done' : ''].filter(Boolean).join(' '),
+          'aria-current': i === state.at ? 'step' : null,
+          onClick: () => { stop(); go(i); },
+        }, el('span.sq-gate-num', x.rule ? String(i + 1) : '✓'), el('span.sq-gate-label', x.short))))),
+      el('div.sq-path-card',
+        el('div.sq-path-q', g.question),
+        el('p.sq-path-text', g.text),
+        body(g)),
+      el('div.fg-toggles',
+        el('button.fg-toggle', { type: 'button', disabled: state.at === 0, onClick: () => { stop(); go(state.at - 1); } }, t('bk.s2.path.prev')),
+        el('button.fg-toggle', { type: 'button', disabled: state.at === PATH_GATES.length - 1, onClick: () => { stop(); go(state.at + 1); } }, t('bk.s2.path.next')),
+        el('button', { type: 'button', class: `fg-toggle${state.timer ? ' fg-toggle-on' : ''}`, 'aria-pressed': state.timer ? 'true' : 'false', onClick: play }, state.timer ? t('bk.s2.path.pause') : t('bk.s2.path.play'))));
+  };
+  draw();
+  return frame(n, 'Od zapytań do wniosku. Cztery sprawdziany', host);
+}
+
+/** The dredging result on its own 48-month axis, with the line between fitted and new data. */
+function pathDredge(d) {
+  const W = 640; const H = 150; const L = 8; const R = 8; const T = 8; const B = 8;
+  const all = [...d.target, ...d.series]; const lo = Math.min(...all); const hi = Math.max(...all);
+  const x = (i) => L + (i / (d.target.length - 1)) * (W - L - R);
+  const y = (v) => T + (1 - (v - lo) / (hi - lo || 1)) * (H - T - B);
+  const pts = (vs) => vs.map((v, i) => [x(i), y(v)]);
+  return svg('svg', { viewBox: `0 0 ${W} ${H}`, class: 'sq-svg sq-path-svg', role: 'img', 'aria-label': t('bk.s2.path.ariaDredge') },
+    svg('line', { x1: x(DREDGE.fit), x2: x(DREDGE.fit), y1: T, y2: H - B, class: 'sq-note' }),
+    svg('polyline', { points: pointsText(pts(d.target)), class: 'sq-line' }),
+    svg('polyline', { points: pointsText(pts(d.series)), class: 'sq-line2 sq-draw-in', pathLength: 1 }));
+}
+
 // ---------------------------------------------------------------- 2.7 which route
 
 const TOOL_QUESTIONS = [
@@ -13582,7 +13798,7 @@ function trendsUrlFigure({ num: n = 'Rysunek' } = {}) {
   return frame(n, 'Adres wykresu Trends to zapis jego ustawień', host);
 }
 
-__modules["src/book/figures/search2.js"] = { "RESOLUTIONS": RESOLUTIONS, "resolutionOf": resolutionOf, "resolutionFigure": resolutionFigure, "mulberry32": mulberry32, "noiseSeries": noiseSeries, "DREDGE": DREDGE, "dredge": dredge, "dredgingFigure": dredgingFigure, "TOOL_QUESTIONS": TOOL_QUESTIONS, "toolAdvice": toolAdvice, "toolFigure": toolFigure, "PEW": PEW, "clicksFigure": clicksFigure, "TRENDS_URL": TRENDS_URL, "trendsUrlFigure": trendsUrlFigure };
+__modules["src/book/figures/search2.js"] = { "RESOLUTIONS": RESOLUTIONS, "resolutionOf": resolutionOf, "resolutionFigure": resolutionFigure, "mulberry32": mulberry32, "noiseSeries": noiseSeries, "DREDGE": DREDGE, "dredge": dredge, "dredgingFigure": dredgingFigure, "PATH_GATES": PATH_GATES, "PATH": PATH, "pathNumbers": pathNumbers, "pathFigure": pathFigure, "TOOL_QUESTIONS": TOOL_QUESTIONS, "toolAdvice": toolAdvice, "toolFigure": toolFigure, "PEW": PEW, "clicksFigure": clicksFigure, "TRENDS_URL": TRENDS_URL, "trendsUrlFigure": trendsUrlFigure };
 })();
 
 /* ===== src/book/book.js ===== */
@@ -13623,7 +13839,7 @@ const { ethicsExercise } = __modules["src/book/figures/ethics.js"];
 const { sourceCard, queryCard, summaryBlock } = __modules["src/book/figures/project.js"];
 const { courseMap, planFigure } = __modules["src/book/figures/plan.js"];
 const { searchmapFigure, windowFigure, querylogFigure, anchorFigure, breaksExercise } = __modules["src/book/figures/search.js"];
-const { resolutionFigure, dredgingFigure, toolFigure, clicksFigure, trendsUrlFigure } = __modules["src/book/figures/search2.js"];
+const { resolutionFigure, pathFigure, dredgingFigure, toolFigure, clicksFigure, trendsUrlFigure } = __modules["src/book/figures/search2.js"];
 const { usesFigure: searchusesFigure, realwindowFigure, formsFigure, shopsFigure, klimaFigure, noiseFigure, validationFigure, wikiFigure, aiFigure } = __modules["src/book/figures/trendsreal.js"];
 const { t } = __modules["src/i18n/index.js"];
 const FIGURES = {
@@ -13656,6 +13872,7 @@ const FIGURES = {
   wiki: wikiFigure,
   ai: aiFigure,
   resolution: resolutionFigure,
+  path: pathFigure,
   dredging: dredgingFigure,
   tools: toolFigure,
   clicks: clicksFigure,

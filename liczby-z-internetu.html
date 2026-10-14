@@ -3329,6 +3329,7 @@ const pl = {
   'fx.arith.pairs': "Działanie idzie wiersz po wierszu, w {n|parze|parach|parach}.",
   'fx.arith.broadcast': 'Ta sama liczba {s} w każdym z {n} wierszy.',
   'fx.peak': "Najwyżej wypada {key}.",
+  'fx.months': 'styczeń|luty|marzec|kwiecień|maj|czerwiec|lipiec|sierpień|wrzesień|październik|listopad|grudzień',
   'fx.logic.i': "„i” wymaga obu warunków naraz. Prawda w {k} z {n}.",
   'fx.logic.lub': "Przy „lub” wystarczy jeden warunek. Prawda w {k} z {n}.",
   'fx.logic.nie': "„nie” odwraca warunek. Prawda w {k} z {n}.",
@@ -3601,6 +3602,19 @@ const pl = {
   'bk.s2.dr.readOne': "Jedno wymyślone hasło ma r = {a} na pierwszych dwóch latach, na lewo od kreski. Na kolejnych dwóch latach r = {b}. Sprawdź więcej haseł.",
   'bk.s2.dr.read': "Spośród {k|wymyślonego hasła|wymyślonych haseł|wymyślonych haseł} najlepsze ma r = {a} na pierwszych dwóch latach, na lewo od kreski. Na kolejnych dwóch latach r = {b}.",
   'bk.s2.dr.caption': "Dane wymyślone. Wszystkie szeregi to czysty przypadek, nic ich nie łączy. Im więcej haseł sprawdzisz, tym lepsze dopasowanie znajdziesz. Na nowych danych znika.",
+  'bk.s2.path.start': "Zapytania",
+  'bk.s2.path.steps': "Droga od zapytań do wniosku",
+  'bk.s2.path.prev': "‹ Wstecz",
+  'bk.s2.path.next': "Dalej ›",
+  'bk.s2.path.play': "▶ Cała droga",
+  'bk.s2.path.pause': "❚❚ Zatrzymaj",
+  'bk.s2.path.again': "↺ Jeszcze raz",
+  'bk.s2.path.aria': "Wykres liniowy. Wyszukiwania z Google Trends i stopa bezrobocia w Polsce, miesiąc po miesiącu.",
+  'bk.s2.path.ariaDredge': "Wykres liniowy. Szereg do przewidzenia i najlepiej dopasowane z wymyślonych haseł, 48 miesięcy.",
+  'bk.s2.path.pair': "Hasło „{q}” i stopa bezrobocia, miesiąc po miesiącu od {a} do {b} r. Na oko oba wykresy idą podobnie. Sprawdzają to kolejne kroki.",
+  'bk.s2.path.yoy': "Na surowych wartościach r = {a}. Na zmianach rok do roku r = {b}. Prawie cały związek brał się ze wspólnego sezonu i trendu.",
+  'bk.s2.path.model': "Hasło „{q}” przechodzi drugi sprawdzian. Na surowych wartościach r = {raw}, a na zmianach rok do roku zostaje r = {r}. W prognozach polskiego bezrobocia rejestrowanego poprawiło jednak wynik tylko trochę (Malinowski 2021).",
+  'bk.s2.path.dredge': "Najlepsze z {k|wymyślonego hasła|wymyślonych haseł|wymyślonych haseł} ma r = {a} na pierwszych dwóch latach, na lewo od kreski. Na kolejnych dwóch latach r = {b}.",
   'bk.s2.tool.caption': "Stan na październik 2026 r. Szczegóły i źródła w tekście tego podrozdziału.",
   'bk.s2.cl.without': "Bez streszczenia AI",
   'bk.s2.cl.with': "Ze streszczeniem AI",
@@ -6051,7 +6065,7 @@ function member(entry) {
   // A series over time: light its peak, so the next scene can say "the peak moved".
   const peak = v.type === 'num' && v.ordered ? maxIndex(v.values) : -1;
   let caption = t('fx.member', { col: v.column, table: tb.name, n: v.values.length });
-  if (peak >= 0) caption += ` ${t('fx.peak', { key: v.keys[peak] })}`;
+  if (peak >= 0) caption += ` ${peakText(v.keys[peak])}`;
   return {
     pic: el('div.pc-stack',
       renderSeries(v, { height: 110, lit: peak >= 0 ? (_, i) => i === peak : null }),
@@ -6196,7 +6210,7 @@ function binary(entry, ctx) {
   if (v.type === 'num' && v.values.length <= 40) {
     const best = maxIndex(v.values);
     chart = renderSeries(v, { lit: (_, i) => i === best, height: 90 });
-    caption += ` ${t('fx.peak', { key: v.keys[best] })}`;
+    caption += ` ${peakText(v.keys[best])}`;
   }
   return { pic: el('div.pc-stack', table, chart), caption };
 }
@@ -6207,6 +6221,13 @@ function scalarText(v) {
   if (v.kind === 'str') return `„${v.v}”`;
   if (v.kind === 'bool') return v.v ? 'tak' : 'nie';
   return '—';
+}
+
+// Month keys in the data are short ('cze'); a sentence needs the full name.
+const SHORT_MONTHS = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'];
+function peakText(key) {
+  const i = SHORT_MONTHS.indexOf(String(key));
+  return t('fx.peak', { key: i >= 0 ? t('fx.months').split('|')[i] : key });
 }
 
 const maxIndex = (xs) => xs.reduce((best, x, i) => (x != null && (best === -1 || x > xs[best]) ? i : best), -1);
@@ -6437,7 +6458,7 @@ function roundPic(v) {
   if (isVec(v) && v.ordered) {
     const best = maxIndex(v.values);
     chart = renderSeries(v, { lit: (_, i) => i === best, height: 90 });
-    caption += ` ${t('fx.peak', { key: v.keys[best] })}`;
+    caption += ` ${peakText(v.keys[best])}`;
   }
   return { pic: el('div.pc-stack', chart, table), caption };
 }
