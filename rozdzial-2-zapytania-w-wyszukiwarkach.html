@@ -12171,6 +12171,8 @@ const CHAPTER = {
       blocks: [
         { p: 'Zapytanie do wyszukiwarki wpisujemy, zanim coś zrobimy. Szukamy klimatyzatora przed zakupem, objawów przed wizytą u lekarza, ofert pracy przed zmianą pracy. Dlatego zapytania mówią o zamiarach, a nie tylko o tym, co już się stało.' },
         { p: 'Zapytanie wpisujemy też w samotności. Nikt nie patrzy, więc pytamy o rzeczy, o których nie mówimy w ankiecie (Stephens-Davidowitz 2017). Ekonomiści używają zapytań do *nowcastingu*, czyli szacowania tego, co dzieje się teraz, zanim urząd statystyczny poda dane (Choi, Varian 2012).' },
+        { p: 'Najbardziej znany przykład dotyczy wyborów w USA. Stephens-Davidowitz policzył w regionach udział zapytań z rasistowskimi obelgami. Tam, gdzie było ich więcej, Obama dostał mniej głosów, niż przewidywał wynik poprzedniego kandydata demokratów. W skali kraju wyszło około 4 punktów procentowych, więcej niż w szacunkach z ankiet (Stephens-Davidowitz 2014).' },
+        { p: 'Zapytania pokazują też, jak media zmieniają zachowania. Po odcinkach programu MTV „16 and Pregnant” rosła liczba zapytań o antykoncepcję, najbardziej tam, gdzie program oglądano najczęściej. Autorzy łączą program ze spadkiem liczby urodzeń wśród nastolatek o 5,7% w półtora roku (Kearney, Levine 2015). Marketing patrzy tak samo. Najpierw kampania, potem zapytania, potem zakup.' },
         { p: 'Samych zapytań nikt jednak nie dostaje. Każde narzędzie pokazuje je przez inny filtr. Rysunek {rys:searchmap} zestawia siedem źródeł. Przy każdym zapisano, co pokazuje i czego nie widać.' },
         { figure: 'searchmap' },
         { terms: [
@@ -12181,7 +12183,7 @@ const CHAPTER = {
           'Sklep internetowy chce wiedzieć, kiedy zacząć kampanię z klimatyzatorami. Które źródło z rysunku wybierzecie i dlaczego?',
           'Ta sama firma chce wiedzieć, po jakich słowach ludzie trafiają na jej stronę. A urząd chce wiedzieć, ilu ludzi szuka pracy. Jakie źródła teraz?',
         ] } },
-        { read: ['stephens2017', 'choi2012'] },
+        { read: ['stephens2017', 'stephens2014', 'kearney2015', 'choi2012'] },
       ],
     },
 
@@ -12264,7 +12266,9 @@ const CHAPTER = {
       blocks: [
         { p: 'Czy zapytania mówią coś o świecie? Sprawdza się to na danych z innego źródła, na przykład z urzędu statystycznego. Najprostsza miara to korelacja r. Bliska 1 znaczy, że oba szeregi rosną i maleją razem. Bliska 0 znaczy, że nie ma między nimi takiego związku.' },
         { p: 'Tu łatwo o pułapkę. Gdy oba szeregi mają ten sam sezon albo ten sam długi spadek, korelacja wychodzi wysoka, nawet jeśli poza tym nic ich nie łączy. Dlatego porównuje się zmiany rok do roku, czyli ten sam miesiąc z miesiącem rok wcześniej.' },
-        { p: 'Polskie badania studzą entuzjazm. Wyszukiwania pomogły szacować bezrobocie w Czechach i na Węgrzech, ale w Polsce wyniki były niejednoznaczne (Pavlicek, Kristoufek 2015). Hasła popularne w literaturze anglojęzycznej nie poprawiły prognoz polskiego bezrobocia rejestrowanego. Pomogły tylko hasła o pracy za granicą (Malinowski 2021).' },
+        { p: 'Polskie badania studzą entuzjazm. Wyszukiwania pomogły szacować bezrobocie w Czechach i na Węgrzech, ale w Polsce wyniki były niejednoznaczne (Pavlicek, Kristoufek 2015). Hasła popularne w literaturze anglojęzycznej nie poprawiły prognoz polskiego bezrobocia rejestrowanego. Trochę pomogło tylko hasło „praca za granicą”, i to niewiele (Malinowski 2021).' },
+        { p: 'Podobnie wyszło w USA. Zapytania dobrze przewidywały wpływy kin w pierwszy weekend, sprzedaż gier i miejsca piosenek na liście przebojów. Ale prosty model na innych dostępnych danych też przewidywał dobrze. Zapytania dodawały do niego od niewiele do dużo, zależnie od dziedziny, a przy grypie niewiele. Zapytania najbardziej pomagają tam, gdzie innych danych brak (Goel i in. 2010).' },
+        { p: 'Druga pułapka to dobór haseł po fakcie. Strategia giełdowa oparta na zapytaniach o słowo „debt” dawała duży zysk na danych z przeszłości (Preis i in. 2013). Inni badacze sprawdzili to jeszcze raz. Zysk zależał głównie od wyboru haseł, a zapytania nie przewidywały lepiej niż same dawne ceny (Challet, Bel Hadj Ayed 2014).' },
         { p: 'Rysunek {rys:validation} pozwala to sprawdzić samemu. Zestawia trzy hasła o pracy ze stopą bezrobocia w Polsce od 2004 r. Porównaj korelację surowych wartości i zmian rok do roku dla każdego hasła.' },
         { figure: 'validation' },
         { discuss: { who: 'w parach', min: 10, prompts: [
@@ -12274,7 +12278,7 @@ const CHAPTER = {
         { terms: [
           ['zmiana rok do roku', 'różnica między wartością w danym miesiącu a wartością w tym samym miesiącu rok wcześniej'],
         ] },
-        { read: ['pavlicek2015', 'malinowski2021'] },
+        { read: ['pavlicek2015', 'malinowski2021', 'goel2010', 'preis2013', 'challet2014'] },
       ],
     },
 
@@ -12313,7 +12317,9 @@ const CHAPTER = {
       parts: [],
       blocks: [
         { p: 'Wykres z Trends da się powtórzyć tylko wtedy, gdy zapiszesz wszystkie ustawienia. Karta zapytań zbiera je w jednym miejscu. To hasło albo temat z całym wyrażeniem, region, okno czasu, kategoria, rodzaj wyszukiwania, data pobrania, liczba pobrań i kotwica.' },
+        { p: 'Bez takiej karty wyniku nie da się sprawdzić. W przeglądzie 70 badań medycznych z Google Trends tylko 7% opisało zapytania na tyle dokładnie, żeby dało się je powtórzyć (Nuti i in. 2014).' },
         { exercise: 'karta2', num: 'Projekt', title: 'Karta zapytań', min: 30 },
+        { read: ['nuti2014'] },
       ],
     },
   ],
@@ -12340,6 +12346,12 @@ const CHAPTER = {
     eichenauer2022: 'Eichenauer, V. Z., Indergand, R., Martínez, I. Z., Sax, C. (2022). Obtaining consistent time series from Google Trends. *Economic Inquiry*, 60(2), 694–705.',
     pavlicek2015: 'Pavlicek, J., Kristoufek, L. (2015). Nowcasting Unemployment Rates with Google Searches: Evidence from the Visegrad Group Countries. *PLoS ONE*, 10(5), e0127084.',
     malinowski2021: 'Malinowski, M. (2021). Wykorzystanie Google Trends do modelowania stopy bezrobocia rejestrowanego w Polsce. *Wiadomości Statystyczne*, 66(3), 45–61.',
+    stephens2014: 'Stephens-Davidowitz, S. (2014). The cost of racial animus on a black candidate: Evidence using Google search data. *Journal of Public Economics*, 118, 26–40.',
+    kearney2015: 'Kearney, M. S., Levine, P. B. (2015). Media Influences on Social Outcomes: The Impact of MTV’s 16 and Pregnant on Teen Childbearing. *American Economic Review*, 105(12), 3597–3632.',
+    goel2010: 'Goel, S., Hofman, J. M., Lahaie, S., Pennock, D. M., Watts, D. J. (2010). Predicting consumer behavior with Web search. *Proceedings of the National Academy of Sciences*, 107(41), 17486–17490.',
+    preis2013: 'Preis, T., Moat, H. S., Stanley, H. E. (2013). Quantifying Trading Behavior in Financial Markets Using Google Trends. *Scientific Reports*, 3, 1684.',
+    challet2014: 'Challet, D., Bel Hadj Ayed, A. (2014). *Do Google Trend data contain more predictability than price returns?* arXiv:1403.1715.',
+    nuti2014: 'Nuti, S. V., Wayda, B., Ranasinghe, I., Wang, S., Dreyer, R. P., Chen, S. I., Murugiah, K. (2014). The Use of Google Trends in Health Care Research: A Systematic Review. *PLoS ONE*, 9(10), e109583.',
     pew2025: 'Pew Research Center (2025). *Google users are less likely to click on links when an AI summary appears in the results*. 22 lipca 2025.',
   },
 };
