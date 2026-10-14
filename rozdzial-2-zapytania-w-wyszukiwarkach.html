@@ -1557,6 +1557,23 @@ textarea.kc-input { resize: vertical; }
   .sq-table { font-size: 12px; }
 }
 
+/* chapter 2, more figures (figures/search2.js) */
+.sq-tall { max-height: 220px; }
+.sq-dot { fill: var(--accent); }
+.sq-read-warn { background: var(--warn-bg); }
+.sq-steps { margin: 0; padding-left: 22px; font-size: 14px; line-height: 1.5; }
+.sq-steps li { margin: 4px 0; }
+.sq-units { display: grid; grid-template-columns: repeat(20, 1fr); gap: 3px; max-width: 420px; }
+.sq-unit { aspect-ratio: 1; border-radius: 2px; background: var(--bg-sunken); border: 1px solid var(--line); }
+.sq-unit-on { background: var(--accent); border-color: var(--accent); }
+.sq-url { font: 13px var(--mono); line-height: 1.9; word-break: break-all; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; }
+.sq-url-base { color: var(--ink-faint); }
+.sq-url-part { font: inherit; padding: 1px 3px; margin: 0 1px; border: 1px dashed var(--line-strong); border-radius: 4px; background: none; color: var(--ink); cursor: pointer; word-break: break-all; text-align: left; }
+.sq-url-on { background: var(--accent-soft); border-style: solid; border-color: var(--accent); }
+.sq-url-missing { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-soft); }
+.sq-url-field { margin-top: 6px; font-weight: 600; }
+@media (max-width: 600px) { .sq-units { gap: 2px; } }
+
 </style>
 </head>
 <body>
@@ -4266,6 +4283,23 @@ const pl = {
   'bk.tr.uses.c': "Haczyk.",
   'bk.tr.uses.aria': "Wykres liniowy. Indeks Google Trends hasła black friday w Polsce, tygodnie od września do grudnia 2025 r.",
   'bk.tr.uses.ramp': "Zainteresowanie rośnie przez {w|tydzień|tygodnie|tygodni} przed szczytem. Od tygodnia {s} indeks ma co najmniej 10, a setkę ma tydzień od {p}.",
+  'bk.s2.res.read': "{w}. Trends dał dane {res}, czyli {n|punkt|punkty|punktów}. Hasło „{q}”.",
+  'bk.s2.res.caption': "Nasze pobrania z 14 października 2026 r. Każde okno ma własną skalę do szczytu, więc wartości z dwóch okien nie wolno zestawiać wprost.",
+  'bk.s2.dr.try': "{k|hasło|hasła|haseł}",
+  'bk.s2.dr.target': "szereg, który chcemy przewidzieć",
+  'bk.s2.dr.best': "najlepiej dopasowane hasło",
+  'bk.s2.dr.readOne': "Jedno wymyślone hasło ma r = {a} na pierwszych dwóch latach, na lewo od kreski. Na kolejnych dwóch latach r = {b}. Sprawdź więcej haseł.",
+  'bk.s2.dr.read': "Spośród {k|wymyślonego hasła|wymyślonych haseł|wymyślonych haseł} najlepsze ma r = {a} na pierwszych dwóch latach, na lewo od kreski. Na kolejnych dwóch latach r = {b}.",
+  'bk.s2.dr.caption': "Dane wymyślone. Wszystkie szeregi to czysty przypadek, nic ich nie łączy. Im więcej haseł sprawdzisz, tym lepsze dopasowanie znajdziesz. Na nowych danych znika.",
+  'bk.s2.tool.caption': "Stan na październik 2026 r. Szczegóły i źródła w tekście tego podrozdziału.",
+  'bk.s2.cl.without': "Bez streszczenia AI",
+  'bk.s2.cl.with': "Ze streszczeniem AI",
+  'bk.s2.cl.read': "{k} na 100 wizyt kończy się kliknięciem w link z wyników.",
+  'bk.s2.cl.caption': "Pew Research Center, 2025. Wizyty na stronach wyników Google, dorośli w USA, marzec 2025 r. Wartości zaokrąglone.",
+  'bk.s2.url.missing': "Czego w adresie nie ma:",
+  'bk.s2.url.day': "data pobrania",
+  'bk.s2.url.field': "W karcie zapytań to pole „{f}”.",
+  'bk.s2.url.caption': "Prawdziwy adres jednego z naszych pobrań. Kliknij część adresu albo to, czego w nim brakuje.",
   'bk.tr.caption.trends': "Google Trends, {q}, {geo}, wszystkie kategorie, wyszukiwarka Google. Pobrane 14 października 2026 r.",
   'bk.tr.win.long': "5 lat",
   'bk.tr.win.y25': "rok 2025",
@@ -12238,7 +12272,8 @@ const CHAPTER = {
         { figure: 'anchor' },
         { p: 'Rysunek {rys:shops} robi to samo z prawdziwymi sklepami. Obok allegro answear ma 1 w każdym tygodniu. Dopiero przez kotwicę widać jego krzywą.' },
         { figure: 'shops' },
-        { p: 'Skala zależy też od długości okna. Dla ostatnich dni Trends podaje dane godzinowe, dla kilku miesięcy dzienne, dla kilku lat tygodniowe, a dla dłuższych okresów miesięczne. Wartości dzienne z dwóch różnych okien nie są więc porównywalne. Badacze łączą je w jeden długi szereg dopiero po przeliczeniu (Eichenauer i in. 2022).' },
+        { p: 'Skala zależy też od długości okna. Dla ostatnich dni Trends podaje dane godzinowe, dla kilku miesięcy dzienne, dla kilku lat tygodniowe, a dla dłuższych okresów miesięczne. Wartości dzienne z dwóch różnych okien nie są więc porównywalne. Badacze łączą je w jeden długi szereg dopiero po przeliczeniu (Eichenauer i in. 2022). Rysunek {rys:resolution} pokazuje, co dały nasze pobrania.' },
+        { figure: 'resolution' },
         { terms: [
           ['kotwica', 'hasło obecne na każdym z pobranych wykresów, przez które przelicza się je na jedną skalę'],
         ] },
@@ -12275,7 +12310,8 @@ const CHAPTER = {
         { p: 'Tu łatwo o pułapkę. Gdy oba szeregi mają ten sam sezon albo ten sam długi spadek, korelacja wychodzi wysoka, nawet jeśli poza tym nic ich nie łączy. Dlatego porównuje się zmiany rok do roku, czyli ten sam miesiąc z miesiącem rok wcześniej.' },
         { p: 'Polskie badania studzą entuzjazm. Wyszukiwania pomogły szacować bezrobocie w Czechach i na Węgrzech, ale w Polsce wyniki były niejednoznaczne (Pavlicek, Kristoufek 2015). Hasła popularne w literaturze anglojęzycznej nie poprawiły prognoz polskiego bezrobocia rejestrowanego. Trochę pomogło tylko hasło „praca za granicą”, i to niewiele (Malinowski 2021).' },
         { p: 'Podobnie wyszło w USA. Zapytania dobrze przewidywały wpływy kin w pierwszy weekend, sprzedaż gier i miejsca piosenek na liście przebojów. Ale prosty model na innych dostępnych danych też przewidywał dobrze. Zapytania dodawały do niego od niewiele do dużo, zależnie od dziedziny, a przy grypie niewiele. Zapytania najbardziej pomagają tam, gdzie innych danych brak (Goel i in. 2010).' },
-        { p: 'Druga pułapka to dobór haseł po fakcie. Strategia giełdowa oparta na zapytaniach o słowo „debt” dawała duży zysk na danych z przeszłości (Preis i in. 2013). Inni badacze sprawdzili to jeszcze raz. Zysk zależał głównie od wyboru haseł, a zapytania nie przewidywały lepiej niż same dawne ceny (Challet, Bel Hadj Ayed 2014).' },
+        { p: 'Druga pułapka to dobór haseł po fakcie. Strategia giełdowa oparta na zapytaniach o słowo „debt” dawała duży zysk na danych z przeszłości (Preis i in. 2013). Inni badacze sprawdzili to jeszcze raz. Zysk zależał głównie od wyboru haseł, a zapytania nie przewidywały lepiej niż same dawne ceny (Challet, Bel Hadj Ayed 2014). Rysunek {rys:dredging} pokazuje, skąd bierze się taki zysk.' },
+        { figure: 'dredging' },
         { p: 'Rysunek {rys:validation} pozwala to sprawdzić samemu. Zestawia trzy hasła o pracy ze stopą bezrobocia w Polsce od 2004 r. Porównaj korelację surowych wartości i zmian rok do roku dla każdego hasła.' },
         { figure: 'validation' },
         { discuss: { who: 'w parach', min: 10, prompts: [
@@ -12295,6 +12331,8 @@ const CHAPTER = {
       blocks: [
         { p: 'Najprostsza droga to Trends w przeglądarce i przycisk pobierania pliku CSV. Wynik zapisuj od razu z datą pobrania, bo w innym dniu liczby mogą być trochę inne. Przy wielu zapytaniach z rzędu Trends odpowiada błędem 429, czyli „za dużo zapytań”. Wtedy trzeba odczekać.' },
         { p: 'Google udostępnia też oficjalne API Trends. Od lipca 2025 r. jest w wersji testowej, a dostęp daje się na wniosek. Jego zaleta to jedna skala we wszystkich zapytaniach, więc kotwica nie jest potrzebna. Biblioteka pytrends, która udawała przeglądarkę, w kwietniu 2025 r. przestała być rozwijana. Jej następcy i płatne serwisy, takie jak SerpApi czy aktory Apify, działają, dopóki pozwala na to Google.' },
+        { p: 'Rysunek {rys:tools} pomaga wybrać drogę do własnego badania.' },
+        { figure: 'tools' },
         { p: 'Dla porównania warto mieć źródło otwarte. Odsłony Wikipedii są dostępne przez darmowe API, w liczbach bezwzględnych. Mówią jednak o czytelnikach encyklopedii, a nie o wszystkich szukających. Rysunek {rys:wiki} pokazuje, jak bardzo te dwa źródła mogą się rozjechać.' },
         { figure: 'wiki' },
         { discuss: { who: 'w parach', min: 5, prompts: [
@@ -12307,7 +12345,8 @@ const CHAPTER = {
       id: 's2-8', num: '2.8', title: 'Wyszukiwanie po AI', meeting: 4,
       parts: [['teoria', 10], ['dyskusja', 10]],
       blocks: [
-        { p: 'Wyszukiwarka się zmienia. Nad wynikami pojawia się streszczenie AI, a w trybie AI rozmowa zastępuje listę linków. Ludzie rzadziej klikają. Pew Research Center sprawdził to na dorosłych w USA w marcu 2025 r. Gdy na stronie wyników było streszczenie AI, ludzie klikali w link w około 8% wizyt, a bez streszczenia w około 15%.' },
+        { p: 'Wyszukiwarka się zmienia. Nad wynikami pojawia się streszczenie AI, a w trybie AI rozmowa zastępuje listę linków. Ludzie rzadziej klikają. Pew Research Center sprawdził to na dorosłych w USA w marcu 2025 r. Gdy na stronie wyników było streszczenie AI, ludzie klikali w link w około 8% wizyt, a bez streszczenia w około 15%. Rysunek {rys:clicks} pokazuje to na stu wizytach.' },
+        { figure: 'clicks' },
         { p: 'Dla badacza to dwie zmiany. Część pytań trafia do czatów, takich jak ChatGPT, których Trends w ogóle nie widzi. A jeśli pytania w wyszukiwarce staną się dłuższe i bardziej rozmowne, krótkich haseł będzie w nich mniej. Długi szereg z Trends może więc spadać, choć zainteresowanie tematem nie maleje. Do tego Google podaje, że Trends odfiltrowuje wewnętrzne wyszukiwania, które wykonują tryb AI i przeglądy od AI.' },
         { p: 'Rysunek {rys:ai} pokazuje dwa hasła od 2022 r. Pierwsze to nazwa czatu, drugie to nazwa encyklopedii, do której wiele osób trafiało z wyszukiwarki.' },
         { figure: 'ai' },
@@ -12324,7 +12363,8 @@ const CHAPTER = {
       parts: [],
       blocks: [
         { p: 'Wykres z Trends da się powtórzyć tylko wtedy, gdy zapiszesz wszystkie ustawienia. Karta zapytań zbiera je w jednym miejscu. To hasło albo temat z całym wyrażeniem, region, okno czasu, kategoria, rodzaj wyszukiwania, data pobrania, liczba pobrań i kotwica.' },
-        { p: 'Bez takiej karty wyniku nie da się sprawdzić. W przeglądzie 70 badań medycznych z Google Trends tylko 7% opisało zapytania na tyle dokładnie, żeby dało się je powtórzyć (Nuti i in. 2014).' },
+        { p: 'Bez takiej karty wyniku nie da się sprawdzić. W przeglądzie 70 badań medycznych z Google Trends tylko 7% opisało zapytania na tyle dokładnie, żeby dało się je powtórzyć (Nuti i in. 2014). Większość ustawień zapisuje sam adres wykresu, co pokazuje rysunek {rys:trendsurl}.' },
+        { figure: 'trendsurl' },
         { exercise: 'karta2', num: 'Projekt', title: 'Karta zapytań', min: 30 },
         { read: ['nuti2014'] },
       ],
@@ -13331,6 +13371,220 @@ function usesFigure({ num: n = 'Rysunek' } = {}) {
 __modules["src/book/figures/trendsreal.js"] = { "num": num, "dayText": dayText, "rescaleCheck": rescaleCheck, "realwindowFigure": realwindowFigure, "formMeans": formMeans, "formsFigure": formsFigure, "shopMeans": shopMeans, "shopsFigure": shopsFigure, "klimaPoints": klimaPoints, "klimaFigure": klimaFigure, "noiseZeros": noiseZeros, "noiseFigure": noiseFigure, "pearson": pearson, "validationPair": validationPair, "validationFigure": validationFigure, "novembers": novembers, "wikiFigure": wikiFigure, "aiPoints": aiPoints, "aiFigure": aiFigure, "bfRamp": bfRamp, "USES": USES, "usesFigure": usesFigure };
 })();
 
+/* ===== src/book/figures/search2.js ===== */
+(function () {
+/**
+ * More figures of chapter 2 (asked by the author on 2026-10-14: a picture for every section).
+ *
+ *   resolutionFigure  2.4 the window decides the resolution: our own downloads, day / week / month
+ *   dredgingFigure    2.6 choosing keywords after the fact: the best of N invented series
+ *   toolFigure        2.7 which route to Trends data fits the study
+ *   clicksFigure      2.8 Pew 2025: clicks per 100 visits with and without an AI summary
+ *   trendsUrlFigure   2.9 the address of a Trends chart as a record of its settings
+ *
+ * The dredging figure runs on invented series from a seeded generator (mulberry32), so the page
+ * and test/book2_oracle.py draw the same numbers. Everything else is real or published.
+ */
+const { el, svg, mount } = __modules["src/ui/dom.js"];
+const { frame, toggles } = __modules["src/book/figures/common.js"];
+const { t } = __modules["src/i18n/index.js"];
+const { fmtNum } = __modules["src/core/format.js"];
+const { TRENDS } = __modules["src/book/data/trends.js"];
+const { pearson } = __modules["src/book/figures/trendsreal.js"];
+const { QUERY_FIELDS } = __modules["src/book/chapter2.js"];
+const { plain } = __modules["src/book/rich.js"];
+const S = TRENDS.sets;
+const num = (v) => (v === '<1' ? 0.5 : v);
+/** Always two decimals, Polish comma: 0.2 -> "0,20". */
+const two = (x) => (Math.round(x * 100) / 100).toFixed(2).replace('.', ',').replace('-', '−');
+
+function line(values, { ymax = 100, H = 120, cls = 'sq-line', split = null, extra = [] } = {}) {
+  const W = 640; const L = 8; const R = 8; const T = 8; const B = 8;
+  const all = [values, ...extra.map((e) => e.values)].flat();
+  const lo = Math.min(0, ...all); const hi = ymax ?? Math.max(...all);
+  const x = (i) => L + (i / Math.max(1, values.length - 1)) * (W - L - R);
+  const y = (v) => T + (1 - (v - lo) / (hi - lo || 1)) * (H - T - B);
+  const pts = (vs) => vs.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  return svg('svg', { viewBox: `0 0 ${W} ${H}`, class: 'sq-svg sq-tall', role: 'img', 'aria-hidden': 'true' },
+    split == null ? null : svg('line', { x1: x(split), x2: x(split), y1: T, y2: H - B, class: 'sq-note' }),
+    values.length > 120 ? svg('polyline', { points: pts(values), class: cls })
+      : [svg('polyline', { points: pts(values), class: cls }), values.map((v, i) => svg('circle', { cx: x(i), cy: y(v), r: 2, class: 'sq-dot' }))],
+    extra.map((e) => svg('polyline', { points: pts(e.values), class: e.cls })));
+}
+
+// ---------------------------------------------------------------- 2.4 resolution
+
+/** Our downloads by window length: what resolution Trends gave and how many points. */
+const RESOLUTIONS = [
+  { id: 'd92', set: 'noise', label: '3 miesiące', sentence: 'Trzy miesiące' },
+  { id: 'y1', set: 'bf2025', label: '1 rok', sentence: 'Jeden rok' },
+  { id: 'y5', set: 'bf5y', label: '5 lat', sentence: 'Pięć lat' },
+  { id: 'y22', set: 'klima', label: '22 lata', sentence: 'Dwadzieścia dwa lata' },
+];
+const RES_NAME = { DAY: 'dzienne', WEEK: 'tygodniowe', MONTH: 'miesięczne' };
+
+function resolutionOf(id) {
+  const r = RESOLUTIONS.find((x) => x.id === id);
+  const s = S[r.set];
+  return { resolution: s.resolution, points: s.dates.length, first: s.dates[0], last: s.dates[s.dates.length - 1], item: s.items[0], values: s.values[0].map(num) };
+}
+
+function resolutionFigure({ num: n = 'Rysunek' } = {}) {
+  const state = { r: 'd92' };
+  const host = el('div.sq-win');
+  const draw = () => {
+    const r = RESOLUTIONS.find((x) => x.id === state.r);
+    const d = resolutionOf(state.r);
+    mount(host,
+      toggles(RESOLUTIONS.map((x) => [x.id, x.label]), state.r, (id) => { state.r = id; draw(); }),
+      el('div.sq-wrap', line(d.values)),
+      el('div.sq-read', t('bk.s2.res.read', { w: r.sentence, res: RES_NAME[d.resolution], n: d.points, q: d.item })),
+      el('div.fg-caption', t('bk.s2.res.caption')));
+  };
+  draw();
+  return frame(n, 'Prawdziwe dane. Długość okna decyduje o dokładności', host);
+}
+
+// ---------------------------------------------------------------- 2.6 dredging
+
+/** mulberry32: a small seeded generator, the same in test/book2_oracle.py. */
+function mulberry32(seed) {
+  let a = seed;
+  return () => {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let x = Math.imul(a ^ (a >>> 15), 1 | a);
+    x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x;
+    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+  };
+}
+/** Invented month-to-month changes: a sum of three uniforms, centred. */
+function noiseSeries(seed, n = DREDGE.months) {
+  const r = mulberry32(seed);
+  return Array.from({ length: n }, () => r() + r() + r() - 1.5);
+}
+const DREDGE = { months: 48, fit: 24, target: 7, first: 100, tries: [1, 10, 100, 1000] };
+
+/** Among the first `tries` invented keywords, the one with the highest r on the first 24 months, and its r on the next 24. */
+function dredge(tries) {
+  const target = noiseSeries(DREDGE.target);
+  let best = { k: 0, rFit: -2 };
+  for (let k = 0; k < tries; k++) {
+    const s = noiseSeries(DREDGE.first + k);
+    const r = pearson(s.slice(0, DREDGE.fit), target.slice(0, DREDGE.fit));
+    if (r > best.rFit) best = { k, rFit: r, series: s };
+  }
+  return { ...best, rNext: pearson(best.series.slice(DREDGE.fit), target.slice(DREDGE.fit)), target };
+}
+
+function dredgingFigure({ num: n = 'Rysunek' } = {}) {
+  const state = { n: 1 };
+  const host = el('div.sq-win');
+  const cache = new Map();
+  const draw = () => {
+    if (!cache.has(state.n)) cache.set(state.n, dredge(state.n));
+    const d = cache.get(state.n);
+    mount(host,
+      toggles(DREDGE.tries.map((k) => [String(k), t('bk.s2.dr.try', { k })]), String(state.n), (v) => { state.n = Number(v); draw(); }),
+      el('div.sq-legend', el('span.sq-leg.sq-leg-a', t('bk.s2.dr.target')), el('span.sq-leg.sq-leg-b', t('bk.s2.dr.best'))),
+      el('div.sq-wrap', line(d.target, { ymax: null, split: DREDGE.fit, extra: [{ values: d.series, cls: 'sq-line2' }] })),
+      el('div', { class: `sq-read${d.rFit > 0.5 ? ' sq-read-warn' : ''}` }, state.n === 1 ? t('bk.s2.dr.readOne', { a: two(d.rFit), b: two(d.rNext) }) : t('bk.s2.dr.read', { k: state.n, a: two(d.rFit), b: two(d.rNext) })),
+      el('div.fg-caption', t('bk.s2.dr.caption')));
+  };
+  draw();
+  return frame(n, 'Dane wymyślone. Szukanie hasła, które pasuje', host);
+}
+
+// ---------------------------------------------------------------- 2.7 which route
+
+const TOOL_QUESTIONS = [
+  { id: 'many', q: 'Ile haseł chcesz porównać?', options: [['few', 'do pięciu'], ['many', 'więcej niż pięć']] },
+  { id: 'abs', q: 'Czy potrzebujesz liczby wyszukiwań, a nie tylko indeksu?', options: [['no', 'wystarczy indeks'], ['yes', 'potrzebuję liczb']] },
+  { id: 'often', q: 'Jak często będziesz pobierać dane?', options: [['once', 'raz, do raportu'], ['regular', 'regularnie, co tydzień']] },
+];
+
+/** The advice for a set of answers: a list of steps, each a short sentence. */
+function toolAdvice({ many, abs, often }) {
+  const steps = ['Trends w przeglądarce i plik CSV. Zapisz datę pobrania i pobierz dane w trzy różne dni.'];
+  if (many === 'many') steps.push('Kilka wykresów po pięć haseł z jedną kotwicą, jak na rysunku z kotwicą.');
+  if (often === 'regular') steps.push('Złóż wniosek o dostęp do API Trends. Do tego czasu pobieraj ręcznie. Płatne serwisy działają tylko tak długo, jak pozwala na to Google.');
+  if (abs === 'yes') steps.push('Liczby wyszukiwań da Planer słów kluczowych Google Ads, ale bez kampanii tylko w przedziałach. Narzędzia SEO podają liczby z modelu.');
+  steps.push('Na koniec sprawdź wynik w otwartym źródle, na przykład w odsłonach Wikipedii.');
+  return steps;
+}
+
+function toolFigure({ num: n = 'Rysunek' } = {}) {
+  const state = { many: 'few', abs: 'no', often: 'once' };
+  const host = el('div.sq-map');
+  const draw = () => {
+    mount(host,
+      TOOL_QUESTIONS.map((q) => el('div.sq-pick', el('b', q.q), toggles(q.options, state[q.id], (v) => { state[q.id] = v; draw(); }))),
+      el('ol.sq-steps', toolAdvice(state).map((s) => el('li', s))),
+      el('div.fg-caption', t('bk.s2.tool.caption')));
+  };
+  draw();
+  return frame(n, 'Którą drogą po dane z wyszukiwarki?', host);
+}
+
+// ---------------------------------------------------------------- 2.8 clicks
+
+const PEW = { withAi: 8, withoutAi: 15 };
+
+function clicksFigure({ num: n = 'Rysunek' } = {}) {
+  const state = { v: 'without' };
+  const host = el('div.sq-win');
+  const draw = () => {
+    const k = state.v === 'with' ? PEW.withAi : PEW.withoutAi;
+    mount(host,
+      toggles([['without', t('bk.s2.cl.without')], ['with', t('bk.s2.cl.with')]], state.v, (v) => { state.v = v; draw(); }),
+      el('div.sq-units', { role: 'img', 'aria-label': t('bk.s2.cl.read', { k }) },
+        Array.from({ length: 100 }, (_, i) => el('span', { class: i < k ? 'sq-unit sq-unit-on' : 'sq-unit' }))),
+      el('div.sq-read', t('bk.s2.cl.read', { k })),
+      el('div.fg-caption', t('bk.s2.cl.caption')));
+  };
+  draw();
+  return frame(n, 'Sto wizyt w wyszukiwarce. Ile kończy się kliknięciem w link?', host);
+}
+
+// ---------------------------------------------------------------- 2.9 the address of a chart
+
+/** A real address from data-sources/trends (row 4), split into the parts a reader can click. */
+const TRENDS_URL = {
+  base: 'https://trends.google.com/trends/explore?',
+  parts: [
+    { id: 'date', text: 'date=2021-10-01%202026-09-30', field: 'okno', say: 'Okno czasu, od 1 października 2021 r. do 30 września 2026 r. Spacja w adresie zapisuje się jako %20.' },
+    { id: 'geo', text: '&geo=PL', field: 'region', say: 'Region. PL to cała Polska. Województwo ma kod z dopiskiem, na przykład PL-MA to małopolskie.' },
+    { id: 'q', text: '&q=hulajnoga,hulajnoga%20%2B%20hulajnogi%20%2B%20hulajnog%C4%99%20%2B%20hulajnog%C4%85,%2Fm%2F08ml_c', field: 'wyrazenie', say: 'Hasła i tematy, oddzielone przecinkami. Plus zapisuje się jako %2B. Kod /m/08ml_c to temat „Hulajnoga”, a nie słowo.' },
+    { id: 'hl', text: '&hl=pl', field: null, say: 'Język strony Trends. Nie zmienia danych, tylko napisy na ekranie.' },
+  ],
+  missing: [
+    { id: 'cat', field: 'kategoria', say: 'Kategorii nie ma w adresie, więc Trends bierze wszystkie kategorie. Wybrana kategoria dopisuje się jako cat= i numer.' },
+    { id: 'gprop', field: 'kategoria', say: 'Rodzaju wyszukiwania też nie ma, więc to wyszukiwarka Google. Inny rodzaj, na przykład YouTube, dopisuje się jako gprop=.' },
+    { id: 'day', field: 'pobrania', say: 'Daty pobrania adres nie zapisuje. A od niej zależy próba. Dlatego karta ma na nią osobne pole.' },
+  ],
+};
+
+function trendsUrlFigure({ num: n = 'Rysunek' } = {}) {
+  const state = { p: 'date' };
+  const host = el('div.sq-map');
+  const all = [...TRENDS_URL.parts, ...TRENDS_URL.missing];
+  const draw = () => {
+    const p = all.find((x) => x.id === state.p);
+    mount(host,
+      el('div.sq-url',
+        el('span.sq-url-base', TRENDS_URL.base),
+        TRENDS_URL.parts.map((x) => el('button', { type: 'button', class: `sq-url-part${x.id === state.p ? ' sq-url-on' : ''}`, onClick: () => { state.p = x.id; draw(); } }, x.text))),
+      el('div.sq-url-missing', el('span', t('bk.s2.url.missing')),
+        TRENDS_URL.missing.map((x) => el('button', { type: 'button', class: `fg-toggle${x.id === state.p ? ' fg-toggle-on' : ''}`, onClick: () => { state.p = x.id; draw(); } }, x.id === 'day' ? t('bk.s2.url.day') : `${x.id}=`))),
+      el('div.sq-read', p.say, p.field ? el('div.sq-url-field', t('bk.s2.url.field', { f: plain(QUERY_FIELDS.find((f) => f.id === p.field).label) })) : null),
+      el('div.fg-caption', t('bk.s2.url.caption')));
+  };
+  draw();
+  return frame(n, 'Adres wykresu Trends to zapis jego ustawień', host);
+}
+
+__modules["src/book/figures/search2.js"] = { "RESOLUTIONS": RESOLUTIONS, "resolutionOf": resolutionOf, "resolutionFigure": resolutionFigure, "mulberry32": mulberry32, "noiseSeries": noiseSeries, "DREDGE": DREDGE, "dredge": dredge, "dredgingFigure": dredgingFigure, "TOOL_QUESTIONS": TOOL_QUESTIONS, "toolAdvice": toolAdvice, "toolFigure": toolFigure, "PEW": PEW, "clicksFigure": clicksFigure, "TRENDS_URL": TRENDS_URL, "trendsUrlFigure": trendsUrlFigure };
+})();
+
 /* ===== src/book/book.js ===== */
 (function () {
 /**
@@ -13369,6 +13623,7 @@ const { ethicsExercise } = __modules["src/book/figures/ethics.js"];
 const { sourceCard, queryCard, summaryBlock } = __modules["src/book/figures/project.js"];
 const { courseMap, planFigure } = __modules["src/book/figures/plan.js"];
 const { searchmapFigure, windowFigure, querylogFigure, anchorFigure, breaksExercise } = __modules["src/book/figures/search.js"];
+const { resolutionFigure, dredgingFigure, toolFigure, clicksFigure, trendsUrlFigure } = __modules["src/book/figures/search2.js"];
 const { usesFigure: searchusesFigure, realwindowFigure, formsFigure, shopsFigure, klimaFigure, noiseFigure, validationFigure, wikiFigure, aiFigure } = __modules["src/book/figures/trendsreal.js"];
 const { t } = __modules["src/i18n/index.js"];
 const FIGURES = {
@@ -13400,6 +13655,11 @@ const FIGURES = {
   validation: validationFigure,
   wiki: wikiFigure,
   ai: aiFigure,
+  resolution: resolutionFigure,
+  dredging: dredgingFigure,
+  tools: toolFigure,
+  clicks: clicksFigure,
+  trendsurl: trendsUrlFigure,
 };
 
 /** What an exercise puts into the report as its answer, by id: () => text or null. Lessons give their accepted code. */
