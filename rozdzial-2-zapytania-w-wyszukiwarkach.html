@@ -4260,6 +4260,12 @@ const pl = {
   'bk.sq.brk.why.c': "Od punktu C cały wykres jest wyżej, także zimą, i tak zostaje. Tak wygląda zmiana sposobu zbierania danych.",
   'bk.sq.brk.ok': "Tak. Sezon wraca co roku, zdarzenie trwa chwilę, a przerwa w danych przesuwa cały dalszy wykres.",
   'bk.sq.brk.caption': "Dane wymyślone. Google zmieniał sposób zbierania danych od 1 stycznia 2016 r. i od 1 stycznia 2022 r. Zmiana poziomu od takiej daty może więc nie być zmianą zachowań.",
+  'bk.tr.uses.q': "Pytanie",
+  'bk.tr.uses.s': "Jakie zapytania",
+  'bk.tr.uses.f': "Wynik",
+  'bk.tr.uses.c': "Haczyk.",
+  'bk.tr.uses.aria': "Wykres liniowy. Indeks Google Trends hasła black friday w Polsce, tygodnie od września do grudnia 2025 r.",
+  'bk.tr.uses.ramp': "Zainteresowanie rośnie przez {w|tydzień|tygodnie|tygodni} przed szczytem. Od tygodnia {s} indeks ma co najmniej 10, a setkę ma tydzień od {p}.",
   'bk.tr.caption.trends': "Google Trends, {q}, {geo}, wszystkie kategorie, wyszukiwarka Google. Pobrane 14 października 2026 r.",
   'bk.tr.win.long': "5 lat",
   'bk.tr.win.y25': "rok 2025",
@@ -12171,8 +12177,8 @@ const CHAPTER = {
       blocks: [
         { p: 'Zapytanie do wyszukiwarki wpisujemy, zanim coś zrobimy. Szukamy klimatyzatora przed zakupem, objawów przed wizytą u lekarza, ofert pracy przed zmianą pracy. Dlatego zapytania mówią o zamiarach, a nie tylko o tym, co już się stało.' },
         { p: 'Zapytanie wpisujemy też w samotności. Nikt nie patrzy, więc pytamy o rzeczy, o których nie mówimy w ankiecie (Stephens-Davidowitz 2017). Ekonomiści używają zapytań do *nowcastingu*, czyli szacowania tego, co dzieje się teraz, zanim urząd statystyczny poda dane (Choi, Varian 2012).' },
-        { p: 'Najbardziej znany przykład dotyczy wyborów w USA. Stephens-Davidowitz policzył w regionach udział zapytań z rasistowskimi obelgami. Tam, gdzie było ich więcej, Obama dostał mniej głosów, niż przewidywał wynik poprzedniego kandydata demokratów. W skali kraju wyszło około 4 punktów procentowych, więcej niż w szacunkach z ankiet (Stephens-Davidowitz 2014).' },
-        { p: 'Zapytania pokazują też, jak media zmieniają zachowania. Po odcinkach programu MTV „16 and Pregnant” rosła liczba zapytań o antykoncepcję, najbardziej tam, gdzie program oglądano najczęściej. Autorzy łączą program ze spadkiem liczby urodzeń wśród nastolatek o 5,7% w półtora roku (Kearney, Levine 2015). Marketing patrzy tak samo. Najpierw kampania, potem zapytania, potem zakup.' },
+        { p: 'Rysunek {rys:searchuses} pokazuje cztery takie zastosowania. Każde to inne pytanie badawcze, inne zapytania i inny haczyk. Dwa przykłady są dobrze znane z badań w USA, czyli rasizm w wyborach (Stephens-Davidowitz 2014) i wpływ programu telewizyjnego na nastolatki (Kearney, Levine 2015). Marketing patrzy tak samo. Najpierw kampania, potem zapytania, potem zakup.' },
+        { figure: 'searchuses' },
         { p: 'Samych zapytań nikt jednak nie dostaje. Każde narzędzie pokazuje je przez inny filtr. Rysunek {rys:searchmap} zestawia siedem źródeł. Przy każdym zapisano, co pokazuje i czego nie widać.' },
         { figure: 'searchmap' },
         { terms: [
@@ -13008,6 +13014,9 @@ function lines({ series, n, ymax, notes = [], ticks = [], aria, dots = [] }) {
     ticks.map(([i, label]) => svg('text', { x: x(i), y: H - 6, class: 'sq-tick', 'text-anchor': 'middle' }, label)));
 }
 const yearTicks = (dates, every = 1) => dates.map((d, i) => [i, d]).filter(([i, d]) => (i === 0 || dates[i - 1].slice(0, 4) !== d.slice(0, 4)) && Number(d.slice(0, 4)) % every === 0).map(([i, d]) => [i, d.slice(0, 4)]);
+const SHORT = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'];
+/** A tick at the first week of each month. */
+const monthTicks = (dates) => dates.map((d, i) => [i, d]).filter(([i, d]) => i === 0 || dates[i - 1].slice(5, 7) !== d.slice(5, 7)).map(([i, d]) => [i, SHORT[Number(d.slice(5, 7)) - 1]]);
 const legend = (items) => el('div.sq-legend', items.map(([cls, label]) => el(`span.sq-leg.${cls}`, label)));
 
 // ---------------------------------------------------------------- 2.2 real window
@@ -13244,7 +13253,82 @@ function aiFigure({ num: n = 'Rysunek' } = {}) {
   return frame(n, 'Prawdziwe dane. „chatgpt” i „wikipedia” w wyszukiwarce Google', host);
 }
 
-__modules["src/book/figures/trendsreal.js"] = { "num": num, "dayText": dayText, "rescaleCheck": rescaleCheck, "realwindowFigure": realwindowFigure, "formMeans": formMeans, "formsFigure": formsFigure, "shopMeans": shopMeans, "shopsFigure": shopsFigure, "klimaPoints": klimaPoints, "klimaFigure": klimaFigure, "noiseZeros": noiseZeros, "noiseFigure": noiseFigure, "pearson": pearson, "validationPair": validationPair, "validationFigure": validationFigure, "novembers": novembers, "wikiFigure": wikiFigure, "aiPoints": aiPoints, "aiFigure": aiFigure };
+// ---------------------------------------------------------------- 2.1 four uses of search data
+
+/** Weeks of 2025 from the first week at 10 or more up to the Black Friday peak (the 100), and the peak week. */
+function bfRamp() {
+  const s = S.bf2025;
+  const v = s.values[0].map(num);
+  const peak = v.indexOf(100);
+  let start = peak;
+  while (start > 0 && v[start - 1] >= 10) start--;
+  return { weeks: peak - start, startDay: s.dates[start], peakDay: s.dates[peak] };
+}
+
+/** The four uses of search data told in 2.1: a question, the searches used, the finding, the catch. */
+const USES = [
+  {
+    id: 'zamiar', label: 'zamiar przed działaniem',
+    question: 'Kiedy ludzie zaczynają myśleć o zakupach na Black Friday?',
+    searches: 'Hasło „black friday” w Google Trends, Polska, tygodnie 2025 r.',
+    found: null, // computed from the real chart, see usesFigure
+    caveat: 'Zapytania mówią o zainteresowaniu, a nie o zakupach. Sprzedaż trzeba sprawdzić w innym źródle.',
+    source: 'Google Trends, pobrane 14 października 2026 r.',
+  },
+  {
+    id: 'tabu', label: 'to, czego nie mówimy',
+    question: 'Ile głosów kosztowała Baracka Obamę niechęć rasowa wyborców?',
+    searches: 'Udział zapytań z rasistowskimi obelgami w regionach USA, lata 2004–2007.',
+    found: 'Około 4 punktów procentowych w wyborach 2008 i 2012 r. To 1,5–3 razy więcej niż w szacunkach z ankiet.',
+    caveat: 'Nie wiadomo, kto wpisał zapytanie. Wniosek dotyczy regionów, a nie pojedynczych ludzi.',
+    source: 'Stephens-Davidowitz (2014).',
+  },
+  {
+    id: 'media', label: 'reakcja na media',
+    question: 'Czy program telewizyjny może zmienić zachowania nastolatek?',
+    searches: 'Zapytania o antykoncepcję po emisji odcinków programu MTV „16 and Pregnant”, w regionach o różnej oglądalności.',
+    found: 'Zapytań przybywało po każdym odcinku, najbardziej tam, gdzie program oglądano najczęściej. Urodzeń wśród nastolatek było o 5,7% mniej w ciągu półtora roku.',
+    caveat: 'Program nie był jedyną przyczyną. Spadek urodzeń wiązał się też z kryzysem gospodarczym.',
+    source: 'Kearney, Levine (2015).',
+  },
+  {
+    id: 'nowcasting', label: 'szacowanie teraźniejszości',
+    question: 'Czy da się oszacować dziś to, co urząd statystyczny poda dopiero za kilka tygodni?',
+    searches: 'Kategorie Google Trends, na przykład samochody albo zasiłek dla bezrobotnych, w USA.',
+    found: 'Proste modele z danymi z Trends trafniej szacowały bieżącą sprzedaż samochodów i liczbę wniosków o zasiłek niż te same modele bez nich.',
+    caveat: 'W Polsce zysk okazał się niewielki. Pomogło tylko hasło „praca za granicą” (Malinowski 2021).',
+    source: 'Choi, Varian (2012).',
+  },
+];
+
+function usesFigure({ num: n = 'Rysunek' } = {}) {
+  const state = { u: 'zamiar' };
+  const host = el('div.sq-map');
+  const ramp = bfRamp();
+  const s = S.bf2025;
+  const from = s.dates.findIndex((d) => d >= '2025-09-01');
+  const draw = () => {
+    const u = USES.find((x) => x.id === state.u);
+    const found = u.found ?? t('bk.tr.uses.ramp', { w: ramp.weeks, s: dayText(ramp.startDay), p: dayText(ramp.peakDay) });
+    mount(host,
+      toggles(USES.map((x) => [x.id, x.label]), state.u, (id) => { state.u = id; draw(); }),
+      el('dl.sq-card',
+        el('dt', t('bk.tr.uses.q')), el('dd', u.question),
+        el('dt', t('bk.tr.uses.s')), el('dd', u.searches),
+        el('dt', t('bk.tr.uses.f')), el('dd', found)),
+      u.id === 'zamiar' ? el('div.sq-wrap', lines({
+        series: [{ values: s.values[0].slice(from), cls: 'sq-line' }], n: s.dates.length - from, ymax: 100,
+        ticks: monthTicks(s.dates.slice(from)),
+        aria: t('bk.tr.uses.aria'),
+      })) : null,
+      el('div.sq-read', el('b', `${t('bk.tr.uses.c')} `), u.caveat),
+      el('div.fg-caption', u.source));
+  };
+  draw();
+  return frame(n, 'Co mówią zapytania? Cztery przykłady z badań', host);
+}
+
+__modules["src/book/figures/trendsreal.js"] = { "num": num, "dayText": dayText, "rescaleCheck": rescaleCheck, "realwindowFigure": realwindowFigure, "formMeans": formMeans, "formsFigure": formsFigure, "shopMeans": shopMeans, "shopsFigure": shopsFigure, "klimaPoints": klimaPoints, "klimaFigure": klimaFigure, "noiseZeros": noiseZeros, "noiseFigure": noiseFigure, "pearson": pearson, "validationPair": validationPair, "validationFigure": validationFigure, "novembers": novembers, "wikiFigure": wikiFigure, "aiPoints": aiPoints, "aiFigure": aiFigure, "bfRamp": bfRamp, "USES": USES, "usesFigure": usesFigure };
 })();
 
 /* ===== src/book/book.js ===== */
@@ -13285,7 +13369,7 @@ const { ethicsExercise } = __modules["src/book/figures/ethics.js"];
 const { sourceCard, queryCard, summaryBlock } = __modules["src/book/figures/project.js"];
 const { courseMap, planFigure } = __modules["src/book/figures/plan.js"];
 const { searchmapFigure, windowFigure, querylogFigure, anchorFigure, breaksExercise } = __modules["src/book/figures/search.js"];
-const { realwindowFigure, formsFigure, shopsFigure, klimaFigure, noiseFigure, validationFigure, wikiFigure, aiFigure } = __modules["src/book/figures/trendsreal.js"];
+const { usesFigure: searchusesFigure, realwindowFigure, formsFigure, shopsFigure, klimaFigure, noiseFigure, validationFigure, wikiFigure, aiFigure } = __modules["src/book/figures/trendsreal.js"];
 const { t } = __modules["src/i18n/index.js"];
 const FIGURES = {
   traces: tracesFigure,
@@ -13303,6 +13387,7 @@ const FIGURES = {
   anonymity: anonymityFigure,
   decay: decayFigure,
   traits: traitsFigure,
+  searchuses: searchusesFigure,
   searchmap: searchmapFigure,
   window: windowFigure,
   querylog: querylogFigure,
