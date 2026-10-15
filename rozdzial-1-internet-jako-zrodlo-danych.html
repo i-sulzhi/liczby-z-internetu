@@ -4187,6 +4187,7 @@ const pl = {
   // --- the textbook (src/book) ---
   'bk.toc': "Spis treści",
   'bk.tocStart': "Początek i plan",
+  'bk.tocStartOnly': 'Początek',
   'bk.recap': "Co już wiesz",
   'bk.summary': "Podsumowanie",
   'bk.chapterShort': "Rozdział {n}",
@@ -12332,6 +12333,7 @@ const CHAPTER = {
   id: 'r2',
   minutes: false,
   plan: false,
+  intro: false,
   card: 'karta2',
   siteNav: ['home', 'chapter1', 'trainer'],
   number: 2,
@@ -14209,7 +14211,7 @@ class BookApp {
     mount(this.tocHost,
       siteNav(ch.siteNav || ['home', 'trainer']),
       personLine(),
-      el('a.bk-toc-item.bk-toc-top', { href: '#bk-start', onClick: () => this.toggleToc(false) }, t('bk.tocStart')),
+      el('a.bk-toc-item.bk-toc-top', { href: '#bk-start', onClick: () => this.toggleToc(false) }, t(this.chapter.intro === false ? 'bk.tocStartOnly' : 'bk.tocStart')),
       ch.sections.map((s) => {
         const items = doneIn(s);
         const finished = items.length && items.every((it) => this.isItemDone(it));
@@ -14248,13 +14250,14 @@ class BookApp {
       el('h1.bk-title', ch.title),
       el('p.bk-authors', ch.authors),
       el('p.bk-lead', { html: rich(ch.lead) }),
-      el('div.bk-box',
+      // a chapter may open straight on its first section (`intro: false`), with no outcomes or map
+      ch.intro === false ? null : [el('div.bk-box',
         el('div.bk-box-title', t('bk.outcomes')),
         el('ul.bk-outcomes', ch.outcomes.map(([code, text]) => el('li', el('span.bk-code', code), text)))),
       el('div.bk-box',
         el('div.bk-box-title', t('bk.howTo')),
         el('ul.bk-howto', ch.howTo.map(([kind, text]) => el('li', el(`span.bk-kind.bk-kind-${kind}`, t(`bk.kind.${kind}`)), text)))),
-      courseMap(ch.number, ch.course),
+      courseMap(ch.number, ch.course)],
       // a course that does all its work in class has no split to draw (`plan: false`, no `prep`)
       ch.plan === false ? null : planFigure(ch.sections),
       ch.prep ? el('p.bk-prep', ch.prep) : null);
