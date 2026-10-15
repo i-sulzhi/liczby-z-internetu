@@ -2654,12 +2654,12 @@ const FUNCTIONS = {
   },
 
   trend: {
-    params: [any('frazy', { rest: true }), any('od', { default: null, namedOnly: true }), any('do', { default: null, namedOnly: true })],
+    params: [any('hasła', { rest: true }), any('od', { default: null, namedOnly: true }), any('do', { default: null, namedOnly: true })],
     run(args, { env }) {
       const dataName = resolveName('wyszukiwania', [...env.keys()]);
       const data = dataName ? env.get(dataName) : null;
       if (!isTab(data)) return fail('err.trendNoData', {}, args._node.span);
-      if (!args._rest.length) fail('err.missingArg', { fn: 'trend', arg: 'fraza' }, args._node.span);
+      if (!args._rest.length) fail('err.missingArg', { fn: 'trend', arg: 'hasło' }, args._node.span);
       const options = data.columns.filter((c) => c.type === 'num' && c.name !== 'wszystkie').map((c) => c.name);
       const phrases = args._rest.map((a) => {
         if (a.value.kind !== 'str') fail('err.trendPhraseText', {}, a.node?.span);
@@ -3897,7 +3897,7 @@ const pl = {
   'err.sortNeedsNumbers': 'sortuj() układa serię liczb.',
   'err.trendNoData': 'trend() potrzebuje danych o wyszukiwaniach (tabela wyszukiwania).',
   'err.trendPhraseText': 'Frazę podaj w cudzysłowie, np. trend("rower").',
-  'err.trendUnknownPhrase': "Brak danych dla frazy „{phrase}”. Dostępne frazy to {options}.",
+  'err.trendUnknownPhrase': "Brak danych dla hasła „{phrase}”. Dostępne hasła to {options}.",
   'err.trendUnknownMonth': "Nie ma miesiąca „{month}”. Dostępne miesiące to {options}.",
   'err.trendEmptyRange': "„od” wypada po „do”, więc okres jest pusty.",
   'err.sessionsNeedEvents': 'sesje() potrzebuje tabeli odsłon z użytkownikiem i godziną (zdarzenia).',
@@ -4098,7 +4098,7 @@ const pl = {
   'fx.trend.index': 'indeks 0–100',
   'fx.trend': "Trends dzieli wyszukiwania przez wszystkie zapytania i skaluje wynik. Najwyższy udział ({key}, „{phrase}”) dostaje 100.",
   'fx.trend.window': "W okresie {from}–{to} 100 oznacza szczyt tylko tego okresu.",
-  'fx.trend.shared': 'Obie frazy mają wspólną skalę.',
+  'fx.trend.shared': 'Oba hasła mają wspólną skalę.',
   'fx.sessions': "Przerwa dłuższa niż {gap} min zaczyna nową sesję, więc z {n} odsłon mamy {k|sesję|sesje|sesji}.",
   'fx.sessions.lane': '{n|sesja|sesje|sesji}',
   'fx.sessions.rule': "✂ oznacza przerwę dłuższą niż {gap} min. Tu zaczyna się nowa sesja.",
@@ -4187,6 +4187,7 @@ const pl = {
   // --- the textbook (src/book) ---
   'bk.toc': "Spis treści",
   'bk.tocStart': "Początek i plan",
+  'bk.recap': "Co już wiesz",
   'bk.summary': "Podsumowanie",
   'bk.chapterShort': "Rozdział {n}",
   'bk.progress': "Wykonane {k}/{n}",
@@ -4382,6 +4383,8 @@ const pl = {
   'bk.tr.noise.aria': "Wykres słupkowy. Dzienny indeks Google Trends hasła hulajnoga elektryczna w województwie małopolskim, lipiec–wrzesień 2026.",
   'bk.tr.noise.read': "W {z} z {n} dni Trends pokazał 0. Hasło jest tu za rzadkie, żeby każdego dnia przejść próg. Gdy w jakimś dniu trafi się kilka zapytań, ten dzień od razu ma wysoką wartość, bo skala liczy się do szczytu.",
   'bk.tr.noise.caption': "Google Trends, „hulajnoga elektryczna”, województwo małopolskie, 1 lipca – 30 września 2026 r., pobrane 14 października 2026 r. Pobranie w inny dzień może dać zera w innych dniach.",
+  'bk.tr.puzzle.read': "Średnio w {y1} r. hasło „urząd pracy” miało {a}, a w {y2} r. już {b}. Stopa bezrobocia spadła w tym czasie z {c}% do {d}%. Czy wyszukiwarka zna więc bezrobocie?",
+  'bk.tr.puzzle.caption': "Google Trends, Polska, lata 2004–2026, pobrane 14 października 2026 r. Stopa bezrobocia bez wyrównania sezonowego, Eurostat une_rt_m, stan z {d}. Każda linia ma własną skalę.",
   'bk.tr.val.raw': "Surowe wartości",
   'bk.tr.val.yoy': "Zmiana rok do roku",
   'bk.tr.val.trends': "Google Trends, {q}",
@@ -8135,26 +8138,26 @@ var __default__ = {
   },
 
   task: {
-    prompt: 'Policz indeks „hulajnoga” na **wspólnej** skali z „rower”. Tak Trends pokazuje dwie frazy naraz.',
+    prompt: 'Policz indeks „hulajnoga” na **wspólnej** skali z „rower”. Tak Trends pokazuje dwa hasła naraz.',
     starter: `${SHARES}\n# indeks hulajnogi:\n`,
     solution: `${SHARES}\nzaokr(100 * udział_h / max(udział_r, udział_h))`,
     tol: 0.5,
     check: resultCheck({ tol: 0.5, forbidNames: ['trend'] }),
     hints: [
-      'Na wspólnej skali 100 dostaje największy udział **obu** fraz. Tu jest to rower w maju.',
+      'Na wspólnej skali 100 dostaje największy udział **obu** haseł. Tu jest to rower w maju.',
       'Podziel `udział_h` przez `max(udział_r, udział_h)`, pomnóż przez 100 i zaokrąglij.',
     ],
     messages: {
-      ownScale: 'Tu szczyt hulajnogi to 100, więc skala jest tylko jej. Na wspólnej skali dziel przez największy udział obu fraz.',
+      ownScale: 'Tu szczyt hulajnogi to 100, więc skala jest tylko jej. Na wspólnej skali dziel przez największy udział obu haseł.',
       rawCounts: 'Dzielisz surowe liczby. Trends najpierw dzieli przez wszystkie wyszukiwania, więc użyj `udział_h`.',
       fraction: 'To ułamki, nie indeks 0–100. Pomnóż przez 100.',
       wrongPhrase: 'To indeks roweru. Zadanie dotyczy hulajnogi, czyli `udział_h`.',
       notSeries: 'Wynik ma być serią 12 miesięcy, nie jedną liczbą.',
       'forbidden.trend': '`trend()` robi to za ciebie. Tu policz to wzorem, żeby zobaczyć każdy krok.',
-      general: 'Jeszcze nie to. Policz udział hulajnogi × 100 ÷ największy udział obu fraz.',
+      general: 'Jeszcze nie to. Policz udział hulajnogi × 100 ÷ największy udział obu haseł.',
     },
     success: 'Na wspólnej skali hulajnoga ma najwyżej 26, a nie 100.',
-    note: '„100” w Trends nie znaczy „dużo”. To szczyt w danym okresie i przy danych frazach. Zmień jedno lub drugie, a zmienią się wszystkie liczby.',
+    note: '„100” w Trends nie znaczy „dużo”. To szczyt w danym okresie i przy danych hasłach. Zmień jedno lub drugie, a zmienią się wszystkie liczby.',
 
     nearMisses: [
       { name: 'own scale', expect: 'ownScale', code: `${SHARES}\nzaokr(100 * udział_h / max(udział_h))` },
@@ -9646,6 +9649,19 @@ function pct(value, digits = 0) {
 /** 4617677 -> "4,6 mln" */
 const mln = (n) => `${fmtNum(Math.round(n / 100000) / 10)} mln`;
 
+// ---------------------------------------------------------------- chart height on a phone
+
+/** Same width as the CSS rule that enlarges chart labels (book.css, .sq-tick). */
+const NARROW = '(max-width: 600px)';
+const isNarrow = () => typeof matchMedia === 'function' && matchMedia(NARROW).matches;
+
+/**
+ * A chart's height in viewBox units. A phone squeezes the 640-unit width to about 340 px, so a
+ * chart drawn for a desktop comes out 60-110 px tall; there it is drawn 1.8 times taller instead.
+ * Only the height grows: labels and lines keep their size.
+ */
+const chartH = (h) => (isNarrow() ? Math.round(h * 1.8) : h);
+
 // ---------------------------------------------------------------- reading a chart point by point
 
 const MONTHS_OF = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
@@ -9706,7 +9722,7 @@ function probe(chart, { W, top, bottom, n, x, read }) {
   return wrap;
 }
 
-__modules["src/book/figures/common.js"] = { "frame": frame, "toggles": toggles, "pct": pct, "mln": mln, "pointDate": pointDate, "probe": probe };
+__modules["src/book/figures/common.js"] = { "frame": frame, "toggles": toggles, "pct": pct, "mln": mln, "NARROW": NARROW, "chartH": chartH, "pointDate": pointDate, "probe": probe };
 })();
 
 /* ===== src/book/figures/traces.js ===== */
@@ -12336,6 +12352,10 @@ const CHAPTER = {
       id: 's2-1', num: '2.1', title: 'Co mówią zapytania?', meeting: 3,
       parts: [['teoria', 10], ['dyskusja', 10]],
       blocks: [
+        { p: 'Zacznijmy od zagadki. Rysunek {rys:puzzle} pokazuje, jak często Polacy wpisywali w Google „urząd pracy” i jaka była w tym czasie stopa bezrobocia. Obie linie od lat spadają.' },
+        { figure: 'puzzle' },
+        { p: 'Czy z wyszukiwarki da się więc odczytać bezrobocie? To pytanie poprowadzi nas przez cały rozdział, a odpowiedź przyjdzie w podrozdziale 2.6. Po drodze wrócą jeszcze trzy hasła. Każde uczy czegoś innego.' },
+        { note: '„black friday” pokazuje sezon i to, jak okno czasu zmienia liczby. „hulajnoga” pokazuje, co Trends liczy jako hasło, a co jako temat. „klimatyzator” pokazuje zdarzenia i zmiany w samym narzędziu. „urząd pracy” niesie główne pytanie rozdziału.' },
         { p: 'Zapytanie do wyszukiwarki wpisujemy, zanim coś zrobimy. Szukamy klimatyzatora przed zakupem, objawów przed wizytą u lekarza, ofert pracy przed zmianą pracy. Dlatego zapytania mówią o zamiarach, a nie tylko o tym, co już się stało.' },
         { p: 'Zapytanie wpisujemy też w samotności. Nikt nie patrzy, więc pytamy o rzeczy, o których nie mówimy w ankiecie (Stephens-Davidowitz 2017). Ekonomiści używają zapytań do *nowcastingu*, czyli szacowania tego, co dzieje się teraz, zanim urząd statystyczny poda dane (Choi, Varian 2012).' },
         { p: 'Rysunek {rys:searchuses} pokazuje cztery takie zastosowania. Każde to inne pytanie badawcze, inne zapytania i inny haczyk. Dwa przykłady są dobrze znane z badań w USA, czyli rasizm w wyborach (Stephens-Davidowitz 2014) i wpływ programu telewizyjnego na nastolatki (Kearney, Levine 2015). Marketing patrzy tak samo. Najpierw kampania, potem zapytania, potem zakup.' },
@@ -12358,13 +12378,13 @@ const CHAPTER = {
       id: 's2-2', num: '2.2', title: 'Jak powstaje indeks Trends?', meeting: 3,
       parts: [['teoria', 10], ['cwiczenie', 15]],
       blocks: [
-        { p: 'Google Trends nie pokazuje liczby wyszukiwań. Bierze próbę wszystkich wyszukiwań z danego miejsca i czasu. Liczy, jaką część z nich stanowi hasło. Potem przelicza te udziały tak, że największy w wybranym okresie dostaje 100.' },
+        { p: 'Zanim odczytamy cokolwiek z wykresu, trzeba wiedzieć, co na nim jest. Google Trends nie pokazuje liczby wyszukiwań. Bierze próbę wszystkich wyszukiwań z danego miejsca i czasu. Liczy, jaką część z nich stanowi hasło. Potem przelicza te udziały tak, że największy w wybranym okresie dostaje 100.' },
         { p: 'Z tego wynikają trzy rzeczy. Po pierwsze, 100 to szczyt, a nie liczba ludzi. Po drugie, rzadkie hasła dostają 0, bo Trends pokazuje tylko te popularne. Po trzecie, ta sama wartość zależy od okna czasu, bo przy innym oknie szczyt może wypaść gdzie indziej. Rysunek {rys:window} pokazuje to na jednym szeregu.' },
         { figure: 'window' },
         { p: 'Na prawdziwych danych wygląda to tak samo. Rysunek {rys:realwindow} pokazuje „black friday” w oknie 5 lat i w oknie samego 2025 r. Wystarczy przeliczyć tygodnie 2025 r. z długiego okna do ich własnego szczytu, żeby dostać wykres pobrany osobno.' },
         { figure: 'realwindow' },
         { p: 'W ćwiczeniu policzysz indeks sam, krok po kroku. Najpierw udział, potem skalę do szczytu, a na końcu wspólną skalę dla dwóch haseł.' },
-        { lesson: 'trends', num: 'Ćwiczenie 2.2', title: 'Indeks Google Trends. Dwie frazy na jednej skali', min: 15 },
+        { lesson: 'trends', num: 'Ćwiczenie 2.2', title: 'Indeks Google Trends. Dwa hasła na jednej skali', min: 15 },
         { terms: [
           ['indeks Google Trends', 'udział hasła we wszystkich wyszukiwaniach z danego miejsca i czasu, przeliczony tak, że szczyt w wybranym okresie to 100'],
           ['próba', 'część wszystkich wyszukiwań, z której Trends liczy wynik; co jakiś czas losowana od nowa'],
@@ -12376,7 +12396,7 @@ const CHAPTER = {
       id: 's2-3', num: '2.3', title: 'Hasło czy temat?', meeting: 3,
       parts: [['teoria', 10], ['dyskusja', 5]],
       blocks: [
-        { p: 'Wpisane w Trends słowo to *hasło*. Hasło liczy zapytania, w których to słowo występuje dokładnie w tej formie. Polski ma odmianę, więc „hulajnoga”, „hulajnogi” i „hulajnogę” to trzy różne hasła.' },
+        { p: 'Indeks liczy udział hasła. Co jednak Trends uznaje za hasło? Wpisane w Trends słowo to *hasło*. Hasło liczy zapytania, w których to słowo występuje dokładnie w tej formie. Polski ma odmianę, więc „hulajnoga”, „hulajnogi” i „hulajnogę” to trzy różne hasła.' },
         { p: 'Trends ma na to własne znaki. Plus łączy hasła, na przykład `hulajnoga + hulajnogi`. Minus odrzuca zapytania z danym słowem, na przykład `hulajnoga - dziecka`. Cudzysłów wymaga słów obok siebie, w tej kolejności.' },
         { p: 'Druga możliwość to *temat*. Temat liczy wszystkie zapytania o daną rzecz, także odmiany, literówki i inne języki. Wygodne, ale nie widać, co dokładnie do niego należy. Rysunek {rys:querylog} pokazuje, co liczy każde wyrażenie w wymyślonym zbiorze zapytań.' },
         { figure: 'querylog' },
@@ -12391,10 +12411,10 @@ const CHAPTER = {
     },
 
     {
-      id: 's2-4', num: '2.4', title: 'Porównania i skala', meeting: 3,
+      id: 's2-4', num: '2.4', title: 'Jak porównywać hasła i okna czasu?', meeting: 3,
       parts: [['teoria', 10], ['dyskusja', 10]],
       blocks: [
-        { p: 'Na jednym wykresie Trends zestawia najwyżej pięć haseł. Wszystkie są wtedy na wspólnej skali, a 100 dostaje szczyt największego. Małe hasło obok dużego spada do 0, do „<1” albo do płaskiej jedynki.' },
+        { p: 'Badanie rzadko kończy się na jednym haśle. Porównuje się marki, miasta albo okresy. Na jednym wykresie Trends zestawia najwyżej pięć haseł. Wszystkie są wtedy na wspólnej skali, a 100 dostaje szczyt największego. Małe hasło obok dużego spada do 0, do „<1” albo do płaskiej jedynki.' },
         { p: 'Co zrobić, gdy marek jest dziewięć? Pobiera się kilka wykresów, a na każdym zostawia jedno wspólne hasło, czyli *kotwicę*. Kotwica pozwala przeliczyć drugi wykres na skalę pierwszego. Rysunek {rys:anchor} łączy tak dwa wykresy sklepów.' },
         { figure: 'anchor' },
         { p: 'Rysunek {rys:shops} robi to samo z prawdziwymi sklepami. Obok allegro answear ma 1 w każdym tygodniu. Dopiero przez kotwicę widać jego krzywą.' },
@@ -12412,28 +12432,30 @@ const CHAPTER = {
     },
 
     {
-      id: 's2-5', num: '2.5', title: 'Szum, sezon i przerwy', meeting: 4,
+      id: 's2-5', num: '2.5', title: 'Ludzie czy narzędzie?', meeting: 4,
       parts: [['teoria', 10], ['cwiczenie', 10]],
       blocks: [
+        { p: 'Wiemy już, skąd się bierze liczba na wykresie. Teraz pytanie, dlaczego ta liczba się zmienia.' },
         { p: 'Pobierz to samo w innym dniu, a liczby mogą być trochę inne. Trends liczy z próby, a próbę co jakiś czas losuje od nowa. Przy popularnych hasłach różnice są małe, przy rzadkich duże. Dlatego w badaniach pobiera się dane kilka razy, w różne dni, i bierze średnią (Eichenauer i in. 2022). Rysunek {rys:noise} pokazuje rzadkie hasło w jednym województwie.' },
         { figure: 'noise' },
         { p: 'Na wykresie z kilku lat nakładają się trzy rzeczy. *Sezon* wraca co roku, jak Black Friday w listopadzie albo klimatyzatory w lipcu. *Zdarzenie* trwa chwilę, jak upał albo głośna wiadomość. *Przerwa w danych* bierze się z narzędzia, a nie z ludzi. Google kilka razy zmieniał sposób zbierania danych, a dalszy wykres mógł się wtedy przesunąć w górę lub w dół.' },
+        { p: 'Zdarzenie widać też w naszym głównym przykładzie. W kwietniu 2020 r. hasło „urząd pracy” miało 81, a rok wcześniej 29. Stopa bezrobocia była w tym miesiącu nawet niższa niż rok wcześniej, 3,1% wobec 3,3%. To był początek pandemii.' },
         { p: 'Przypomnij sobie Google Flu Trends z rozdziału 1. Szacunek rozjechał się z danymi lekarzy także dlatego, że zmieniała się sama wyszukiwarka.' },
         { p: 'Google sam zaznacza takie miejsca na wykresie. Rysunek {rys:klima} pokazuje „klimatyzator” od 2004 r. razem z uwagami Google o zmianach w 2011, 2016 i 2022 r.' },
         { figure: 'klima' },
         { exercise: 'przerwy', num: 'Ćwiczenie 2.5', title: 'Sezon, zdarzenie czy przerwa?', min: 10, toc: 'Ćwiczenie 2.5. Sezon, zdarzenie czy przerwa' },
         { terms: [
           ['sezonowość', 'wzór, który powtarza się co roku w tych samych miesiącach'],
-          ['przerwa w szeregu', 'zmiana poziomu wykresu, która wynika ze zmiany sposobu pomiaru'],
+          ['przerwa w danych', 'zmiana poziomu wykresu, która wynika ze zmiany sposobu pomiaru'],
         ] },
       ],
     },
 
     {
-      id: 's2-6', num: '2.6', title: 'Od zapytań do wniosków', meeting: 4,
+      id: 's2-6', num: '2.6', title: 'Czy zapytania mówią coś o świecie?', meeting: 4,
       parts: [['teoria', 10], ['dyskusja', 15]],
       blocks: [
-        { p: 'Czy zapytania mówią coś o świecie? Sprawdza się to na danych z innego źródła, na przykład z urzędu statystycznego. Najprostsza miara to korelacja r. Bliska 1 znaczy, że oba szeregi rosną i maleją razem. Bliska 0 znaczy, że nie ma między nimi takiego związku.' },
+        { p: 'Pora wrócić do zagadki z rysunku {rys:puzzle}. Czy zapytania mówią coś o świecie, sprawdza się na danych z innego źródła, na przykład z urzędu statystycznego. Najprostsza miara to korelacja r. Bliska 1 znaczy, że oba szeregi rosną i maleją razem. Bliska 0 znaczy, że nie ma między nimi takiego związku.' },
         { p: 'Rysunek {rys:path} prowadzi od zapytań do wniosku przez cztery sprawdziany. Kliknij każdy z nich albo przejdź całą drogę. Niżej omawiamy je po kolei.' },
         { figure: 'path' },
         { p: 'Tu łatwo o pułapkę. Gdy oba szeregi mają ten sam sezon albo ten sam długi spadek, korelacja wychodzi wysoka, nawet jeśli poza tym nic ich nie łączy. Dlatego porównuje się zmiany rok do roku, czyli ten sam miesiąc z miesiącem rok wcześniej.' },
@@ -12441,6 +12463,7 @@ const CHAPTER = {
         { p: 'Podobnie wyszło w USA. Zapytania dobrze przewidywały wpływy kin w pierwszy weekend, sprzedaż gier i miejsca piosenek na liście przebojów. Ale prosty model na innych dostępnych danych też przewidywał dobrze. Zapytania dodawały do niego od niewiele do dużo, zależnie od dziedziny, a przy grypie niewiele. Zapytania najbardziej pomagają tam, gdzie innych danych brak (Goel i in. 2010).' },
         { p: 'Druga pułapka to dobór haseł po fakcie. Strategia giełdowa oparta na zapytaniach o słowo „debt” dawała duży zysk na danych z przeszłości (Preis i in. 2013). Inni badacze sprawdzili to jeszcze raz. Zysk zależał głównie od wyboru haseł, a zapytania nie przewidywały lepiej niż same dawne ceny (Challet, Bel Hadj Ayed 2014). Rysunek {rys:dredging} pokazuje, skąd bierze się taki zysk.' },
         { figure: 'dredging' },
+        { p: 'Odpowiedź na zagadkę daje drugi sprawdzian. „urząd pracy” i bezrobocie miały wspólny długi spadek i wspólny sezon. Na surowych wartościach r = 0,64, a na zmianach rok do roku r = 0,02. To hasło nie mówiło więc nic o bezrobociu. Obie linie po prostu spadały. Czy inne hasło wypada lepiej?' },
         { p: 'Rysunek {rys:validation} pozwala to sprawdzić samemu. Zestawia trzy hasła o pracy ze stopą bezrobocia w Polsce od 2004 r. Porównaj korelację surowych wartości i zmian rok do roku dla każdego hasła.' },
         { figure: 'validation' },
         { discuss: { who: 'w parach', min: 10, prompts: [
@@ -12455,10 +12478,10 @@ const CHAPTER = {
     },
 
     {
-      id: 's2-7', num: '2.7', title: 'Narzędzia i dostęp', meeting: 4,
+      id: 's2-7', num: '2.7', title: 'Skąd wziąć dane?', meeting: 4,
       parts: [['teoria', 10], ['dyskusja', 5]],
       blocks: [
-        { p: 'Najprostsza droga to Trends w przeglądarce i przycisk pobierania pliku CSV. Wynik zapisuj od razu z datą pobrania, bo w innym dniu liczby mogą być trochę inne. Przy wielu zapytaniach z rzędu Trends odpowiada błędem 429, czyli „za dużo zapytań”. Wtedy trzeba odczekać.' },
+        { p: 'Wiesz już, jak czytać wykres i jak sprawdzić wniosek. Zostaje sprawa praktyczna. Najprostsza droga to Trends w przeglądarce i przycisk pobierania pliku CSV. Wynik zapisuj od razu z datą pobrania, bo z podrozdziału 2.5 wiesz, że liczby zależą od dnia. Przy wielu zapytaniach z rzędu Trends odpowiada błędem 429, czyli „za dużo zapytań”. Wtedy trzeba odczekać.' },
         { p: 'Google udostępnia też oficjalne API Trends. Od lipca 2025 r. jest w wersji testowej, a dostęp daje się na wniosek. Jego zaleta to jedna skala we wszystkich zapytaniach, więc kotwica nie jest potrzebna. Biblioteka pytrends, która udawała przeglądarkę, w kwietniu 2025 r. przestała być rozwijana. Jej następcy i płatne serwisy, takie jak SerpApi czy aktory Apify, działają, dopóki pozwala na to Google.' },
         { p: 'Rysunek {rys:tools} pomaga wybrać drogę do własnego badania.' },
         { figure: 'tools' },
@@ -12471,10 +12494,11 @@ const CHAPTER = {
     },
 
     {
-      id: 's2-8', num: '2.8', title: 'Wyszukiwanie po AI', meeting: 4,
+      id: 's2-8', num: '2.8', title: 'Czego Trends już nie widzi?', meeting: 4,
       parts: [['teoria', 10], ['dyskusja', 10]],
       blocks: [
-        { p: 'Wyszukiwarka się zmienia. Nad wynikami pojawia się streszczenie AI, a w trybie AI rozmowa zastępuje listę linków. Ludzie rzadziej klikają. Pew Research Center sprawdził to na dorosłych w USA w marcu 2025 r. Gdy na stronie wyników było streszczenie AI, ludzie klikali w link w około 8% wizyt, a bez streszczenia w około 15%. Rysunek {rys:clicks} pokazuje to na stu wizytach.' },
+        { p: 'W podrozdziale 2.5 Google zmieniał narzędzie po cichu, w uwagach na wykresie. Teraz wyszukiwarka zmienia się na oczach wszystkich.' },
+        { p: 'Nad wynikami pojawia się streszczenie AI, a w trybie AI rozmowa zastępuje listę linków. Ludzie rzadziej klikają. Pew Research Center sprawdził to na dorosłych w USA w marcu 2025 r. Gdy na stronie wyników było streszczenie AI, ludzie klikali w link w około 8% wizyt, a bez streszczenia w około 15%. Rysunek {rys:clicks} pokazuje to na stu wizytach.' },
         { figure: 'clicks' },
         { p: 'Dla badacza to dwie zmiany. Część pytań trafia do czatów, takich jak ChatGPT, których Trends w ogóle nie widzi. A jeśli pytania w wyszukiwarce staną się dłuższe i bardziej rozmowne, krótkich haseł będzie w nich mniej. Długi szereg z Trends może więc spadać, choć zainteresowanie tematem nie maleje. Do tego Google podaje, że Trends odfiltrowuje wewnętrzne wyszukiwania, które wykonują tryb AI i przeglądy od AI.' },
         { p: 'Rysunek {rys:ai} pokazuje dwa hasła od 2022 r. Pierwsze to nazwa czatu, drugie to nazwa encyklopedii, do której wiele osób trafiało z wyszukiwarki.' },
@@ -12491,7 +12515,7 @@ const CHAPTER = {
       id: 's2-9', num: '2.9', title: 'Projekt, krok 2. Karta zapytań', meeting: 0, outside: false,
       parts: [],
       blocks: [
-        { p: 'Wykres z Trends da się powtórzyć tylko wtedy, gdy zapiszesz wszystkie ustawienia. Karta zapytań zbiera je w jednym miejscu. To hasło albo temat z całym wyrażeniem, region, okno czasu, kategoria, rodzaj wyszukiwania, data pobrania, liczba pobrań i kotwica.' },
+        { p: 'Każdy podrozdział dodał coś, co trzeba ustawić i zapisać. Wykres z Trends da się powtórzyć tylko wtedy, gdy zapiszesz wszystkie ustawienia. Karta zapytań zbiera je w jednym miejscu. To hasło albo temat z całym wyrażeniem, region, okno czasu, kategoria, rodzaj wyszukiwania, data pobrania, liczba pobrań i kotwica.' },
         { p: 'Bez takiej karty wyniku nie da się sprawdzić. W przeglądzie 70 badań medycznych z Google Trends tylko 7% opisało zapytania na tyle dokładnie, żeby dało się je powtórzyć (Nuti i in. 2014). Większość ustawień zapisuje sam adres wykresu, co pokazuje rysunek {rys:trendsurl}.' },
         { figure: 'trendsurl' },
         { exercise: 'karta2', num: 'Projekt', title: 'Karta zapytań', min: 30 },
@@ -12504,6 +12528,14 @@ const CHAPTER = {
     { lesson: 'trends', label: 'Ćwiczenie 2.2. Indeks Google Trends', section: 's2-2' },
     { id: 'przerwy', label: 'Ćwiczenie 2.5. Sezon, zdarzenie czy przerwa', section: 's2-5' },
     { id: 'karta2', label: 'Projekt, krok 2. Karta zapytań', section: 's2-9' },
+  ],
+
+  recap: [
+    'Zapytania mówią o zamiarach i o tym, czego nie mówimy w ankiecie. Każde narzędzie pokazuje je jednak przez własny filtr (W1).',
+    'Indeks Trends to udział hasła, a nie liczba ludzi. 100 to szczyt w wybranym oknie i przy wybranych hasłach.',
+    'Na wykresie ruszają się naraz ludzie i narzędzie. Sezon i zdarzenia to ludzie. Próba, przerwy w danych i AI to narzędzie (U2, K2).',
+    'Zagadka z początku ma odpowiedź. „urząd pracy” i bezrobocie spadały razem, ale na zmianach rok do roku związek znika. Wniosek z zapytań przechodzi cztery sprawdziany z rysunku {rys:path}.',
+    'Każde ustawienie trafia do karty zapytań, bo bez niej wyniku nie da się powtórzyć.',
   ],
 
   next: 'Rozdział 3 zaczyna się tam, gdzie kończy się wyszukiwarka. Zobaczymy, co ludzie robią na stronie, gdy już na nią trafią.',
@@ -12863,7 +12895,7 @@ __modules["src/book/data/searchsim.js"] = { "months": months, "WINDOW": WINDOW, 
  * functions are exported for the book test and the oracle.
  */
 const { el, svg, mount } = __modules["src/ui/dom.js"];
-const { frame, toggles, probe, pointDate } = __modules["src/book/figures/common.js"];
+const { frame, toggles, probe, pointDate, chartH } = __modules["src/book/figures/common.js"];
 const { t } = __modules["src/i18n/index.js"];
 const { fmtNum } = __modules["src/core/format.js"];
 const { getItem, setItem, isDone, markDone } = __modules["src/book/store.js"];
@@ -12932,7 +12964,7 @@ function windowSeries(win, data = WINDOW) {
 function windowFigure({ num = 'Rysunek' } = {}) {
   const state = { w: 'all' };
   const host = el('div.sq-win');
-  const W = 640; const H = 200; const L = 44; const R = 6; const T = 10; const B = 22;
+  const W = 640; const H = chartH(200); const L = 44; const R = 6; const T = 18; const B = 22;
   const draw = () => {
     const win = WINDOWS.find((w) => w.id === state.w);
     const { rows, peak } = windowSeries(win);
@@ -13089,7 +13121,7 @@ function breaksExercise({ onDone } = {}) {
   const state = { picked: { ...(getItem('ans:przerwy') || {}) }, checked: false };
   const host = el('div.sq-brk');
   const rows = months(BREAKS.from, BREAKS.index.length).map((month, i) => ({ month, v: BREAKS.index[i] }));
-  const W = 640; const H = 210; const L = 40; const R = 8; const T = 16; const B = 22;
+  const W = 640; const H = chartH(210); const L = 40; const R = 8; const T = 16; const B = 22;
   const top = Math.max(...BREAKS.index);
   const x = (i) => L + (i / (rows.length - 1)) * (W - L - R);
   const y = (v) => T + (1 - v / top) * (H - T - B);
@@ -13160,7 +13192,7 @@ __modules["src/book/data/trends.js"] = { "TRENDS": TRENDS };
  *   aiFigure          2.8 "chatgpt" and "wikipedia" in Trends since 2022
  */
 const { el, svg, mount } = __modules["src/ui/dom.js"];
-const { frame, toggles, probe, pointDate } = __modules["src/book/figures/common.js"];
+const { frame, toggles, probe, pointDate, chartH } = __modules["src/book/figures/common.js"];
 const { t } = __modules["src/i18n/index.js"];
 const { fmtNum } = __modules["src/core/format.js"];
 const { TRENDS } = __modules["src/book/data/trends.js"];
@@ -13183,7 +13215,7 @@ const shownValue = (v) => (typeof v === 'number' ? fmtNum(v) : String(v));
  * (probe in common.js); the readout shows the series' own values unless value() says otherwise.
  */
 function lines({ series, n, ymax, notes = [], ticks = [], aria, dots = [], read = null }) {
-  const W = 640; const H = 210; const L = 40; const R = 8; const T = 10; const B = 22;
+  const W = 640; const H = chartH(210); const L = 40; const R = 8; const T = 18; const B = 22;
   const x = (i) => L + (i / Math.max(1, n - 1)) * (W - L - R);
   const y = (v) => T + (1 - Math.min(v, ymax) / ymax) * (H - T - B);
   const chart = svg('svg', { viewBox: `0 0 ${W} ${H}`, class: 'sq-svg', role: 'img', 'aria-label': aria },
@@ -13350,7 +13382,7 @@ const noiseZeros = () => S.noise.values[0].filter((v) => v === 0).length;
 function noiseFigure({ num: n = 'Rysunek' } = {}) {
   const host = el('div.sq-win');
   const v = S.noise.values[0];
-  const W = 640; const H = 150; const L = 40; const B = 20; const T = 8;
+  const W = 640; const H = chartH(150); const L = 40; const B = 20; const T = 16;
   const bw = (W - L - 6) / v.length;
   const y = (x) => T + (1 - num(x) / 100) * (H - T - B);
   mount(host,
@@ -13387,6 +13419,39 @@ function validationPair(item, mode) {
   const a = use.map((m) => (mode === 'raw' ? tr(m) : tr(m) - tr(back(m))));
   const b = use.map((m) => (mode === 'raw' ? un(m) : un(m) - un(back(m))));
   return { months: use, a, b, r: pearson(a, b) };
+}
+
+// ---------------------------------------------------------------- 2.1 the puzzle that opens the chapter
+
+/**
+ * "urząd pracy" and unemployment, raw, without r: the chapter asks whether search knows
+ * unemployment and answers in 2.6. The readout compares the searches' peak year with the last
+ * full year of both series.
+ */
+function puzzleNumbers() {
+  const p = S.praca; const u = TRENDS.une; const k = p.items.indexOf('urząd pracy');
+  const yearMean = (dates, values, y) => { const xs = dates.map((d, i) => [d, values[i]]).filter(([d]) => d.startsWith(y)).map(([, v]) => num(v)); return xs.length === 12 ? mean(xs) : null; };
+  const years = [...new Set(p.dates.map((d) => d.slice(0, 4)))];
+  const search = years.map((y) => [y, yearMean(p.dates, p.values[k], y)]).filter(([, v]) => v != null);
+  const peak = search.reduce((a, b) => (b[1] > a[1] ? b : a));
+  const last = search.filter(([y]) => yearMean(u.months, u.values, y) != null).at(-1);
+  return { y1: peak[0], a: Math.round(peak[1]), y2: last[0], b: Math.round(last[1]), c: one(yearMean(u.months, u.values, peak[0])), d: one(yearMean(u.months, u.values, last[0])) };
+}
+
+function puzzleFigure({ num: n = 'Rysunek' } = {}) {
+  const host = el('div.sq-win');
+  const pr = validationPair('urząd pracy', 'raw');
+  const q = puzzleNumbers();
+  const scale = (xs) => { const m = Math.max(...xs); return xs.map((x) => (100 * x) / m); };
+  mount(host,
+    legend([['sq-leg-a', t('bk.tr.val.trends', { q: 'urząd pracy' })], ['sq-leg-b', t('bk.tr.val.une')]]),
+    el('div.sq-wrap', lines({
+      series: [{ values: scale(pr.a), cls: 'sq-line' }, { values: scale(pr.b), cls: 'sq-line2' }], n: pr.months.length, ymax: 100, ticks: yearTicks(pr.months, 4), aria: t('bk.tr.val.aria'),
+      read: { head: (i) => pointDate(pr.months[i], 'MONTH'), names: ['urząd pracy', t('bk.tr.val.une')], value: (k, i) => valueText(k, k === 0 ? pr.a[i] : pr.b[i], 'raw') },
+    })),
+    el('div.sq-read', t('bk.tr.puzzle.read', q)),
+    el('div.fg-caption', t('bk.tr.puzzle.caption', { d: TRENDS.une.updated })));
+  return frame(n, 'Prawdziwe dane. Zagadka. Czy wyszukiwarka zna bezrobocie?', host);
 }
 
 /** A readout value: the Trends index or the unemployment rate, raw or as a change against a year earlier. */
@@ -13542,7 +13607,7 @@ function usesFigure({ num: n = 'Rysunek' } = {}) {
   return frame(n, 'Co mówią zapytania? Cztery przykłady z badań', host);
 }
 
-__modules["src/book/figures/trendsreal.js"] = { "num": num, "dayText": dayText, "rescaleCheck": rescaleCheck, "realwindowFigure": realwindowFigure, "formMeans": formMeans, "formsFigure": formsFigure, "shopMeans": shopMeans, "shopsFigure": shopsFigure, "klimaPoints": klimaPoints, "klimaFigure": klimaFigure, "noiseZeros": noiseZeros, "noiseFigure": noiseFigure, "pearson": pearson, "validationPair": validationPair, "valueText": valueText, "validationFigure": validationFigure, "novembers": novembers, "wikiFigure": wikiFigure, "aiPoints": aiPoints, "aiFigure": aiFigure, "bfRamp": bfRamp, "USES": USES, "usesFigure": usesFigure };
+__modules["src/book/figures/trendsreal.js"] = { "num": num, "dayText": dayText, "rescaleCheck": rescaleCheck, "realwindowFigure": realwindowFigure, "formMeans": formMeans, "formsFigure": formsFigure, "shopMeans": shopMeans, "shopsFigure": shopsFigure, "klimaPoints": klimaPoints, "klimaFigure": klimaFigure, "noiseZeros": noiseZeros, "noiseFigure": noiseFigure, "pearson": pearson, "validationPair": validationPair, "puzzleNumbers": puzzleNumbers, "puzzleFigure": puzzleFigure, "valueText": valueText, "validationFigure": validationFigure, "novembers": novembers, "wikiFigure": wikiFigure, "aiPoints": aiPoints, "aiFigure": aiFigure, "bfRamp": bfRamp, "USES": USES, "usesFigure": usesFigure };
 })();
 
 /* ===== src/book/figures/search2.js ===== */
@@ -13561,7 +13626,7 @@ __modules["src/book/figures/trendsreal.js"] = { "num": num, "dayText": dayText, 
  * and test/book2_oracle.py draw the same numbers. Everything else is real or published.
  */
 const { el, svg, mount } = __modules["src/ui/dom.js"];
-const { frame, toggles, probe, pointDate } = __modules["src/book/figures/common.js"];
+const { frame, toggles, probe, pointDate, chartH } = __modules["src/book/figures/common.js"];
 const { t } = __modules["src/i18n/index.js"];
 const { fmtNum } = __modules["src/core/format.js"];
 const { TRENDS } = __modules["src/book/data/trends.js"];
@@ -13578,7 +13643,8 @@ const two = (x) => (Math.round(x * 100) / 100).toFixed(2).replace('.', ',').repl
 const LEG = { 'sq-line': 'sq-leg-a', 'sq-line2': 'sq-leg-b', 'sq-line3': 'sq-leg-c' };
 
 /** A line chart; with `read` ({ head(i), names, value(k, i) }) it is readable point by point. */
-function line(values, { ymax = 100, H = 120, cls = 'sq-line', split = null, extra = [], read = null } = {}) {
+function line(values, { ymax = 100, H: h = 120, cls = 'sq-line', split = null, extra = [], read = null } = {}) {
+  const H = chartH(h);
   const W = 640; const L = 8; const R = 8; const T = 8; const B = 8;
   const all = [values, ...extra.map((e) => e.values)].flat();
   const lo = Math.min(0, ...all); const hi = ymax ?? Math.max(...all);
@@ -13745,7 +13811,7 @@ function morph(poly, from, to, ms = 1100, hold = 500) {
 
 /** Month series on one shared time axis. Raw values to 0-100 of their maximum, changes around the middle. */
 function pathPlot(axis) {
-  const W = 640; const H = 150; const L = 8; const R = 8; const T = 8; const B = 20;
+  const W = 640; const H = chartH(150); const L = 8; const R = 8; const T = 8; const B = 20;
   const x = (m) => L + (axis.indexOf(m) / (axis.length - 1)) * (W - L - R);
   const y = (v) => T + (1 - v / 100) * (H - T - B);
   const rawPts = (months, xs) => { const m = Math.max(...xs); return months.map((mo, i) => [x(mo), y((100 * xs[i]) / m)]); };
@@ -13862,7 +13928,7 @@ function pathFigure({ num: n = 'Rysunek' } = {}) {
 
 /** The dredging result on its own 48-month axis, with the line between fitted and new data. */
 function pathDredge(d) {
-  const W = 640; const H = 150; const L = 8; const R = 8; const T = 8; const B = 8;
+  const W = 640; const H = chartH(150); const L = 8; const R = 8; const T = 8; const B = 8;
   const all = [...d.target, ...d.series]; const lo = Math.min(...all); const hi = Math.max(...all);
   const x = (i) => L + (i / (d.target.length - 1)) * (W - L - R);
   const y = (v) => T + (1 - (v - lo) / (hi - lo || 1)) * (H - T - B);
@@ -14011,7 +14077,7 @@ const { sourceCard, queryCard, summaryBlock } = __modules["src/book/figures/proj
 const { courseMap, planFigure } = __modules["src/book/figures/plan.js"];
 const { searchmapFigure, windowFigure, querylogFigure, anchorFigure, breaksExercise } = __modules["src/book/figures/search.js"];
 const { resolutionFigure, pathFigure, dredgingFigure, toolFigure, clicksFigure, trendsUrlFigure } = __modules["src/book/figures/search2.js"];
-const { usesFigure: searchusesFigure, realwindowFigure, formsFigure, shopsFigure, klimaFigure, noiseFigure, validationFigure, wikiFigure, aiFigure } = __modules["src/book/figures/trendsreal.js"];
+const { usesFigure: searchusesFigure, realwindowFigure, formsFigure, shopsFigure, klimaFigure, noiseFigure, validationFigure, wikiFigure, aiFigure, puzzleFigure } = __modules["src/book/figures/trendsreal.js"];
 const { t } = __modules["src/i18n/index.js"];
 const FIGURES = {
   traces: tracesFigure,
@@ -14043,6 +14109,7 @@ const FIGURES = {
   wiki: wikiFigure,
   ai: aiFigure,
   resolution: resolutionFigure,
+  puzzle: puzzleFigure,
   path: pathFigure,
   dredging: dredgingFigure,
   tools: toolFigure,
@@ -14239,6 +14306,8 @@ class BookApp {
     });
     return el('section.bk-section.bk-end', { id: 'bk-end' },
       el('div.bk-sec-head', el('h2.bk-sec-title', t('bk.summary'))),
+      // what the chapter set out to show, said once more (chapter 2 has it; chapter 1 does not)
+      ch.recap ? el('div.bk-box.bk-recap', el('div.bk-box-title', t('bk.recap')), el('ol', ch.recap.map((r) => el('li', { html: rich(r) })))) : null,
       summary,
       el('aside.bk-note.bk-note-info', el('b', `${t('bk.next')} `), ch.next),
       el('div.bk-box.bk-refs',

@@ -1926,12 +1926,12 @@ const FUNCTIONS = {
   },
 
   trend: {
-    params: [any('frazy', { rest: true }), any('od', { default: null, namedOnly: true }), any('do', { default: null, namedOnly: true })],
+    params: [any('hasła', { rest: true }), any('od', { default: null, namedOnly: true }), any('do', { default: null, namedOnly: true })],
     run(args, { env }) {
       const dataName = resolveName('wyszukiwania', [...env.keys()]);
       const data = dataName ? env.get(dataName) : null;
       if (!isTab(data)) return fail('err.trendNoData', {}, args._node.span);
-      if (!args._rest.length) fail('err.missingArg', { fn: 'trend', arg: 'fraza' }, args._node.span);
+      if (!args._rest.length) fail('err.missingArg', { fn: 'trend', arg: 'hasło' }, args._node.span);
       const options = data.columns.filter((c) => c.type === 'num' && c.name !== 'wszystkie').map((c) => c.name);
       const phrases = args._rest.map((a) => {
         if (a.value.kind !== 'str') fail('err.trendPhraseText', {}, a.node?.span);
@@ -3169,7 +3169,7 @@ const pl = {
   'err.sortNeedsNumbers': 'sortuj() układa serię liczb.',
   'err.trendNoData': 'trend() potrzebuje danych o wyszukiwaniach (tabela wyszukiwania).',
   'err.trendPhraseText': 'Frazę podaj w cudzysłowie, np. trend("rower").',
-  'err.trendUnknownPhrase': "Brak danych dla frazy „{phrase}”. Dostępne frazy to {options}.",
+  'err.trendUnknownPhrase': "Brak danych dla hasła „{phrase}”. Dostępne hasła to {options}.",
   'err.trendUnknownMonth': "Nie ma miesiąca „{month}”. Dostępne miesiące to {options}.",
   'err.trendEmptyRange': "„od” wypada po „do”, więc okres jest pusty.",
   'err.sessionsNeedEvents': 'sesje() potrzebuje tabeli odsłon z użytkownikiem i godziną (zdarzenia).',
@@ -3370,7 +3370,7 @@ const pl = {
   'fx.trend.index': 'indeks 0–100',
   'fx.trend': "Trends dzieli wyszukiwania przez wszystkie zapytania i skaluje wynik. Najwyższy udział ({key}, „{phrase}”) dostaje 100.",
   'fx.trend.window': "W okresie {from}–{to} 100 oznacza szczyt tylko tego okresu.",
-  'fx.trend.shared': 'Obie frazy mają wspólną skalę.',
+  'fx.trend.shared': 'Oba hasła mają wspólną skalę.',
   'fx.sessions': "Przerwa dłuższa niż {gap} min zaczyna nową sesję, więc z {n} odsłon mamy {k|sesję|sesje|sesji}.",
   'fx.sessions.lane': '{n|sesja|sesje|sesji}',
   'fx.sessions.rule': "✂ oznacza przerwę dłuższą niż {gap} min. Tu zaczyna się nowa sesja.",
@@ -3459,6 +3459,7 @@ const pl = {
   // --- the textbook (src/book) ---
   'bk.toc': "Spis treści",
   'bk.tocStart': "Początek i plan",
+  'bk.recap': "Co już wiesz",
   'bk.summary': "Podsumowanie",
   'bk.chapterShort': "Rozdział {n}",
   'bk.progress': "Wykonane {k}/{n}",
@@ -3654,6 +3655,8 @@ const pl = {
   'bk.tr.noise.aria': "Wykres słupkowy. Dzienny indeks Google Trends hasła hulajnoga elektryczna w województwie małopolskim, lipiec–wrzesień 2026.",
   'bk.tr.noise.read': "W {z} z {n} dni Trends pokazał 0. Hasło jest tu za rzadkie, żeby każdego dnia przejść próg. Gdy w jakimś dniu trafi się kilka zapytań, ten dzień od razu ma wysoką wartość, bo skala liczy się do szczytu.",
   'bk.tr.noise.caption': "Google Trends, „hulajnoga elektryczna”, województwo małopolskie, 1 lipca – 30 września 2026 r., pobrane 14 października 2026 r. Pobranie w inny dzień może dać zera w innych dniach.",
+  'bk.tr.puzzle.read': "Średnio w {y1} r. hasło „urząd pracy” miało {a}, a w {y2} r. już {b}. Stopa bezrobocia spadła w tym czasie z {c}% do {d}%. Czy wyszukiwarka zna więc bezrobocie?",
+  'bk.tr.puzzle.caption': "Google Trends, Polska, lata 2004–2026, pobrane 14 października 2026 r. Stopa bezrobocia bez wyrównania sezonowego, Eurostat une_rt_m, stan z {d}. Każda linia ma własną skalę.",
   'bk.tr.val.raw': "Surowe wartości",
   'bk.tr.val.yoy': "Zmiana rok do roku",
   'bk.tr.val.trends': "Google Trends, {q}",
@@ -7346,26 +7349,26 @@ var __default__ = {
   },
 
   task: {
-    prompt: 'Policz indeks „hulajnoga” na **wspólnej** skali z „rower”. Tak Trends pokazuje dwie frazy naraz.',
+    prompt: 'Policz indeks „hulajnoga” na **wspólnej** skali z „rower”. Tak Trends pokazuje dwa hasła naraz.',
     starter: `${SHARES}\n# indeks hulajnogi:\n`,
     solution: `${SHARES}\nzaokr(100 * udział_h / max(udział_r, udział_h))`,
     tol: 0.5,
     check: resultCheck({ tol: 0.5, forbidNames: ['trend'] }),
     hints: [
-      'Na wspólnej skali 100 dostaje największy udział **obu** fraz. Tu jest to rower w maju.',
+      'Na wspólnej skali 100 dostaje największy udział **obu** haseł. Tu jest to rower w maju.',
       'Podziel `udział_h` przez `max(udział_r, udział_h)`, pomnóż przez 100 i zaokrąglij.',
     ],
     messages: {
-      ownScale: 'Tu szczyt hulajnogi to 100, więc skala jest tylko jej. Na wspólnej skali dziel przez największy udział obu fraz.',
+      ownScale: 'Tu szczyt hulajnogi to 100, więc skala jest tylko jej. Na wspólnej skali dziel przez największy udział obu haseł.',
       rawCounts: 'Dzielisz surowe liczby. Trends najpierw dzieli przez wszystkie wyszukiwania, więc użyj `udział_h`.',
       fraction: 'To ułamki, nie indeks 0–100. Pomnóż przez 100.',
       wrongPhrase: 'To indeks roweru. Zadanie dotyczy hulajnogi, czyli `udział_h`.',
       notSeries: 'Wynik ma być serią 12 miesięcy, nie jedną liczbą.',
       'forbidden.trend': '`trend()` robi to za ciebie. Tu policz to wzorem, żeby zobaczyć każdy krok.',
-      general: 'Jeszcze nie to. Policz udział hulajnogi × 100 ÷ największy udział obu fraz.',
+      general: 'Jeszcze nie to. Policz udział hulajnogi × 100 ÷ największy udział obu haseł.',
     },
     success: 'Na wspólnej skali hulajnoga ma najwyżej 26, a nie 100.',
-    note: '„100” w Trends nie znaczy „dużo”. To szczyt w danym okresie i przy danych frazach. Zmień jedno lub drugie, a zmienią się wszystkie liczby.',
+    note: '„100” w Trends nie znaczy „dużo”. To szczyt w danym okresie i przy danych hasłach. Zmień jedno lub drugie, a zmienią się wszystkie liczby.',
 
     nearMisses: [
       { name: 'own scale', expect: 'ownScale', code: `${SHARES}\nzaokr(100 * udział_h / max(udział_h))` },
