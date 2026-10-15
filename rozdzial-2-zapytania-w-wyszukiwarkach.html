@@ -1612,6 +1612,32 @@ textarea.kc-input { resize: vertical; }
 .sq-probe > b { color: var(--ink); }
 .sq-probe-item b { color: var(--ink); font-variant-numeric: tabular-nums; }
 
+/* unnumbered schemes in the text (schemes.js): steps, cards with mini charts, tables */
+.bk-steps { list-style: none; margin: 0; padding: 0; display: flex; gap: 26px; align-items: stretch; min-width: 0; }
+.bk-step { flex: 1; position: relative; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-panel); font-size: 15px; line-height: 1.45; display: flex; flex-direction: column; gap: 2px; }
+.bk-step + .bk-step::before { content: "→"; position: absolute; left: -20px; top: 50%; transform: translateY(-50%); color: var(--accent); font-weight: 700; }
+.bk-step-n { width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font: 600 13px/22px var(--sans); text-align: center; }
+.bk-step-title { font-size: 15px; }
+.bk-step-text { color: var(--ink-soft); }
+/* min-width 0 and min(): an auto-fit grid would otherwise make the text column as wide as four cards */
+.bk-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr)); gap: 10px; min-width: 0; }
+.bk-card { padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-panel); font-size: 15px; line-height: 1.45; display: flex; flex-direction: column; gap: 2px; }
+.bk-card-link { color: inherit; text-decoration: none; display: flex; flex-direction: column; gap: 2px; }
+.bk-card:has(.bk-card-link:hover), .bk-card:has(.bk-card-link:focus-visible) { border-color: var(--accent); }
+.bk-card-text { color: var(--ink-soft); }
+.bk-glyph { width: 64px; height: 24px; margin-bottom: 4px; }
+.bk-glyph polyline { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.bk-glyph-a { stroke: var(--accent); }
+.bk-glyph-b { stroke: var(--warn); }
+.bk-table-wrap { overflow-x: auto; min-width: 0; }
+.bk-table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.45; }
+.bk-table th, .bk-table td { text-align: left; vertical-align: top; padding: 7px 10px; border-bottom: 1px solid var(--line); }
+.bk-table th { color: var(--ink-soft); font-weight: 600; background: var(--bg-sunken); }
+@media (max-width: 600px) {
+  .bk-steps { flex-direction: column; gap: 22px; }
+  .bk-step + .bk-step::before { content: "↓"; left: 50%; top: -19px; transform: translateX(-50%); }
+}
+
 </style>
 </head>
 <body>
@@ -7692,6 +7718,63 @@ class Workbench {
 __modules["src/book/workbench.js"] = { "Workbench": Workbench };
 })();
 
+/* ===== src/book/schemes.js ===== */
+(function () {
+/**
+ * Small unnumbered schemes that stand in for lists and enumerations in the chapter text
+ * (2026-10-15, the author asked for less text and more pictures). They are blocks, not figures:
+ * figure numbers stay as they are, and the lecturer notes cite them.
+ *
+ *   { steps: [[title, text], ...] }                      a process, boxes joined by arrows
+ *   { cards: [{ title, text, glyph?, href? }], label }   parallel items, each with an optional
+ *                                                        mini chart (glyph) or a link to a section
+ *   { table: { head: [...], rows: [[...], ...] } }       a comparison, cells may use rich text
+ */
+const { el, svg } = __modules["src/ui/dom.js"];
+const { rich } = __modules["src/book/rich.js"];
+// mini charts, 64 x 24: one or two lines that show a pattern at a glance
+const W = 64; const H = 24;
+const line = (ys) => ys.map((y, i) => `${((i / (ys.length - 1)) * (W - 4) + 2).toFixed(1)},${y}`).join(' ');
+const GLYPHS = {
+  season: [[18, 8, 18, 18, 8, 18, 18, 8, 18, 18, 8, 18]],
+  event: [[17, 17, 16, 17, 4, 17, 16, 17, 17, 16, 17, 17]],
+  break: [[19, 18, 19, 18, 19, 9, 8, 9, 8, 9, 8, 9]],
+  noise: [[20, 20, 12, 20, 20, 20, 6, 20, 20, 15, 20, 20]],
+  together: [[20, 17, 15, 12, 10, 7, 5], [21, 19, 16, 14, 11, 9, 6]],
+  none: [[14, 9, 16, 11, 13, 8, 15], [6, 12, 18, 12, 6, 12, 18]],
+  opposite: [[20, 17, 15, 12, 10, 7, 5], [5, 8, 10, 13, 15, 18, 20]],
+};
+
+function glyph(name) {
+  const lines = GLYPHS[name];
+  if (!lines) return null;
+  return svg('svg', { viewBox: `0 0 ${W} ${H}`, class: 'bk-glyph', 'aria-hidden': 'true' },
+    lines.map((ys, k) => svg('polyline', { points: line(ys), class: k ? 'bk-glyph-b' : 'bk-glyph-a' })));
+}
+
+function stepsBlock(steps) {
+  return el('ol.bk-steps', steps.map(([title, text], i) => el('li.bk-step',
+    el('span.bk-step-n', String(i + 1)),
+    el('b.bk-step-title', { html: rich(title) }),
+    el('span.bk-step-text', { html: rich(text) }))));
+}
+
+function cardsBlock(cards, label = null) {
+  return el('ul.bk-cards', { 'aria-label': label }, cards.map((c) => {
+    const body = [glyph(c.glyph), el('b.bk-card-title', { html: rich(c.title) }), el('span.bk-card-text', { html: rich(c.text) })];
+    return el('li.bk-card', c.href ? el('a.bk-card-link', { href: c.href }, body) : body);
+  }));
+}
+
+function tableBlock({ head, rows }) {
+  return el('div.bk-table-wrap', el('table.bk-table',
+    el('thead', el('tr', head.map((h) => el('th', { scope: 'col', html: rich(h) })))),
+    el('tbody', rows.map((r) => el('tr', r.map((c) => el('td', { html: rich(c) })))))));
+}
+
+__modules["src/book/schemes.js"] = { "GLYPHS": GLYPHS, "glyph": glyph, "stepsBlock": stepsBlock, "cardsBlock": cardsBlock, "tableBlock": tableBlock };
+})();
+
 /* ===== src/lessons/schema.js ===== */
 (function () {
 /**
@@ -12364,13 +12447,16 @@ const CHAPTER = {
       blocks: [
         { p: 'Zacznijmy od zagadki. Rysunek {rys:puzzle} pokazuje, jak często Polacy wpisywali w Google „urząd pracy” i jaka była w tym czasie stopa bezrobocia rejestrowanego, czyli liczona z danych urzędów pracy. Przez lata obie linie spadały.' },
         { figure: 'puzzle' },
-        { p: 'Czy z wyszukiwarki da się więc odczytać bezrobocie? Wartości z Trends to indeks od 0 do 100, a jak powstaje, zobaczysz w podrozdziale 2.2. To pytanie poprowadzi nas przez cały rozdział, a odpowiedź przyjdzie w podrozdziale 2.6. Po drodze wrócą jeszcze trzy hasła. Każde uczy czegoś innego.' },
-        { note: '„black friday” pokazuje sezon i to, jak okno czasu zmienia liczby. „hulajnoga” pokazuje, co Trends liczy jako hasło, a co jako temat. „klimatyzator” pokazuje zdarzenia i zmiany w samym narzędziu. „urząd pracy” niesie główne pytanie rozdziału.' },
-        { p: 'Zapytanie do wyszukiwarki wpisujemy, zanim coś zrobimy. Szukamy klimatyzatora przed zakupem, objawów przed wizytą u lekarza, ofert pracy przed zmianą pracy. Dlatego zapytania mówią o zamiarach, a nie tylko o tym, co już się stało.' },
-        { p: 'Zapytanie wpisujemy też w samotności. Nikt nie patrzy, więc pytamy o rzeczy, o których nie mówimy w ankiecie (Stephens-Davidowitz 2017). Ekonomiści używają zapytań do *nowcastingu*, czyli szacowania tego, co dzieje się teraz, zanim urząd statystyczny poda dane (Choi, Varian 2012).' },
-        { p: 'Rysunek {rys:searchuses} pokazuje cztery takie zastosowania. Każde to inne pytanie badawcze, inne zapytania i inny haczyk. Dwa przykłady są dobrze znane z badań w USA, czyli rasizm w wyborach (Stephens-Davidowitz 2014) i wpływ programu telewizyjnego na nastolatki (Kearney, Levine 2015). Marketing patrzy tak samo. Najpierw kampania, potem zapytania, potem zakup.' },
+        { p: 'Czy z wyszukiwarki da się więc odczytać bezrobocie? Odpowiedź przyjdzie w podrozdziale 2.6. Wartości z Trends to indeks od 0 do 100, a jak powstaje, zobaczysz w podrozdziale 2.2. Po drodze wrócą trzy hasła z marketingu. Każde uczy czegoś innego.' },
+        { label: 'Cztery hasła rozdziału', cards: [
+          { title: '„urząd pracy”', text: 'Główne pytanie rozdziału. Odpowiedź w 2.6.', href: '#s2-6' },
+          { title: '„black friday”', text: 'Sezon i okno czasu, w 2.2.', href: '#s2-2' },
+          { title: '„hulajnoga”', text: 'Hasło czy temat, w 2.3.', href: '#s2-3' },
+          { title: '„klimatyzator”', text: 'Zdarzenia i zmiany narzędzia, w 2.5.', href: '#s2-5' },
+        ] },
+        { p: 'Dlaczego zapytania? Wpisujemy je, zanim coś zrobimy, więc mówią o zamiarach. Wpisujemy je w samotności, więc mówią o tym, czego nie mówimy w ankiecie (Stephens-Davidowitz 2017). Ekonomiści szacują z nich teraźniejszość, zanim urząd poda dane. To *nowcasting* (Choi, Varian 2012). Rysunek {rys:searchuses} pokazuje cztery zastosowania, każde z haczykiem.' },
         { figure: 'searchuses' },
-        { p: 'Samych zapytań nikt jednak nie dostaje. Każde narzędzie pokazuje je przez inny filtr. Rysunek {rys:searchmap} zestawia siedem źródeł. Przy każdym zapisano, co pokazuje i czego nie widać.' },
+        { p: 'Samych zapytań nikt jednak nie dostaje. Rysunek {rys:searchmap} zestawia siedem źródeł, a każde patrzy przez inny filtr.' },
         { figure: 'searchmap' },
         { terms: [
           ['zapytanie', 'słowa wpisane w okienko wyszukiwarki'],
@@ -12388,10 +12474,15 @@ const CHAPTER = {
       id: 's2-2', num: '2.2', title: 'Jak powstaje indeks Trends?', meeting: 3,
       parts: [['teoria', 10], ['cwiczenie', 15]],
       blocks: [
-        { p: 'Zanim odczytamy cokolwiek z wykresu, trzeba wiedzieć, co na nim jest. Google Trends nie pokazuje liczby wyszukiwań. Bierze próbę wszystkich wyszukiwań z danego miejsca i czasu. Liczy, jaką część z nich stanowi hasło. Potem przelicza te udziały tak, że największy w wybranym okresie dostaje 100.' },
-        { p: 'Z tego wynikają trzy rzeczy. Po pierwsze, 100 to szczyt, a nie liczba ludzi. Po drugie, rzadkie hasła dostają 0, bo Trends pokazuje tylko te popularne. Po trzecie, ta sama wartość zależy od okna czasu, bo przy innym oknie szczyt może wypaść gdzie indziej. Rysunek {rys:window} pokazuje to na jednym szeregu.' },
+        { p: 'Google Trends nie pokazuje liczby wyszukiwań. Liczbę na wykresie liczy w trzech krokach.' },
+        { steps: [
+          ['Próba', 'Część wszystkich wyszukiwań z danego miejsca i czasu.'],
+          ['Udział', 'Jaką część próby stanowi hasło.'],
+          ['Skala do szczytu', 'Największy udział w oknie dostaje 100, reszta to procent szczytu.'],
+        ] },
+        { p: 'Dlatego 100 to szczyt, a nie liczba ludzi, a rzadkie hasła dostają 0. Ta sama wartość zależy też od okna czasu, bo przy innym oknie szczyt wypada gdzie indziej. Rysunek {rys:window} pokazuje to na jednym szeregu.' },
         { figure: 'window' },
-        { p: 'Na prawdziwych danych wygląda to tak samo. Rysunek {rys:realwindow} pokazuje „black friday” w oknie 5 lat i w oknie samego 2025 r. Wystarczy przeliczyć tygodnie 2025 r. z długiego okna do ich własnego szczytu, żeby dostać wykres pobrany osobno.' },
+        { p: 'Rysunek {rys:realwindow} pokazuje to samo na prawdziwym „black friday”. Tygodnie 2025 r. z okna 5 lat, przeliczone do własnego szczytu, dają wykres pobrany osobno.' },
         { figure: 'realwindow' },
         { p: 'W ćwiczeniu policzysz indeks samodzielnie, krok po kroku. Najpierw udział, potem skalę do szczytu, a na końcu wspólną skalę dla dwóch haseł.' },
         { lesson: 'trends', num: 'Ćwiczenie 2.2', title: 'Indeks Google Trends. Dwa hasła na jednej skali', min: 15 },
@@ -12406,13 +12497,19 @@ const CHAPTER = {
       id: 's2-3', num: '2.3', title: 'Hasło czy temat?', meeting: 3,
       parts: [['teoria', 10], ['dyskusja', 5]],
       blocks: [
-        { p: 'Indeks liczy udział hasła. Co jednak Trends uznaje za hasło? Wpisane w Trends słowo to *hasło*. Hasło liczy zapytania, w których to słowo występuje dokładnie w tej formie. Polski ma odmianę, więc „hulajnoga”, „hulajnogi” i „hulajnogę” to trzy różne hasła.' },
-        { p: 'Trends ma na to własne znaki. Plus łączy hasła, na przykład `hulajnoga + hulajnogi`. Minus odrzuca zapytania z danym słowem, na przykład `hulajnoga - dziecka`. Cudzysłów wymaga słów obok siebie, w tej kolejności.' },
-        { p: 'Druga możliwość to *temat*. Temat liczy wszystkie zapytania o daną rzecz, także odmiany i inne języki. Wygodne, ale nie widać, co dokładnie do niego należy. Rysunek {rys:querylog} pokazuje, co liczy każde wyrażenie w wymyślonym zbiorze zapytań.' },
+        { p: 'Co Trends uznaje za hasło? *Hasło* to słowo wpisane w okienko. Liczy zapytania, w których to słowo występuje dokładnie w tej formie. Polski ma odmianę, więc „hulajnoga”, „hulajnogi” i „hulajnogę” to trzy różne hasła. Druga możliwość to *temat*. Liczy zapytania o daną rzecz, także odmiany i inne języki, ale nie widać, co do niego należy.' },
+        { table: { head: ['Wyrażenie', 'Co liczy'], rows: [
+          ['`hulajnoga`', 'zapytania z tym słowem dokładnie w tej formie'],
+          ['`hulajnoga + hulajnogi`', 'zapytania z jednym albo drugim hasłem'],
+          ['`hulajnoga - dziecka`', 'zapytania z hasłem, ale bez słowa „dziecka”'],
+          ['`"hulajnoga elektryczna"`', 'oba słowa obok siebie, w tej kolejności'],
+          ['temat „Hulajnoga”', 'zapytania o tę rzecz w różnych formach i językach'],
+        ] } },
+        { p: 'Rysunek {rys:querylog} pokazuje, co liczy każde wyrażenie w wymyślonym zbiorze zapytań.' },
         { figure: 'querylog' },
-        { p: 'Rysunek {rys:forms} pokazuje to samo na prawdziwych danych. Hasło z odmianami i temat leżą wyraźnie wyżej niż samo „hulajnoga”.' },
+        { p: 'Na prawdziwych danych hasło z odmianami i temat leżą wyraźnie wyżej niż samo „hulajnoga” (rysunek {rys:forms}).' },
         { figure: 'forms' },
-        { p: 'Kłopot bywa też odwrotny, bo jedno słowo znaczy kilka rzeczy. Malinowski zauważył, że polskie „praca” to nie tylko zatrudnienie. To też praca domowa, licencjacka czy magisterska. Angielski ma osobno „job” i „homework”, więc tam tego problemu nie ma. Dlatego oprócz „praca” sprawdzał hasła „praca za granicą” oraz „CV + curriculum vitae” (Malinowski 2021).' },
+        { p: 'Kłopot bywa też odwrotny. Polskie „praca” to także praca domowa czy magisterska, a angielski ma na to osobne słowa. Dlatego Malinowski (2021) sprawdzał też „praca za granicą” i „CV + curriculum vitae”.' },
         { p: 'Wniosek jest praktyczny. W raporcie zawsze pisz, czy to hasło, czy temat, i podaj całe wyrażenie. Porównuj hasło z hasłem, a temat z tematem.' },
         { discuss: { who: 'w parach', min: 5, prompts: [
           'Napiszcie wyrażenie dla „klimatyzator” z odmianami. Jakie formy dodacie? Czego nie złapiecie mimo to?',
@@ -12424,12 +12521,12 @@ const CHAPTER = {
       id: 's2-4', num: '2.4', title: 'Jak porównywać hasła i okna czasu?', meeting: 3,
       parts: [['teoria', 10], ['dyskusja', 10]],
       blocks: [
-        { p: 'Badanie rzadko kończy się na jednym haśle. Porównuje się marki, miasta albo okresy. Na jednym wykresie Trends zestawia najwyżej pięć haseł. Wszystkie są wtedy na wspólnej skali, a 100 dostaje szczyt największego. Małe hasło obok dużego spada do 0, do „<1” albo do płaskiej jedynki.' },
-        { p: 'Co zrobić, gdy marek jest dziewięć? Pobiera się kilka wykresów, a na każdym zostawia jedno wspólne hasło, czyli *kotwicę*. Kotwica pozwala przeliczyć drugi wykres na skalę pierwszego. Rysunek {rys:anchor} łączy tak dwa wykresy sklepów.' },
+        { p: 'Na jednym wykresie Trends zestawia najwyżej pięć haseł, na wspólnej skali. 100 dostaje szczyt największego, a małe hasło obok dużego spada do 0, do „<1” albo do płaskiej jedynki.' },
+        { p: 'Gdy marek jest więcej, pobiera się kilka wykresów z jednym wspólnym hasłem, czyli *kotwicą*. Przez nią drugi wykres przelicza się na skalę pierwszego. Rysunek {rys:anchor} robi to na danych wymyślonych.' },
         { figure: 'anchor' },
         { p: 'Rysunek {rys:shops} robi to samo z prawdziwymi sklepami. Obok allegro answear ma 1 w każdym tygodniu. Dopiero przez kotwicę widać, ile naprawdę wynosi.' },
         { figure: 'shops' },
-        { p: 'Skala zależy też od długości okna. Dla ostatnich dni Trends podaje dane godzinowe, dla kilku miesięcy dzienne, dla kilku lat tygodniowe, a dla dłuższych okresów miesięczne. Wartości dzienne z dwóch różnych okien nie są więc porównywalne. Badacze łączą je w jeden długi szereg dopiero po przeliczeniu (Eichenauer i in. 2022). Rysunek {rys:resolution} pokazuje, co dały nasze pobrania.' },
+        { p: 'Od długości okna zależy też dokładność. Trends podaje dane godzinowe, dzienne, tygodniowe albo miesięczne, więc wartości z dwóch okien nie są porównywalne wprost (Eichenauer i in. 2022). Rysunek {rys:resolution} pokazuje nasze pobrania.' },
         { figure: 'resolution' },
         { terms: [
           ['kotwica', 'hasło obecne na każdym z pobranych wykresów, przez które przelicza się je na jedną skalę'],
@@ -12446,12 +12543,18 @@ const CHAPTER = {
       parts: [['teoria', 10], ['cwiczenie', 10]],
       blocks: [
         { p: 'Wiemy już, skąd się bierze liczba na wykresie. Teraz pytanie, dlaczego ta liczba się zmienia.' },
-        { p: 'Pobierz to samo w innym dniu, a liczby mogą być trochę inne. Trends liczy z próby, a próbę co jakiś czas losuje od nowa. Przy popularnych hasłach różnice są małe, przy rzadkich duże. Dlatego w badaniach pobiera się dane kilka razy, w różne dni, i bierze średnią (Eichenauer i in. 2022). Rysunek {rys:noise} pokazuje rzadkie hasło w jednym województwie.' },
+        { p: 'Pobierz to samo w innym dniu, a liczby mogą być trochę inne. Trends liczy z próby i co jakiś czas losuje ją od nowa. Przy rzadkich hasłach różnice są duże, więc pobiera się dane kilka razy i bierze średnią (Eichenauer i in. 2022). Rysunek {rys:noise} pokazuje rzadkie hasło w jednym województwie.' },
         { figure: 'noise' },
-        { p: 'Na wykresie z kilku lat nakładają się trzy rzeczy. *Sezon* wraca co roku, jak Black Friday w listopadzie albo klimatyzatory w lipcu. *Zdarzenie* trwa chwilę, jak upał albo głośna wiadomość. *Przerwa w danych* bierze się z narzędzia, a nie z ludzi. Google kilka razy zmieniał sposób zbierania danych, a dalszy wykres mógł się wtedy przesunąć w górę lub w dół.' },
+        { p: 'Na wykresie z kilku lat nakładają się cztery wzory. Dwa pochodzą od ludzi, dwa od narzędzia.' },
+        { label: 'Cztery wzory na wykresie', cards: [
+          { glyph: 'season', title: 'Sezon', text: 'Wraca co roku, jak Black Friday w listopadzie albo klimatyzatory w lipcu. To ludzie.' },
+          { glyph: 'event', title: 'Zdarzenie', text: 'Trwa chwilę, jak upał albo głośna wiadomość. To ludzie.' },
+          { glyph: 'break', title: 'Przerwa w danych', text: 'Cały dalszy wykres przesuwa się, bo Google zmienił sposób zbierania danych. To narzędzie.' },
+          { glyph: 'noise', title: 'Szum próby', text: 'Drobne skoki, najbardziej przy rzadkich hasłach. To narzędzie.' },
+        ] },
         { p: 'Zdarzenie widać też w naszym głównym przykładzie. W kwietniu 2020 r. hasło „urząd pracy” miało 81, a rok wcześniej 29. Stopa bezrobocia rejestrowanego wzrosła w tym czasie tylko z 5,6% do 5,8%. To był początek pandemii.' },
         { p: 'Przypomnij sobie Google Flu Trends z rozdziału 1. Szacunek rozjechał się z danymi lekarzy także dlatego, że zmieniała się sama wyszukiwarka.' },
-        { p: 'Google sam zaznacza takie miejsca na wykresie. Rysunek {rys:klima} pokazuje „klimatyzator” od 2004 r. razem z uwagami Google o zmianach w 2011, 2016 i 2022 r. Uwaga mówi, gdzie warto sprawdzić, a nie że wykres na pewno się przesunął. Uwaga z 2011 r. dotyczy przypisania do regionów, więc liczy się głównie przy danych z województw.' },
+        { p: 'Google sam zaznacza miejsca zmian. Rysunek {rys:klima} pokazuje „klimatyzator” od 2004 r. z uwagami z 2011, 2016 i 2022 r. Uwaga mówi, gdzie warto sprawdzić, a nie że wykres na pewno się przesunął. Uwaga z 2011 r. dotyczy przypisania do regionów, więc liczy się głównie przy danych z województw.' },
         { figure: 'klima' },
         { exercise: 'przerwy', num: 'Ćwiczenie 2.5', title: 'Sezon, zdarzenie czy przerwa?', min: 10, toc: 'Ćwiczenie 2.5. Sezon, zdarzenie czy przerwa' },
         { terms: [
@@ -12465,16 +12568,20 @@ const CHAPTER = {
       id: 's2-6', num: '2.6', title: 'Czy zapytania mówią coś o świecie?', meeting: 4,
       parts: [['teoria', 15], ['dyskusja', 10]],
       blocks: [
-        { p: 'Pora wrócić do zagadki z rysunku {rys:puzzle}. Czy zapytania mówią coś o świecie, sprawdza się na danych z innego źródła, na przykład z urzędu statystycznego. Najprostsza miara to korelacja r. Bliska 1 znaczy, że oba szeregi rosną i maleją razem. Bliska 0 znaczy, że nie ma między nimi takiego związku. Ujemna znaczy, że gdy jeden szereg rośnie, drugi maleje.' },
+        { p: 'Pora wrócić do zagadki z rysunku {rys:puzzle}. Czy zapytania mówią coś o świecie, sprawdza się na danych z innego źródła. Najprostsza miara to korelacja r.' },
+        { label: 'Jak czytać korelację r', cards: [
+          { glyph: 'together', title: 'r bliskie 1', text: 'Oba szeregi rosną i maleją razem.' },
+          { glyph: 'none', title: 'r bliskie 0', text: 'Nie ma między nimi takiego związku.' },
+          { glyph: 'opposite', title: 'r ujemne', text: 'Gdy jeden szereg rośnie, drugi maleje.' },
+        ] },
         { p: 'Rysunek {rys:path} prowadzi od zapytań do wniosku przez cztery sprawdziany. Kliknij każdy z nich albo przejdź całą drogę. Pierwszy sprawdzian to druga seria, o której mowa wyżej. Pozostałe trzy omawiamy niżej po kolei.' },
         { figure: 'path' },
         { p: 'Tu łatwo o pułapkę. Gdy oba szeregi mają ten sam sezon albo ten sam długi spadek, korelacja wychodzi wysoka, nawet jeśli poza tym nic ich nie łączy. Dlatego porównuje się zmiany rok do roku, czyli ten sam miesiąc z miesiącem rok wcześniej.' },
         { p: 'Tu jest odpowiedź na zagadkę. „urząd pracy” i bezrobocie rejestrowane miały wspólny długi spadek i wspólny sezon. Na surowych wartościach r = 0,70, a na zmianach rok do roku r = 0,10. Prawie cały związek brał się więc z tego, co obie linie miały wspólne. Związku z opóźnieniem ten sprawdzian nie wyklucza, ale tej prostej próby hasło nie przechodzi. Czy inne hasło wypada lepiej, sprawdzisz na rysunku {rys:validation}.' },
-        { p: 'Polskie badania studzą entuzjazm. Wyszukiwania pomogły szacować bezrobocie w Czechach i na Węgrzech, ale w Polsce wyniki były niejednoznaczne (Pavlicek, Kristoufek 2015). Hasła popularne w literaturze anglojęzycznej nie poprawiły prognoz polskiego bezrobocia rejestrowanego. Trochę pomogło tylko hasło „praca za granicą”, i to niewiele (Malinowski 2021).' },
-        { p: 'Podobnie wyszło w USA. Zapytania dobrze przewidywały wpływy kin w pierwszy weekend, sprzedaż gier i miejsca piosenek na liście przebojów. Ale prosty model na innych dostępnych danych też przewidywał dobrze. Zapytania dodawały do niego od niewiele do dużo, zależnie od dziedziny, a przy grypie niewiele. Zapytania najbardziej pomagają tam, gdzie innych danych brak (Goel i in. 2010).' },
-        { p: 'Druga pułapka to dobór haseł po fakcie. Strategia giełdowa oparta na zapytaniach o słowo „debt” dawała duży zysk na danych z przeszłości (Preis i in. 2013). Inni badacze sprawdzili to jeszcze raz. Zysk zależał głównie od wyboru haseł, a zapytania nie przewidywały lepiej niż same dawne ceny (Challet, Bel Hadj Ayed 2014). Rysunek {rys:dredging} pokazuje, skąd bierze się taki zysk.' },
+        { p: 'Badania studzą entuzjazm. W Czechach i na Węgrzech wyszukiwania pomogły szacować bezrobocie, a w Polsce wyniki były niejednoznaczne (Pavlicek, Kristoufek 2015). Polskim prognozom pomogło trochę tylko hasło „praca za granicą” (Malinowski 2021). W USA zapytania pomagały najbardziej tam, gdzie brakowało innych danych (Goel i in. 2010).' },
+        { p: 'Druga pułapka to dobór haseł po fakcie. Strategia giełdowa na słowie „debt” dawała zysk na danych z przeszłości (Preis i in. 2013), ale zależał on głównie od wyboru haseł (Challet, Bel Hadj Ayed 2014). Rysunek {rys:dredging} pokazuje, skąd się bierze taki zysk.' },
         { figure: 'dredging' },
-        { p: 'Rysunek {rys:validation} zestawia trzy hasła o pracy z dwiema stopami bezrobocia od 2004 r. Pierwsza to bezrobocie rejestrowane z GUS. Od czerwca 2025 r. rośnie ono także dlatego, że urzędy rzadziej wykreślają ludzi z rejestru. Druga pochodzi z badania aktywności ekonomicznej ludności (BAEL) i liczy także tych, którzy nie chodzą do urzędu pracy. Porównaj korelację surowych wartości i zmian rok do roku dla każdego hasła i obu stóp.' },
+        { p: 'Rysunek {rys:validation} zestawia trzy hasła o pracy z dwiema stopami bezrobocia. Pierwsza to bezrobocie rejestrowane z GUS. Od czerwca 2025 r. rośnie ono także dlatego, że urzędy rzadziej wykreślają ludzi z rejestru. Druga pochodzi z badania aktywności ekonomicznej ludności (BAEL) i liczy także tych, którzy nie chodzą do urzędu pracy.' },
         { figure: 'validation' },
         { discuss: { who: 'w parach', min: 10, prompts: [
           'Które hasło ma najwyższe r na surowych wartościach? Co zostaje z tego r po przejściu na zmiany rok do roku?',
@@ -12491,11 +12598,16 @@ const CHAPTER = {
       id: 's2-7', num: '2.7', title: 'Skąd wziąć dane?', meeting: 4,
       parts: [['teoria', 10], ['dyskusja', 5]],
       blocks: [
-        { p: 'Wiesz już, jak czytać wykres i jak sprawdzić wniosek. Zostaje sprawa praktyczna. Najprostsza droga to Trends w przeglądarce i przycisk pobierania pliku CSV. Wynik zapisuj od razu z datą pobrania, bo z podrozdziału 2.5 wiesz, że liczby zależą od dnia. Przy wielu zapytaniach z rzędu Trends odpowiada błędem 429, czyli „za dużo zapytań”. Wtedy trzeba odczekać.' },
-        { p: 'Google udostępnia też oficjalne API Trends. Od lipca 2025 r. jest w wersji testowej, a dostęp daje się na wniosek. Jego zaleta to jedna skala we wszystkich zapytaniach, więc kotwica nie jest potrzebna. Biblioteka pytrends, która udawała przeglądarkę, w kwietniu 2025 r. przestała być rozwijana. Jej następcy i płatne serwisy, takie jak SerpApi czy aktory Apify, działają, dopóki pozwala na to Google.' },
-        { p: 'Rysunek {rys:tools} pomaga wybrać drogę do własnego badania.' },
+        { p: 'Wiesz już, jak czytać wykres i jak sprawdzić wniosek. Zostaje sprawa praktyczna, czyli skąd wziąć dane.' },
+        { table: { head: ['Droga', 'Zaleta', 'Haczyk'], rows: [
+          ['Trends w przeglądarce i plik CSV', 'za darmo, od razu', 'przy wielu zapytaniach z rzędu błąd 429, czyli „za dużo zapytań”'],
+          ['oficjalne API Trends', 'jedna skala we wszystkich zapytaniach, bez kotwicy', 'od lipca 2025 r. wersja testowa, dostęp na wniosek'],
+          ['biblioteka pytrends', 'udawała przeglądarkę', 'od kwietnia 2025 r. nierozwijana'],
+          ['następcy pytrends, SerpApi, aktory Apify', 'pobierają automatycznie, często za opłatą', 'działają, dopóki pozwala na to Google'],
+        ] } },
+        { p: 'Wynik zapisuj od razu z datą pobrania, bo z podrozdziału 2.5 wiesz, że liczby zależą od dnia. Rysunek {rys:tools} pomaga wybrać drogę do własnego badania.' },
         { figure: 'tools' },
-        { p: 'Dla porównania warto mieć źródło otwarte. Odsłony Wikipedii są dostępne przez darmowe API, w liczbach bezwzględnych. Mówią jednak o czytelnikach encyklopedii, a nie o wszystkich szukających. Rysunek {rys:wiki} pokazuje, jak bardzo te dwa źródła mogą się rozjechać.' },
+        { p: 'Dla porównania warto mieć źródło otwarte. Odsłony Wikipedii są darmowe i w liczbach bezwzględnych, ale mówią o czytelnikach encyklopedii, a nie o wszystkich szukających. Rysunek {rys:wiki} pokazuje, jak bardzo te źródła mogą się rozjechać.' },
         { figure: 'wiki' },
         { discuss: { who: 'w parach', min: 5, prompts: [
           'Macie zbadać popularność dziesięciu marek przez trzy lata. Które narzędzie wybierzecie, ile to kosztuje i czego w nim nie zobaczycie?',
@@ -12508,9 +12620,14 @@ const CHAPTER = {
       parts: [['teoria', 10], ['dyskusja', 10]],
       blocks: [
         { p: 'W podrozdziale 2.5 Google zmieniał narzędzie po cichu, w uwagach na wykresie. Teraz wyszukiwarka zmienia się na oczach wszystkich.' },
-        { p: 'Nad wynikami pojawia się streszczenie AI, a w trybie AI rozmowa zastępuje listę linków. Ludzie rzadziej klikają. Pew Research Center sprawdził to na dorosłych w USA w marcu 2025 r. Gdy na stronie wyników było streszczenie AI, ludzie klikali w link w około 8% wizyt, a bez streszczenia w około 15%. Rysunek {rys:clicks} pokazuje to na stu wizytach.' },
+        { p: 'Nad wynikami pojawia się streszczenie AI, a w trybie AI rozmowa zastępuje listę linków. Ludzie rzadziej klikają. Pew Research Center sprawdził to na dorosłych w USA w marcu 2025 r. Ze streszczeniem AI link klikano w około 8% wizyt, a bez niego w około 15% (rysunek {rys:clicks}).' },
         { figure: 'clicks' },
-        { p: 'Dla badacza to dwie zmiany. Część pytań trafia do czatów, takich jak ChatGPT, których Trends w ogóle nie widzi. A jeśli pytania w wyszukiwarce staną się dłuższe i bardziej rozmowne, krótkich haseł będzie w nich mniej. Długi szereg z Trends może więc spadać, choć zainteresowanie tematem nie maleje. Do tego Google podaje, że Trends odfiltrowuje wewnętrzne wyszukiwania, które wykonują tryb AI i przeglądy od AI.' },
+        { p: 'Dla badacza to trzy zmiany.' },
+        { label: 'Czego Trends nie widzi', cards: [
+          { title: 'Pytania idą do czatów', text: 'ChatGPT i podobnych narzędzi Trends w ogóle nie widzi.' },
+          { title: 'Pytania mogą być dłuższe', text: 'W rozmownych pytaniach jest mniej krótkich haseł. Szereg z Trends może spadać, choć zainteresowanie nie maleje.' },
+          { title: 'Wyszukiwania AI są odfiltrowane', text: 'Google podaje, że Trends pomija wyszukiwania, które wykonują sam tryb AI i przeglądy od AI.' },
+        ] },
         { p: 'Rysunek {rys:ai} pokazuje dwa hasła od 2022 r. Pierwsze to nazwa czatu, drugie to nazwa encyklopedii, do której wiele osób trafiało z wyszukiwarki.' },
         { figure: 'ai' },
         { discuss: { who: 'w grupach 3–4 osób', min: 10, prompts: [
@@ -12525,7 +12642,7 @@ const CHAPTER = {
       id: 's2-9', num: '2.9', title: 'Projekt, krok 2. Karta zapytań', meeting: 0, outside: false,
       parts: [],
       blocks: [
-        { p: 'Każdy podrozdział dodał coś, co trzeba ustawić i zapisać. Wykres z Trends da się powtórzyć tylko wtedy, gdy zapiszesz wszystkie ustawienia. Karta zapytań zbiera je w jednym miejscu. To hasło albo temat z całym wyrażeniem, region, okno czasu, kategoria, rodzaj wyszukiwania, data pobrania, liczba pobrań i kotwica.' },
+        { p: 'Każdy podrozdział dodał coś, co trzeba ustawić i zapisać. Wykres z Trends da się powtórzyć tylko wtedy, gdy zapiszesz wszystkie ustawienia, a karta zapytań zbiera je w jednym miejscu.' },
         { p: 'Bez takiej karty wyniku nie da się sprawdzić. W przeglądzie 70 badań medycznych z Google Trends tylko 7% opisało zapytania na tyle dokładnie, żeby dało się je powtórzyć (Nuti i in. 2014). Większość ustawień zapisuje sam adres wykresu, co pokazuje rysunek {rys:trendsurl}.' },
         { figure: 'trendsurl' },
         { exercise: 'karta2', num: 'Projekt', title: 'Karta zapytań', min: 30 },
@@ -14080,6 +14197,7 @@ __modules["src/book/figures/search2.js"] = { "RESOLUTIONS": RESOLUTIONS, "resolu
 const { el, mount } = __modules["src/ui/dom.js"];
 const { rich, setFigureNumbers } = __modules["src/book/rich.js"];
 const { Workbench } = __modules["src/book/workbench.js"];
+const { stepsBlock, cardsBlock, tableBlock } = __modules["src/book/schemes.js"];
 const { lessonById } = __modules["src/lessons/index.js"];
 const { getProgress, reportFacts } = __modules["src/ui/progress.js"];
 const { isDone, getItem } = __modules["src/book/store.js"];
@@ -14303,6 +14421,10 @@ class BookApp {
       return el('dl.bk-terms', el('div.bk-box-title', t('bk.terms')), b.terms.map(([term, def]) => el('div.bk-term', el('dt', term), el('dd', def))));
     }
     if (b.note) return el(`aside.bk-note.bk-note-${b.tone || 'info'}`, { html: rich(b.note) });
+    // unnumbered schemes in place of lists in the text (schemes.js)
+    if (b.steps) return stepsBlock(b.steps);
+    if (b.cards) return cardsBlock(b.cards, b.label);
+    if (b.table) return tableBlock(b.table);
     if (b.datasets) {
       return el('div.bk-box.bk-datasets',
         el('div.bk-box-title', t('bk.datasets')),
