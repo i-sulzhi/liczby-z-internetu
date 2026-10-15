@@ -4385,7 +4385,7 @@ const pl = {
   'bk.tr.noise.read': "W {z} z {n} dni Trends pokazał 0. Hasło jest tu za rzadkie, żeby każdego dnia przejść próg. Gdy w jakimś dniu trafi się kilka zapytań, ten dzień od razu ma wysoką wartość, bo skala liczy się do szczytu.",
   'bk.tr.noise.caption': "Google Trends, „hulajnoga elektryczna”, województwo małopolskie, 1 lipca – 30 września 2026 r., pobrane 14 października 2026 r. Pobranie w inny dzień może dać zera w innych dniach.",
   'bk.tr.puzzle.read': "Średnio w {y1} r. hasło „urząd pracy” miało {a} na skali Trends, a w {y2} r. już {b}. Stopa bezrobocia rejestrowanego spadła w tym czasie z {c}% do {d}%. Czy wyszukiwarka zna więc bezrobocie?",
-  'bk.tr.puzzle.caption': "Google Trends, Polska, lata 2004–2026, pobrane 14 października 2026 r. Stopa bezrobocia rejestrowanego, GUS, stan z {d}. Od grudnia 2020 r. GUS liczy ją na nowej podstawie, stąd mały skok. Każda linia ma własną skalę.",
+  'bk.tr.puzzle.caption': "Google Trends, Polska, lata 2004–2026, pobrane 14 października 2026 r. Stopa bezrobocia rejestrowanego, GUS, stan z {d}. Od grudnia 2020 r. GUS liczy ją na nowej podstawie, stąd mały skok. Od czerwca 2025 r. urzędy pracy rzadziej wykreślają ludzi z rejestru, bo zmieniła się ustawa. Część późniejszego wzrostu stopy wynika więc z samego pomiaru. Każda linia ma własną skalę.",
   'bk.tr.val.raw': "Surowe wartości",
   'bk.tr.val.yoy': "Zmiana rok do roku",
   'bk.tr.val.trends': "Google Trends, {q}",
@@ -4396,7 +4396,7 @@ const pl = {
   'bk.tr.val.aria': "Wykres liniowy. Wybrane hasło z Google Trends i stopa bezrobocia w Polsce, miesiąc po miesiącu.",
   'bk.tr.val.read': "Korelacja r = {r}, liczona z {n} miesięcy.",
   'bk.tr.val.caption.lfs': "Google Trends, Polska, lata 2004–2026, pobrane 14 października 2026 r. Stopa bezrobocia bez wyrównania sezonowego, Eurostat une_rt_m, stan z {d}. To stopa z badania aktywności ekonomicznej ludności (BAEL). Liczy ludzi, którzy szukają pracy, także tych, którzy nie chodzą do urzędu pracy. Każda linia ma własną skalę. Rok do roku to różnica między miesiącem a tym samym miesiącem rok wcześniej.",
-  'bk.tr.val.caption.reg': "Google Trends, Polska, lata 2004–2026, pobrane 14 października 2026 r. Stopa bezrobocia rejestrowanego, GUS, stan z {d}. Liczy ludzi zarejestrowanych w urzędach pracy. Tej stopy używał Malinowski. Od grudnia 2020 r. GUS liczy ją na nowej podstawie, więc wykres ma tam skok o 0,5 pkt proc., a zmiany rok do roku liczymy na jednej podstawie. Każda linia ma własną skalę. Rok do roku to różnica między miesiącem a tym samym miesiącem rok wcześniej.",
+  'bk.tr.val.caption.reg': "Google Trends, Polska, lata 2004–2026, pobrane 14 października 2026 r. Stopa bezrobocia rejestrowanego, GUS, stan z {d}. Liczy ludzi zarejestrowanych w urzędach pracy. Tej stopy używał Malinowski. Od grudnia 2020 r. GUS liczy ją na nowej podstawie, więc wykres ma tam skok o 0,5 pkt proc., a zmiany rok do roku liczymy na jednej podstawie. Od czerwca 2025 r. urzędy pracy rzadziej wykreślają ludzi z rejestru, bo zmieniła się ustawa. Część późniejszego wzrostu stopy wynika więc z samego pomiaru. Każda linia ma własną skalę. Rok do roku to różnica między miesiącem a tym samym miesiącem rok wcześniej.",
   'bk.tr.wiki.wiki': "Odsłony hasła „Black Friday” w polskiej Wikipedii, listopad",
   'bk.tr.wiki.trends': "Google Trends, „black friday”, średnia z tygodni listopada",
   'bk.tr.wiki.read': "W Wikipedii listopad {py} r. miał {pv} odsłon, a listopad {ly} r. tylko {lv}. W wyszukiwarce listopady trzymają się w tym czasie na podobnym poziomie.",
@@ -12358,7 +12358,7 @@ const CHAPTER = {
       id: 's2-1', num: '2.1', title: 'Co mówią zapytania?', meeting: 3,
       parts: [['teoria', 10], ['dyskusja', 10]],
       blocks: [
-        { p: 'Zacznijmy od zagadki. Rysunek {rys:puzzle} pokazuje, jak często Polacy wpisywali w Google „urząd pracy” i jaka była w tym czasie stopa bezrobocia rejestrowanego, czyli liczona z danych urzędów pracy. Obie linie od lat spadają.' },
+        { p: 'Zacznijmy od zagadki. Rysunek {rys:puzzle} pokazuje, jak często Polacy wpisywali w Google „urząd pracy” i jaka była w tym czasie stopa bezrobocia rejestrowanego, czyli liczona z danych urzędów pracy. Przez lata obie linie spadały.' },
         { figure: 'puzzle' },
         { p: 'Czy z wyszukiwarki da się więc odczytać bezrobocie? To pytanie poprowadzi nas przez cały rozdział, a odpowiedź przyjdzie w podrozdziale 2.6. Po drodze wrócą jeszcze trzy hasła. Każde uczy czegoś innego.' },
         { note: '„black friday” pokazuje sezon i to, jak okno czasu zmienia liczby. „hulajnoga” pokazuje, co Trends liczy jako hasło, a co jako temat. „klimatyzator” pokazuje zdarzenia i zmiany w samym narzędziu. „urząd pracy” niesie główne pytanie rozdziału.' },
@@ -12461,8 +12461,8 @@ const CHAPTER = {
       id: 's2-6', num: '2.6', title: 'Czy zapytania mówią coś o świecie?', meeting: 4,
       parts: [['teoria', 10], ['dyskusja', 15]],
       blocks: [
-        { p: 'Pora wrócić do zagadki z rysunku {rys:puzzle}. Czy zapytania mówią coś o świecie, sprawdza się na danych z innego źródła, na przykład z urzędu statystycznego. Najprostsza miara to korelacja r. Bliska 1 znaczy, że oba szeregi rosną i maleją razem. Bliska 0 znaczy, że nie ma między nimi takiego związku.' },
-        { p: 'Rysunek {rys:path} prowadzi od zapytań do wniosku przez cztery sprawdziany. Kliknij każdy z nich albo przejdź całą drogę. Niżej omawiamy je po kolei.' },
+        { p: 'Pora wrócić do zagadki z rysunku {rys:puzzle}. Czy zapytania mówią coś o świecie, sprawdza się na danych z innego źródła, na przykład z urzędu statystycznego. Najprostsza miara to korelacja r. Bliska 1 znaczy, że oba szeregi rosną i maleją razem. Bliska 0 znaczy, że nie ma między nimi takiego związku. Ujemna znaczy, że gdy jeden szereg rośnie, drugi maleje.' },
+        { p: 'Rysunek {rys:path} prowadzi od zapytań do wniosku przez cztery sprawdziany. Kliknij każdy z nich albo przejdź całą drogę. Pierwszy sprawdzian to druga seria, o której mowa wyżej. Pozostałe trzy omawiamy niżej po kolei.' },
         { figure: 'path' },
         { p: 'Tu łatwo o pułapkę. Gdy oba szeregi mają ten sam sezon albo ten sam długi spadek, korelacja wychodzi wysoka, nawet jeśli poza tym nic ich nie łączy. Dlatego porównuje się zmiany rok do roku, czyli ten sam miesiąc z miesiącem rok wcześniej.' },
         { p: 'Tu jest odpowiedź na zagadkę. „urząd pracy” i bezrobocie rejestrowane miały wspólny długi spadek i wspólny sezon. Na surowych wartościach r = 0,70, a na zmianach rok do roku r = 0,10. Prawie cały związek brał się więc z tego, co obie linie miały wspólne. Związku z opóźnieniem ten sprawdzian nie wyklucza, ale tej prostej próby hasło nie przechodzi. Czy inne hasło wypada lepiej, sprawdzisz na rysunku {rys:validation}.' },
@@ -12470,7 +12470,7 @@ const CHAPTER = {
         { p: 'Podobnie wyszło w USA. Zapytania dobrze przewidywały wpływy kin w pierwszy weekend, sprzedaż gier i miejsca piosenek na liście przebojów. Ale prosty model na innych dostępnych danych też przewidywał dobrze. Zapytania dodawały do niego od niewiele do dużo, zależnie od dziedziny, a przy grypie niewiele. Zapytania najbardziej pomagają tam, gdzie innych danych brak (Goel i in. 2010).' },
         { p: 'Druga pułapka to dobór haseł po fakcie. Strategia giełdowa oparta na zapytaniach o słowo „debt” dawała duży zysk na danych z przeszłości (Preis i in. 2013). Inni badacze sprawdzili to jeszcze raz. Zysk zależał głównie od wyboru haseł, a zapytania nie przewidywały lepiej niż same dawne ceny (Challet, Bel Hadj Ayed 2014). Rysunek {rys:dredging} pokazuje, skąd bierze się taki zysk.' },
         { figure: 'dredging' },
-        { p: 'Rysunek {rys:validation} zestawia trzy hasła o pracy z dwiema stopami bezrobocia od 2004 r. Pierwsza to bezrobocie rejestrowane z GUS. Druga pochodzi z badania aktywności ekonomicznej ludności (BAEL) i liczy także tych, którzy nie chodzą do urzędu pracy. Porównaj korelację surowych wartości i zmian rok do roku dla każdego hasła i obu stóp.' },
+        { p: 'Rysunek {rys:validation} zestawia trzy hasła o pracy z dwiema stopami bezrobocia od 2004 r. Pierwsza to bezrobocie rejestrowane z GUS. Od czerwca 2025 r. rośnie ono także dlatego, że urzędy rzadziej wykreślają ludzi z rejestru. Druga pochodzi z badania aktywności ekonomicznej ludności (BAEL) i liczy także tych, którzy nie chodzą do urzędu pracy. Porównaj korelację surowych wartości i zmian rok do roku dla każdego hasła i obu stóp.' },
         { figure: 'validation' },
         { discuss: { who: 'w parach', min: 10, prompts: [
           'Które hasło ma najwyższe r na surowych wartościach? Co zostaje z tego r po przejściu na zmiany rok do roku?',
@@ -12537,9 +12537,9 @@ const CHAPTER = {
   ],
 
   recap: [
-    'Zapytania mówią o zamiarach i o tym, czego nie mówimy w ankiecie. Każde narzędzie pokazuje je jednak przez własny filtr (W1).',
+    'Zapytania mówią o zamiarach i o tym, czego nie mówimy w ankiecie. Każde narzędzie pokazuje je jednak przez własny filtr.',
     'Indeks Trends to udział hasła, a nie liczba ludzi. 100 to szczyt w wybranym oknie i przy wybranych hasłach.',
-    'Na wykresie ruszają się naraz ludzie i narzędzie. Sezon i zdarzenia to ludzie. Próba, przerwy w danych i AI to narzędzie (U2, K2).',
+    'Na wykresie ruszają się naraz ludzie i narzędzie. Sezon i zdarzenia to ludzie. Próba, przerwy w danych i AI to narzędzie.',
     'Zagadka z początku ma odpowiedź. „urząd pracy” i bezrobocie spadały razem, ale na zmianach rok do roku związek prawie znika. Wniosek z zapytań przechodzi cztery sprawdziany z rysunku {rys:path}.',
     'Każde ustawienie trafia do karty zapytań, bo bez niej wyniku nie da się powtórzyć.',
   ],
