@@ -13193,7 +13193,7 @@ function lines({ series, n, ymax, notes = [], ticks = [], aria, dots = [], read 
     notes.map((i) => svg('line', { x1: x(i), x2: x(i), y1: T, y2: H - B, class: 'sq-note' })),
     series.map((s) => svg('polyline', { points: s.values.map((v, i) => `${x(i).toFixed(1)},${y(num(v)).toFixed(1)}`).join(' '), class: s.cls })),
     dots.map(([i, v]) => svg('circle', { cx: x(i), cy: y(v), r: 4, class: 'sq-mark' })),
-    ticks.map(([i, label]) => svg('text', { x: x(i), y: H - 6, class: 'sq-tick', 'text-anchor': 'middle' }, label)));
+    ticks.map(([i, label]) => svg('text', { x: x(i), y: H - 6, class: 'sq-tick', 'text-anchor': x(i) - L < 24 ? 'start' : W - R - x(i) < 24 ? 'end' : 'middle' }, label)));
   if (!read) return chart;
   return probe(chart, {
     W, top: T, bottom: H - B, n, x,
@@ -13204,7 +13204,8 @@ function lines({ series, n, ymax, notes = [], ticks = [], aria, dots = [], read 
     }),
   });
 }
-const yearTicks = (dates, every = 1) => dates.map((d, i) => [i, d]).filter(([i, d]) => (i === 0 || dates[i - 1].slice(0, 4) !== d.slice(0, 4)) && Number(d.slice(0, 4)) % every === 0).map(([i, d]) => [i, d.slice(0, 4)]);
+/** A label where a year starts; a series that begins mid-year gets no label for that part year. */
+const yearTicks = (dates, every = 1) => dates.map((d, i) => [i, d]).filter(([i, d]) => (i === 0 ? d.slice(5, 7) === '01' : dates[i - 1].slice(0, 4) !== d.slice(0, 4)) && Number(d.slice(0, 4)) % every === 0).map(([i, d]) => [i, d.slice(0, 4)]);
 const SHORT = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'];
 /** A tick at the first week of each month. */
 const monthTicks = (dates) => dates.map((d, i) => [i, d]).filter(([i, d]) => i === 0 || dates[i - 1].slice(5, 7) !== d.slice(5, 7)).map(([i, d]) => [i, SHORT[Number(d.slice(5, 7)) - 1]]);
