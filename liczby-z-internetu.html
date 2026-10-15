@@ -3218,7 +3218,7 @@ const pl = {
   'ui.site.chapter1': "Rozdział 1. Internet jako źródło danych",
   'ui.site.chapter2': "Rozdział 2. Zapytania w wyszukiwarkach",
   'ui.site.trainer': "Trener. 13 lekcji z liczenia",
-  'ui.dataNote': "Kliknij, by zobaczyć całą tabelę. Dane są fikcyjne i służą do ćwiczeń. Prawdziwe są tylko dwie tabele, sceny i opinie.",
+  'ui.dataNote': "Kliknij, by zobaczyć całą tabelę. Dane są fikcyjne i służą do ćwiczeń. Wyjątkiem są dwie prawdziwe tabele, „sceny” i „opinie”.",
   'ui.about': "Kurs do przedmiotu „Warsztat analityki internetowej”. Opracowali dr Ilya Sulzhytski i Claude (Anthropic). Dane i dokumenty są fikcyjne. Prawdziwe są dwie tabele. Tabela sceny pochodzi z badania Sulzhytski i Howanitz (2025). Tabela opinie to opinie z Allegro ze zbioru Allegro Reviews (licencja CC BY-SA 4.0). Postęp zapisuje się tylko w tej przeglądarce.",
 
   'module.1': 'Internet jako źródło danych',
@@ -3575,8 +3575,12 @@ const pl = {
   'bk.sq.log.about': "O hulajnodze elektrycznej?",
   'bk.sq.log.yes': "tak",
   'bk.sq.log.no': "nie",
-  'bk.sq.log.read': "Wyrażenie liczy {counted} wyszukiwań. Pomija {missed} wyszukiwań o hulajnogach elektrycznych. Liczy {foreign} wyszukiwań o czymś innym.",
-  'bk.sq.log.caption': "Dane wymyślone. Hasło liczy słowa dokładnie w tej formie, w dowolnej kolejności. Cudzysłów wymaga słów obok siebie, plus dodaje inne hasła, a minus odrzuca zapytania z danym słowem. Temat liczy też odmiany, literówki i inne języki, ale w prawdziwym Trends nie widać, co do niego należy.",
+  'bk.sq.log.counted': "Wyrażenie liczy {counted} wyszukiwań.",
+  'bk.sq.log.missed': "Pomija {missed} wyszukiwań o hulajnogach elektrycznych.",
+  'bk.sq.log.missedNone': "Nie pomija żadnego wyszukiwania o hulajnogach elektrycznych.",
+  'bk.sq.log.foreign': "Liczy {foreign} wyszukiwań o czymś innym.",
+  'bk.sq.log.foreignNone': "Nie liczy niczego obcego.",
+  'bk.sq.log.caption': "Dane wymyślone. Hasło liczy słowa dokładnie w tej formie, w dowolnej kolejności. Cudzysłów wymaga słów obok siebie, plus dodaje inne hasła, a minus odrzuca zapytania z danym słowem. Temat liczy też odmiany i inne języki, ale w prawdziwym Trends nie widać, co do niego należy.",
   'bk.sq.anc.c1': "Wykres 1",
   'bk.sq.anc.c2': "Wykres 2",
   'bk.sq.anc.joined': "Połączone przez {a}",
@@ -3647,7 +3651,7 @@ const pl = {
   'bk.tr.forms.caption': "Google Trends, Polska, pobrane 14 października 2026 r. Trzy linie są na jednym wykresie, więc na wspólnej skali. Trends ma dwa różne tematy o nazwie „Hulajnoga elektryczna”, dlatego wybrano ogólny temat „Hulajnoga”. Hasło i temat zestawiono tu celowo, żeby pokazać różnicę. W badaniu porównuj hasło z hasłem.",
   'bk.tr.shops.pair': "allegro i answear",
   'bk.tr.shops.readJoined': "Przez kotwicę wychodzi, że allegro ma około {r} razy więcej wyszukiwań niż answear.",
-  'bk.tr.shops.readPair': "Na wspólnym wykresie z allegro answear ma 1 w każdym tygodniu. Stosunek wychodzi około {r}, ale krzywej answear już nie widać.",
+  'bk.tr.shops.readPair': "Na wspólnym wykresie z allegro answear ma 1 w każdym tygodniu. Stosunek wychodzi około {r}, ale wartości answear nie da się już odczytać.",
   'bk.tr.shops.caption': "Google Trends, Polska, październik 2025 – wrzesień 2026, pobrane 14 października 2026 r. Słupki to średnia z 53 tygodni. Ciekawostka. W wyszukiwarce „olx” jest wyżej niż „allegro”. Trends nie mówi, ilu ludzi wchodzi na stronę bez szukania.",
   'bk.tr.klima.off': "Sam wykres",
   'bk.tr.klima.on': "Uwagi Google",
@@ -3779,7 +3783,7 @@ const pl = {
   'who.title': "Kim jesteś?",
   'who.say': "Wpisz imię i nazwisko. Twój postęp zapisze się osobno, także na wspólnym komputerze.",
   'who.start': "Zacznij",
-  'who.hint': "Imię zostaje w tej przeglądarce i nigdzie nie jest wysyłane. Trafi tylko do raportu, który sam przekażesz prowadzącemu.",
+  'who.hint': "Imię zostaje w tej przeglądarce i nigdzie nie jest wysyłane. Trafi tylko do raportu, który przekażesz prowadzącemu.",
   'who.back': "Wracasz? Kliknij swoje imię.",
   'who.last': "ostatnio {date}",
   'who.backToNames': "Wróć",
@@ -7162,7 +7166,7 @@ __modules["src/lessons/l02-wzmianki.js"] = { "default": __default__ };
 /* ===== src/lessons/l03-operatory.js ===== */
 (function () {
 /**
- * Lesson 3 -- Operatory wyszukiwarki (topic 2; "Google hacking" and infobrokering
+ * Lesson 3 -- Operatory wyszukiwarki (topic 1, exercise 1.6 of the textbook; "Google hacking" and infobrokering
  * in the reading list).
  *
  * Twelve documents about e-scooters. Each scene adds one operator and the picture is
