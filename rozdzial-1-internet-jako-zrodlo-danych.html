@@ -910,6 +910,11 @@ textarea.rp-input { resize: vertical; font: 12.5px/1.5 var(--mono); white-space:
 .who-teacher, .who-link { padding: 0; border: 0; background: none; color: var(--ink-soft); font: inherit; font-size: 13px; text-decoration: underline; text-align: left; cursor: pointer; }
 .who-teacher:hover, .who-link:hover { color: var(--accent); }
 .who-close { justify-self: start; }
+/* "Masz raport z innego komputera?": a student's link, so it stands out from the teacher's */
+.who-bring { color: var(--accent); font-weight: 600; }
+.who-file-label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
+.who-file { max-width: 100%; font: inherit; font-size: 14px; font-weight: 400; }
+.who-bring-sum { margin: 6px 0 10px; padding-left: 1.2em; font-size: 14px; }
 .who-line, .who-box { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 8px 6px; font-size: 13px; color: var(--ink-soft); }
 .who-line-name { font-weight: 700; color: var(--ink); overflow-wrap: anywhere; }
 .who-danger { color: var(--err); font-weight: 700; }
@@ -1637,6 +1642,52 @@ textarea.kc-input { resize: vertical; }
   .bk-steps { flex-direction: column; gap: 22px; }
   .bk-step + .bk-step::before { content: "↓"; left: 50%; top: -19px; transform: translateX(-50%); }
 }
+
+/* ---- chapter 3: spreadsheet exercises (figures/sheet.js) */
+.sh { display: grid; gap: 12px; min-width: 0; }
+.sh-say { margin: 0; }
+.sh-files, .sh-steps-box { display: grid; gap: 6px; min-width: 0; }
+.sh-files-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-soft); }
+.sh-file { display: grid; gap: 4px; min-width: 0; }
+.sh-file-btn { justify-self: start; max-width: 100%; padding: 4px 12px; border: 1px solid var(--line-strong); border-radius: 14px; background: transparent; color: var(--ink); font: 13px var(--mono); cursor: pointer; overflow-wrap: anywhere; text-align: left; }
+.sh-file-btn:hover { border-color: var(--accent); }
+.sh-src { font-size: 12px; color: var(--ink-soft); overflow-wrap: anywhere; }
+.sh-src a { color: inherit; text-decoration: underline; }
+.sh-peek summary { cursor: pointer; font-size: 13px; color: var(--ink-soft); }
+.sh-pre { margin: 6px 0 0; padding: 8px 10px; max-width: 100%; overflow-x: auto; border-radius: var(--radius); background: var(--code-bg); font: 12px/1.5 var(--mono); white-space: pre; }
+.sh-steps { margin: 0; padding-left: 22px; display: grid; gap: 6px; font-size: 14px; line-height: 1.55; }
+.sh-steps code, .sh-field code, .sh-verdict code { overflow-wrap: anywhere; white-space: normal; }
+.sh-fields { display: grid; gap: 10px; }
+.sh-field { display: grid; gap: 4px; }
+.sh-field label { font-size: 14px; }
+.sh-input { max-width: 16em; padding: 6px 10px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--bg-panel); color: var(--ink); font: 15px var(--mono); }
+.sh-bad { border-color: var(--err); background: var(--err-bg); }
+.sh-verdict:empty { display: none; }
+.sh-verdict.sh-right, .sh-verdict.sh-wrong { padding: 10px 12px; border-radius: var(--radius); font-size: 15px; }
+.sh-right { background: var(--ok-bg); }
+.sh-wrong { background: var(--warn-bg); }
+
+/* ---- chapter 3 figures (figures/chatgpt.js) */
+.cg-stacks { display: grid; gap: 6px; min-width: 0; }
+.cg-stack-row { display: grid; grid-template-columns: minmax(0, 8em) minmax(0, 1fr) 4.5em; gap: 8px; align-items: center; font-size: 13px; }
+.cg-stack-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cg-stack-track { display: block; min-width: 0; }
+.cg-stack { display: flex; height: 16px; border-radius: 3px; overflow: hidden; background: var(--bg-sunken); }
+.cg-part { display: block; height: 100%; }
+.cg-stack-num { font: 12px var(--mono); text-align: right; color: var(--ink-soft); white-space: nowrap; }
+.cg-user, .cg-leg-user::before, .cg-phone, .cg-leg-phone::before, .cg-search, .cg-leg-search::before { background: var(--accent); }
+.cg-auto, .cg-leg-auto::before, .cg-empty, .cg-leg-empty::before { background: var(--warn); }
+.cg-spider, .cg-leg-spider::before, .cg-desk, .cg-leg-desk::before, .cg-internal, .cg-leg-internal::before { background: var(--ink-faint); }
+.cg-link, .cg-leg-link::before { background: var(--ok); }
+.cg-ext, .cg-leg-ext::before { background: var(--line-strong); }
+.cg-pairs { display: grid; gap: 8px; min-width: 0; }
+.cg-pair { display: grid; gap: 2px; }
+.cg-pair-name { font-size: 13px; font-weight: 600; }
+.sq-fill2 { background: var(--warn); }
+.cg-dot-a { fill: var(--accent); opacity: .75; }
+.cg-dot-b { fill: var(--warn); opacity: .9; }
+.cg-dot-off { fill: var(--ink-faint); opacity: .2; }
+@media (max-width: 600px) { .cg-stack-row { grid-template-columns: minmax(0, 6.5em) minmax(0, 1fr) auto; font-size: 12px; } }
 
 </style>
 </head>
@@ -3971,6 +4022,7 @@ const pl = {
   'ui.site.home': "← Strona kursu",
   'ui.site.chapter1': "Rozdział 1. Internet jako źródło danych",
   'ui.site.chapter2': "Rozdział 2. Zapytania w wyszukiwarkach",
+  'ui.site.chapter3': "Rozdział 3. Ruch i zachowania użytkowników",
   'ui.site.trainer': "Trener. 13 lekcji z liczenia",
   'ui.dataNote': "Kliknij, by zobaczyć całą tabelę. Dane są fikcyjne i służą do ćwiczeń. Wyjątkiem są dwie prawdziwe tabele, „sceny” i „opinie”.",
   'ui.about': "Kurs do przedmiotu „Warsztat analityki internetowej”. Opracowali dr Ilya Sulzhytski i Claude (Anthropic). Dane i dokumenty są fikcyjne. Prawdziwe są dwie tabele. Tabela sceny pochodzi z badania Sulzhytski i Howanitz (2025). Tabela opinie to opinie z Allegro ze zbioru Allegro Reviews (licencja CC BY-SA 4.0). Postęp zapisuje się tylko w tej przeglądarce.",
@@ -4547,6 +4599,30 @@ const pl = {
   'who.forgetAsk': "Usunąć postęp i odpowiedzi osoby {name}? Tego nie da się cofnąć.",
   'who.forgetYes': "Tak, usuń",
   'who.forgetNo': "Zostaw",
+  'bk.sh.files': "Pliki do pobrania",
+  'bk.sh.peek': "Zobacz początek pliku",
+  'bk.sh.source': "Źródło:",
+  'bk.sh.taken': "pobrane {date}.",
+  'bk.sh.steps': "W Excelu",
+  'bk.sh.empty': "Pole „{label}” jest puste.",
+  'bk.sh.wrongCount': "Nie zgadza się {k} z {n}.",
+  'bk.sh.answer': "W arkuszu:",
+  'bk.card.ch3SourcesTitle': "Karta trzech źródeł (rozdział 3). Warsztat analityki internetowej",
+  'bk.card.ch3ReportTitle': "Raport. ChatGPT w Polsce (rozdział 3). Warsztat analityki internetowej",
+  'bring.open': "Masz raport z innego komputera? Wczytaj go i pracuj dalej",
+  'bring.title': "Wczytaj swój raport",
+  'bring.say': "Wybierz plik raportu pobrany na innym komputerze albo wklej jego tekst. Wrócą wykonane ćwiczenia, Twój kod i karta. Raport musi mieć ostatnią linię z kodem kontrolnym.",
+  'bring.file': "Plik raportu (.txt)",
+  'bring.orPaste': "Albo wklej cały tekst raportu.",
+  'bring.placeholder': "Wklej tu swój raport",
+  'bring.date': "· raport z {date}",
+  'bring.found': "Z tej strony wróci {n} z {total} ćwiczeń.",
+  'bring.card': "Karta z raportu też wróci.",
+  'bring.unknown': "Liczba ćwiczeń pominiętych, bo nie ma ich na tej stronie, to {n}.",
+  'bring.nothing': "Raport jest nienaruszony, ale nie ma w nim żadnego ćwiczenia z tej strony.",
+  'bring.otherPage': "To raport z innej strony ({course}). Otwórz tamtą stronę i wczytaj go tam.",
+  'bring.cannotRead': "Nie udało się odczytać pliku. Otwórz go w Notatniku i wklej tekst poniżej.",
+  'bring.go': "Pracuj dalej jako {name}",
   // --- the report for the teacher (ui/report.js, ui/reportbox.js) ---------------------
   'rep.title': "Raport dla prowadzącego",
   'rep.nameLabel': "Imię i nazwisko",
@@ -9276,10 +9352,15 @@ function writeAll(data) {
 
 const getItem = (id) => readAll()[id] ?? null;
 
+/** Who wants to know that something was saved (the report under the chapter redraws). */
+const watchers = new Set();
+function onSaved(fn) { watchers.add(fn); return () => watchers.delete(fn); }
+
 function setItem(id, value) {
   const all = readAll();
   all[id] = value;
   writeAll(all);
+  for (const fn of watchers) { try { fn(id); } catch { /* a watcher never stops a save */ } }
   return value;
 }
 
@@ -9291,7 +9372,7 @@ function resetBook() {
   try { localStorage.removeItem(personKey(KEY)); } catch { memory = {}; }
 }
 
-__modules["src/book/store.js"] = { "useStore": useStore, "getItem": getItem, "setItem": setItem, "isDone": isDone, "markDone": markDone, "resetBook": resetBook };
+__modules["src/book/store.js"] = { "useStore": useStore, "getItem": getItem, "onSaved": onSaved, "setItem": setItem, "isDone": isDone, "markDone": markDone, "resetBook": resetBook };
 })();
 
 /* ===== src/ui/site.js ===== */
@@ -9305,7 +9386,7 @@ __modules["src/book/store.js"] = { "useStore": useStore, "getItem": getItem, "se
  */
 const { el } = __modules["src/ui/dom.js"];
 const { t } = __modules["src/i18n/index.js"];
-const SITE_PAGES = { home: './', chapter1: 'rozdzial-1-internet-jako-zrodlo-danych.html', chapter2: 'rozdzial-2-zapytania-w-wyszukiwarkach.html', trainer: 'liczby-z-internetu.html' };
+const SITE_PAGES = { home: './', chapter1: 'rozdzial-1-internet-jako-zrodlo-danych.html', chapter2: 'rozdzial-2-zapytania-w-wyszukiwarkach.html', chapter3: 'rozdzial-3-ruch-i-zachowania-uzytkownikow.html', trainer: 'liczby-z-internetu.html' };
 
 function siteLinks(loc = typeof location === 'undefined' ? null : location) {
   return loc && /^https?:$/.test(loc.protocol) ? SITE_PAGES : null;
@@ -9466,7 +9547,70 @@ function verifyReports(text) {
   return out;
 }
 
-__modules["src/ui/report.js"] = { "buildReport": buildReport, "verifyReports": verifyReports };
+/**
+ * A student's own report read back in full, so the work can continue on another computer
+ * (the R trainer's "Przywróć postęp", D36 there). Only the last report in the text, and only
+ * when its check code holds: a report edited by hand brings nothing.
+ *
+ * The answers are read from the text as pasted, not from the normalised one, because the
+ * indentation of Python code matters. A downloaded file keeps it; a report pasted through an
+ * LMS may lose it, and then the code comes back flat (still marked done).
+ *
+ * @param {string} text
+ * @param {Object} [o]
+ * @param {string[]} [o.sections]  titles of the further sections (the card), where answers end
+ * @returns {{ok: boolean, reason?: string, name?: string, course?: string, date?: string,
+ *   items?: Array<{n, label, status: 'done'|'seen'|null, doneAt, attempts, hintsUsed, answer}>,
+ *   sections?: Array<{title, text}>}}
+ */
+function readReport(text, { sections = [] } = {}) {
+  const all = verifyReports(text);
+  const last = all[all.length - 1];
+  if (!last) return { ok: false, reason: 'noCode' };
+  if (!last.ok) return last;
+  const clean = (l) => l.replace(/[   \t]/g, ' ').replace(/ +/g, ' ').trim();
+  const raw = String(text).replace(/\r\n?/g, '\n').split('\n');
+  let end = raw.length - 1;
+  while (end >= 0 && !clean(raw[end]).startsWith(t('rep.code'))) end -= 1;
+  let start = end;
+  while (start > 0 && clean(raw[start]) !== t('rep.head')) start -= 1;
+  const body = raw.slice(start, end);
+  const titles = new Set(sections.map(clean));
+  const day = (s) => {
+    const m = s.match(/(\d\d)\.(\d\d)\.(\d{4})/);
+    return m ? new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]), 12).getTime() : null;
+  };
+  const count = (state, key) => Number(state.match(new RegExp(`${t(key).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} (\\d+)`))?.[1] || 0);
+  const items = [];
+  const found = [];
+  let into = null;    // the answer lines of the item read last
+  let section = null;
+  for (const line of body) {
+    const c = clean(line);
+    const m = !section && c.match(/^(\d+)\. (.+) → (.+)$/);
+    if (m) {
+      const state = m[3];
+      const done = state.startsWith(t('rep.done'));
+      const seen = !done && state.startsWith(t('rep.started'));
+      into = [];
+      items.push({ n: Number(m[1]), label: m[2], status: done ? 'done' : seen ? 'seen' : null, doneAt: done ? day(state) : null,
+        attempts: count(state, 'rep.attempts'), hintsUsed: count(state, 'rep.hints'), lines: into });
+    } else if (titles.has(c)) {
+      section = { title: c, lines: [] };
+      found.push(section);
+      into = null;
+    } else if (section) section.lines.push(line);
+    else if (into) into.push(line.startsWith('    ') ? line.slice(4) : line.trim() === '' ? '' : line);
+  }
+  const join = (lines) => lines.join('\n').replace(/^\n+|\s+$/g, '');
+  return {
+    ok: true, name: last.name, course: last.course, date: last.date,
+    items: items.map(({ lines, ...it }) => ({ ...it, answer: join(lines) || null })),
+    sections: found.map((s) => ({ title: s.title, text: join(s.lines) })),
+  };
+}
+
+__modules["src/ui/report.js"] = { "buildReport": buildReport, "verifyReports": verifyReports, "readReport": readReport };
 })();
 
 /* ===== src/ui/download.js ===== */
@@ -9551,15 +9695,17 @@ function reportPanel({ course, items, extra = () => [], fileName = 'raport.txt' 
   const draw = () => {
     const name = nameInput.value.replace(/\s+/g, ' ').trim();
     if (!name) { mount(out, el('p.rp-need', t('rep.needName'))); return; }
-    const text = buildReport({ course, name, items: items(), extra: extra() });
+    const fresh = () => buildReport({ course, name, items: items(), extra: extra() });
+    const text = fresh();
     const area = el('textarea.rp-input.rp-text', { readonly: true, rows: '12', 'aria-label': t('rep.title'), spellcheck: 'false' });
     area.value = text;
     const status = el('span.rp-status', { 'aria-live': 'polite' });
     mount(out,
       area,
       el('div.rp-bar',
-        el('button.ls-check', { type: 'button', onClick: async () => { status.textContent = t((await copyText(text, area)) ? 'rep.copied' : 'rep.copyFailed'); } }, t('rep.copy')),
-        el('button.rp-btn', { type: 'button', onClick: () => { if (!download(fileName, `${text}\n`)) status.textContent = t('rep.copyFailed'); } }, t('rep.download')),
+        // Built again on click: what was typed a moment ago is in it, even before the text redraws.
+        el('button.ls-check', { type: 'button', onClick: async () => { const now = fresh(); area.value = now; status.textContent = t((await copyText(now, area)) ? 'rep.copied' : 'rep.copyFailed'); } }, t('rep.copy')),
+        el('button.rp-btn', { type: 'button', onClick: () => { const now = fresh(); area.value = now; if (!download(fileName, `${now}\n`)) status.textContent = t('rep.copyFailed'); } }, t('rep.download')),
         status),
       el('p.rp-say', t('rep.say')));
   };
@@ -9603,6 +9749,7 @@ const { el, mount } = __modules["src/ui/dom.js"];
 const { t } = __modules["src/i18n/index.js"];
 const { MAX_NAME, people, enter, choose, forget, person } = __modules["src/ui/person.js"];
 const { checkPanel } = __modules["src/ui/reportbox.js"];
+const { readReport } = __modules["src/ui/report.js"];
 const pad = (n) => String(n).padStart(2, '0');
 const shortDate = (ms) => { const d = new Date(ms); return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}`; };
 
@@ -9626,8 +9773,12 @@ function toAnchor() {
  * Show "Kim jesteś?" in `host`, and call `start()` once someone is chosen.
  * @param {Element} host
  * @param {Function} start  builds the page into the same host
+ * @param {Object} [o]
+ * @param {Function} [o.restore]   (report) => reportPlan: lets a student continue from their own
+ *                                 report, made on another computer
+ * @param {string[]} [o.sections]  titles of the report's further sections (the card)
  */
-function gate(host, start) {
+function gate(host, start, { restore = null, sections = [] } = {}) {
   const go = (p) => {
     if (!p) return;
     mount(host);
@@ -9662,6 +9813,7 @@ function gate(host, start) {
         }, input, el('button.ls-check.who-start', { type: 'submit' }, t('who.start'))),
         el('p.who-hint', t('who.hint')),
         back,
+        restore ? el('button.who-teacher.who-bring', { type: 'button', onClick: showBring }, t('bring.open')) : null,
         el('button.who-teacher', { type: 'button', onClick: showCheck }, t('rep.checkTitle')))));
     setTimeout(() => { try { input.focus(); } catch { /* not on the page yet */ } }, 0);
   };
@@ -9670,6 +9822,49 @@ function gate(host, start) {
       el('h1.who-title', t('rep.checkTitle')),
       checkPanel(),
       el('button.rp-btn.who-close', { type: 'button', onClick: showWho }, t('who.backToNames')))));
+  // "Mam raport z innego komputera": a file or pasted text, checked, then continued as its person.
+  const showBring = () => {
+    const verdict = el('div.rp-verdicts', { 'aria-live': 'polite' });
+    const paste = el('textarea.rp-input.rp-paste', { rows: '6', placeholder: t('bring.placeholder'), 'aria-label': t('bring.title'), spellcheck: 'false' });
+    const judge = (text) => {
+      if (!String(text).trim()) { mount(verdict); return; }
+      const report = readReport(text, { sections });
+      if (!report.ok) { mount(verdict, el('div.rp-verdict.rp-bad', t(report.reason === 'noCode' ? 'rep.noCode' : 'rep.bad'))); return; }
+      const plan = restore(report);
+      if (!report.name || !plan.worked) {
+        mount(verdict, el('div.rp-verdict.rp-bad', plan.unknown && report.course ? t('bring.otherPage', { course: report.course }) : t('bring.nothing')));
+        return;
+      }
+      mount(verdict, el('div.rp-verdict.rp-ok',
+        el('b', report.name), ' ', t('bring.date', { date: report.date || '?' }),
+        el('ul.who-bring-sum',
+          el('li', t('bring.found', { n: plan.done, total: plan.total })),
+          plan.card ? el('li', t('bring.card')) : null,
+          plan.unknown ? el('li', t('bring.unknown', { n: plan.unknown })) : null),
+        el('button.ls-check.who-start', {
+          type: 'button',
+          onClick: () => { const p = enter(report.name); plan.apply(); go(p); },
+        }, t('bring.go', { name: report.name }))));
+    };
+    paste.addEventListener('input', () => judge(paste.value));
+    const file = el('input.who-file', {
+      type: 'file', accept: '.txt,text/plain', 'aria-label': t('bring.file'),
+      onChange: () => {
+        const f = file.files?.[0];
+        if (!f) return;
+        f.text().then((text) => { paste.value = text; judge(text); }).catch(() => mount(verdict, el('div.rp-verdict.rp-bad', t('bring.cannotRead'))));
+      },
+    });
+    mount(host, el('div.who',
+      el('div.who-card.who-card-wide', { role: 'dialog', 'aria-label': t('bring.title') },
+        el('h1.who-title', t('bring.title')),
+        el('p.who-say', t('bring.say')),
+        el('label.who-file-label', el('span', t('bring.file')), file),
+        el('p.who-hint', t('bring.orPaste')),
+        paste,
+        verdict,
+        el('button.rp-btn.who-close', { type: 'button', onClick: showWho }, t('who.backToNames')))));
+  };
   showWho();
 }
 
@@ -12422,7 +12617,7 @@ const CHAPTER = {
   plan: false,
   intro: false,
   card: 'karta2',
-  siteNav: ['home', 'chapter1', 'trainer'],
+  siteNav: ['home', 'chapter1', 'chapter3', 'trainer'],
   number: 2,
   kicker: 'Warsztat analityki internetowej · Rozdział 2 z 5',
   title: 'Badanie trendów na podstawie zapytań w wyszukiwarkach',
@@ -12695,6 +12890,211 @@ const CHAPTER = {
 __modules["src/book/chapter2.js"] = { "QUERY_FIELDS": QUERY_FIELDS, "CHAPTER": CHAPTER };
 })();
 
+/* ===== src/book/chapter3.js ===== */
+(function () {
+/**
+ * Chapter 3 of the textbook, syllabus topic 3, "Analiza ruchu i zachowań użytkowników technologii
+ * cyfrowych", as a do-it-yourself report on open data about ChatGPT in Poland. Plan and the
+ * author's decisions in docs/chapter3-plan.md (2026-10-29): no new theory, every step recalls one
+ * idea of chapters 1-2 and puts it to work in Excel on ready files; checks on those files.
+ *
+ * Block kinds are the same as in chapter1.js. Exercises cg2-cg8 and the figures are in
+ * figures/chatgpt.js; the two cards (karta3a, karta3) in figures/project.js.
+ */
+
+/** Step 1: one card of the three sources. */
+const SOURCE_FIELDS3 = [
+  { id: 'pytanie', kind: 'area', label: 'Pytanie raportu, własnymi słowami' },
+  { id: 'wikipedia', kind: 'area', label: 'Wikipedia. Co mierzy odsłona hasła? Kogo w tych danych nie ma?' },
+  { id: 'trends', kind: 'area', label: 'Google Trends. Co mierzy indeks? Czego nie pokazuje?' },
+  { id: 'eurostat', kind: 'area', label: 'Eurostat. Kto odpowiadał na pytania i jak często jest ta ankieta?' },
+];
+
+/** Step 9: the report itself, the template of the project. */
+const REPORT_FIELDS3 = [
+  { id: 'pytanie', kind: 'area', label: 'Pytanie raportu' },
+  { id: 'dane', kind: 'area', label: 'Dane. Trzy źródła, okna czasu, dzień pobrania' },
+  { id: 'wynik', kind: 'area', label: 'Najważniejszy wynik, z liczbą' },
+  { id: 'porownanie', kind: 'area', label: 'Co mówią pozostałe źródła? Zgadzają się czy nie?' },
+  { id: 'ograniczenia', kind: 'area', label: 'Ograniczenia. Czego te dane nie mówią?' },
+  { id: 'projekt', kind: 'area', label: 'Co z tego raportu weźmiesz do własnego projektu?' },
+];
+
+const P = (text) => ({ p: text });
+const remind = (text) => ({ note: `**Przypomnienie.** ${text}`, tone: 'info' });
+
+const CHAPTER = {
+  id: 'r3',
+  minutes: false,
+  plan: false,
+  intro: false,
+  card: 'karta3',
+  siteNav: ['home', 'chapter1', 'chapter2', 'trainer'],
+  number: 3,
+  kicker: 'Warsztat analityki internetowej · Rozdział 3 z 5',
+  title: 'Analiza ruchu i zachowań użytkowników technologii cyfrowych',
+  authors: 'dr Ilya Sulzhytski i Claude (Anthropic)',
+  lead: 'Ten rozdział robisz sam. Krok po kroku zbudujesz krótki raport o tym, jak Polacy korzystają z ChatGPT. Z otwartych danych, w Excelu, bez nowej teorii. Teoria była w rozdziałach 1 i 2, a tu ją zastosujesz.',
+  outcomes: [
+    ['U1', 'przygotowujesz krótki raport z trzech otwartych źródeł danych internetowych'],
+    ['U3', 'liczysz w arkuszu udziały, średnie, indeks i korelację na prawdziwych danych'],
+    ['K2', 'oceniasz, czy zmiana w danych to zmiana zachowań, czy zmiana sposobu liczenia'],
+  ],
+  howTo: [
+    ['cwiczenie', 'każdy krok to plik, kilka kroków w Excelu i liczby, które strona sprawdza'],
+    ['projekt', 'raport z kroku 9 to wzór raportu do projektu'],
+  ],
+
+  sections: [
+    {
+      id: 's3-1', num: '3.1', title: 'Krok 1. Pytanie i źródła', meeting: 5,
+      parts: [['teoria', 10], ['projekt', 15]],
+      blocks: [
+        P('Pytanie raportu brzmi tak. **Jak Polacy zaczęli korzystać z ChatGPT?** Odpowiesz na nie z trzech otwartych źródeł. Każde patrzy na ludzi inaczej.'),
+        { label: 'Trzy źródła raportu', cards: [
+          { title: 'Wikipedia', text: 'Ile razy otwarto hasło „ChatGPT”. Ślad zachowania, dzień po dniu, z podziałem na ludzi, boty i urządzenia.' },
+          { title: 'Google Trends', text: 'Jak często wpisywano „chatgpt” w Google. Ślad zachowania, indeks od 0 do 100.' },
+          { title: 'Eurostat', text: 'Ankieta z 2025 r. Ludzie sami mówią, czy używają AI. Na razie jest tylko ten jeden rok.' },
+        ] },
+        remind('Ślady powstają same, a ankietę ktoś zaprojektował (podrozdział 1.3). Każde źródło kogoś pomija i coś mierzy inaczej, niż chcemy (podrozdział 1.7).'),
+        P('Każdy krok ma ten sam porządek. Najpierw przypomnienie z rozdziału 1 albo 2. Potem plik do pobrania, kroki w Excelu i pola na liczby, które strona sprawdza. Po sprawdzeniu rysunek pokazuje, co z tego wynika.'),
+        { note: 'Kroki napisaliśmy dla polskiego Excela. W angielskim Excelu funkcje mają angielskie nazwy, podajemy je w nawiasie. Pliki mają średniki i przecinek dziesiętny, więc otworzysz je dwuklikiem. Wyjątkiem jest plik z Trends w kroku 6.', tone: 'info' },
+        { exercise: 'karta3a', num: 'Krok 1', title: 'Karta trzech źródeł', toc: 'Krok 1. Karta trzech źródeł' },
+      ],
+    },
+    {
+      id: 's3-2', num: '3.2', title: 'Krok 2. Ruch na stronie', meeting: 5,
+      parts: [['cwiczenie', 25]],
+      blocks: [
+        remind('Odsłona hasła to ślad. Mierzy, że ktoś otworzył stronę, a nie, że ją przeczytał albo używa ChatGPT (podrozdział 1.5).'),
+        P('Zacznij od ruchu. Ile razy dziennie ktoś otwierał hasło „ChatGPT” w polskiej Wikipedii? Dzienne liczby zsumujesz w miesiące.'),
+        { exercise: 'cg2', num: 'Krok 2', title: 'Odsłony w miesiącach', toc: 'Krok 2. Odsłony w miesiącach' },
+        { figure: 'cgmonths' },
+      ],
+    },
+    {
+      id: 's3-3', num: '3.3', title: 'Krok 3. Ludzie czy boty? Skąd przyszli?', meeting: 5,
+      parts: [['cwiczenie', 35]],
+      blocks: [
+        remind('Dane internetowe są brudne. Część ruchu robią programy, a nie ludzie (podrozdział 1.7). W analityce stron wejście bez źródła to tak zwany ruch bezpośredni. Nie wiadomo, skąd przyszedł.'),
+        P('Rysunek {rys:cgmonths} pokazał, że od kwietnia 2026 r. odsłony spadły kilka razy. Czy Polacy nagle przestali interesować się ChatGPT? Sprawdź dwie rzeczy. Kto czyta hasło i skąd przychodzi.'),
+        { exercise: 'cg3', num: 'Krok 3', title: 'Boty i źródła wejść', toc: 'Krok 3. Boty i źródła wejść' },
+        { figure: 'cgagents' },
+        { figure: 'cgsources' },
+        P('To jest odpowiedź na zagadkę z kroku 2. Od kwietnia zniknął głównie ruch bez źródła, który wcześniej robił dwie trzecie wejść. Wejścia z wyszukiwarki spadły dużo mniej. Bez tego pliku łatwo napisać w raporcie, że Polacy stracili zainteresowanie ChatGPT.'),
+        { discuss: { who: 'w parach', prompts: [
+          'Czym mógł być ruch bez źródła? Podajcie dwa wyjaśnienia.',
+          'Jak napisać o tym w raporcie, skoro przyczyny nie znamy?',
+        ] } },
+      ],
+    },
+    {
+      id: 's3-4', num: '3.4', title: 'Krok 4. Telefon czy komputer?', meeting: 6,
+      parts: [['cwiczenie', 20]],
+      blocks: [
+        remind('Udział zależy od mianownika (lekcja „Wskaźniki i mianowniki” w trenerze). Tu mianownikiem są odsłony ludzi w danym roku.'),
+        P('Zachowania użytkowników to także sprzęt. Na czym Polacy czytają o ChatGPT?'),
+        { exercise: 'cg4', num: 'Krok 4', title: 'Udział telefonu', toc: 'Krok 4. Udział telefonu' },
+        { figure: 'cgdevices' },
+        P('W 2026 r. udział telefonu nagle spada. Z marca na kwiecień odsłony z telefonu spadły o ponad 80%, a z komputera prawie o połowę. Z odsłon, które wtedy zniknęły, dwie trzecie były z telefonu. Ten sam spadek widać więc w dwóch plikach, a razem mówią więcej niż każdy osobno.'),
+      ],
+    },
+    {
+      id: 's3-5', num: '3.5', title: 'Krok 5. Rytm', meeting: 6,
+      parts: [['cwiczenie', 25]],
+      blocks: [
+        remind('Na wykresie z sieci ruszają się sezon, zdarzenia i samo narzędzie (podrozdział 2.5). Sezon to ludzie.'),
+        P('Kiedy Polacy otwierają hasło „ChatGPT”? Policz średnie dla dni tygodnia i dla wakacji.'),
+        { exercise: 'cg5', num: 'Krok 5', title: 'Dni tygodnia i wakacje', toc: 'Krok 5. Dni tygodnia i wakacje' },
+        { figure: 'cgrhythm' },
+        P('Wakacje 2025 r. to spadek o dwie trzecie wobec wiosny, a sobota o jedną czwartą wobec poniedziałku. Taki rytm pasuje bardziej do nauki i pracy niż do rozrywki.'),
+      ],
+    },
+    {
+      id: 's3-6', num: '3.6', title: 'Krok 6. Trends obok Wikipedii', meeting: 6,
+      parts: [['cwiczenie', 30]],
+      blocks: [
+        remind('Indeks Trends to udział hasła, a nie liczba ludzi. 100 to szczyt wybranego okna (podrozdział 2.2).'),
+        P('Wikipedia daje liczby, a Trends indeks. Żeby je porównać, Wikipedię też zamienisz na indeks, 100 w najwyższym miesiącu.'),
+        { exercise: 'cg6', num: 'Krok 6', title: 'Dwa indeksy', toc: 'Krok 6. Dwa indeksy' },
+        { figure: 'cgtwo' },
+      ],
+    },
+    {
+      id: 's3-7', num: '3.7', title: 'Krok 7. Kto deklaruje?', meeting: 7,
+      parts: [['cwiczenie', 20]],
+      blocks: [
+        remind('Ślady nie mówią, kto je zostawił. O tym, kto jest w danych, mówi dopiero inne źródło (podrozdział 1.4).'),
+        P('Wikipedia i Trends nie wiedzą, ile lat ma czytelnik. Eurostat zapytał o to ludzi wprost.'),
+        { exercise: 'cg7', num: 'Krok 7', title: 'Ankieta Eurostatu', toc: 'Krok 7. Ankieta Eurostatu' },
+        { figure: 'cgeuro' },
+      ],
+    },
+    {
+      id: 's3-8', num: '3.8', title: 'Krok 8. Czy źródła mówią to samo?', meeting: 7,
+      parts: [['cwiczenie', 25]],
+      blocks: [
+        remind('Korelacja r mówi, czy dwie liczby rosną razem. Wynik z sieci sprawdza się drugim źródłem (podrozdział 2.6).'),
+        P('Wikipedia i Trends to dwa ślady tego samego zainteresowania. Czy zgadzają się tydzień po tygodniu?'),
+        { exercise: 'cg8', num: 'Krok 8', title: 'Korelacja i poziom', toc: 'Krok 8. Korelacja i poziom' },
+        { figure: 'cgscatter' },
+      ],
+    },
+    {
+      id: 's3-9', num: '3.9', title: 'Krok 9. Raport', meeting: 7,
+      parts: [['projekt', 30], ['dyskusja', 15]],
+      blocks: [
+        P('Masz osiem kroków i liczby do każdego. Raport to jednak więcej niż wykresy. Potrzebuje pytania, opisu danych, wyniku z liczbą, porównania źródeł i ograniczeń. Tak samo zbudujesz raport w projekcie.'),
+        { exercise: 'karta3', num: 'Krok 9', title: 'Raport. ChatGPT w Polsce', toc: 'Krok 9. Raport' },
+        { discuss: { who: 'w parach, po 3 minuty', prompts: [
+          'Przeczytajcie sobie nawzajem najważniejszy wynik. Czy ma liczbę i źródło?',
+          'Które ograniczenie jest najpoważniejsze? Czy drugie źródło je łagodzi?',
+        ] } },
+      ],
+    },
+  ],
+
+  summary: [
+    { id: 'karta3a', label: 'Krok 1. Karta trzech źródeł', section: 's3-1' },
+    { id: 'cg2', label: 'Krok 2. Odsłony w miesiącach', section: 's3-2' },
+    { id: 'cg3', label: 'Krok 3. Boty i źródła wejść', section: 's3-3' },
+    { id: 'cg4', label: 'Krok 4. Udział telefonu', section: 's3-4' },
+    { id: 'cg5', label: 'Krok 5. Dni tygodnia i wakacje', section: 's3-5' },
+    { id: 'cg6', label: 'Krok 6. Dwa indeksy', section: 's3-6' },
+    { id: 'cg7', label: 'Krok 7. Ankieta Eurostatu', section: 's3-7' },
+    { id: 'cg8', label: 'Krok 8. Korelacja i poziom', section: 's3-8' },
+    { id: 'karta3', label: 'Krok 9. Raport. ChatGPT w Polsce', section: 's3-9' },
+  ],
+
+  recap: [
+    'Ruch na stronie to suma śladów. Zanim go opiszesz, sprawdź, kto go zrobił i skąd przyszedł.',
+    'Spadek na wykresie nie zawsze znaczy, że ludzie stracili zainteresowanie. Tu zniknął ruch bez źródła.',
+    'Rytm tygodnia i roku mówi o ludziach więcej niż sama suma odsłon.',
+    'Dwa ślady mogą iść razem i mimo to rozjechać się poziomem. r tego nie widzi.',
+    'Ślady nie mówią, kto je zostawił. Ankieta to mówi, ale rzadko i o deklaracjach.',
+  ],
+
+  next: 'Rozdział 4 to profile użytkowników z mediów społecznościowych. Z wpisów i reakcji zbudujemy obraz grupy i sprawdzimy, czy model językowy koduje teksty tak jak człowiek.',
+
+  prep: '',
+
+  datasets: [
+    { name: 'Odsłony haseł Wikipedii (Wikimedia Pageviews)', url: 'https://pageviews.wmcloud.org/?project=pl.wikipedia.org&pages=ChatGPT', what: 'Dzienne odsłony każdego hasła, osobno ludzie, automaty i roboty oraz komputer i telefon.', licence: 'Licencja CC0.' },
+    { name: 'Wikimedia Clickstream', url: 'https://dumps.wikimedia.org/other/clickstream/', what: 'Co miesiąc pary „skąd i dokąd” dla haseł Wikipedii, także dla polskiej.', licence: 'Licencja CC0.' },
+    { name: 'Google Trends', url: 'https://trends.google.com/trends/explore?date=2022-12-01%202026-09-30&geo=PL&q=chatgpt&hl=pl', what: 'Indeks zainteresowania hasłem „chatgpt” w Polsce.', licence: 'Regulamin Google.' },
+    { name: 'Eurostat, użycie generatywnej AI (isoc_ai_iaiu)', url: 'https://ec.europa.eu/eurostat/databrowser/view/isoc_ai_iaiu/default/table?lang=en', what: 'Odsetek osób, które w ostatnich 3 miesiącach używały narzędzi generatywnej AI, 2025 r.', licence: 'Otwarta licencja Eurostatu.' },
+  ],
+
+  refs: {
+    beasley2014: 'Beasley, M. (2014). *UX i analiza ruchu w sieci. Praktyczny poradnik*. Gliwice: Helion.',
+    wulczyn2015: 'Wulczyn, E., Taraborelli, D. (2015). *Wikipedia Clickstream*. figshare. doi:10.6084/m9.figshare.1305770.',
+    eurostat2026: 'Eurostat (2026). *Individuals – use of generative AI tools* (isoc_ai_iaiu), dane za 2025 r. Luksemburg: Eurostat.',
+  },
+};
+
+__modules["src/book/chapter3.js"] = { "SOURCE_FIELDS3": SOURCE_FIELDS3, "REPORT_FIELDS3": REPORT_FIELDS3, "CHAPTER": CHAPTER };
+})();
+
 /* ===== src/book/figures/project.js ===== */
 (function () {
 /**
@@ -12706,7 +13106,7 @@ __modules["src/book/chapter2.js"] = { "QUERY_FIELDS": QUERY_FIELDS, "CHAPTER": C
  * exercises done (class tasks are 20% of the grade) and downloads with the card.
  */
 const { el, mount } = __modules["src/ui/dom.js"];
-const { getItem, setItem, isDone, markDone } = __modules["src/book/store.js"];
+const { getItem, setItem, isDone, markDone, onSaved } = __modules["src/book/store.js"];
 const { download } = __modules["src/ui/download.js"];
 const { reportPanel } = __modules["src/ui/reportbox.js"];
 const { personBox } = __modules["src/ui/people.js"];
@@ -12716,6 +13116,7 @@ const { TRAITS } = __modules["src/book/figures/traits.js"];
 const { t } = __modules["src/i18n/index.js"];
 const { plain } = __modules["src/book/rich.js"];
 const { QUERY_FIELDS } = __modules["src/book/chapter2.js"];
+const { SOURCE_FIELDS3, REPORT_FIELDS3 } = __modules["src/book/chapter3.js"];
 const CARD_FIELDS = [
   { id: 'temat', kind: 'area', label: 'Temat i pytanie badawcze' },
   { id: 'zrodlo', kind: 'line', label: 'Źródło danych (nazwa, adres)' },
@@ -12735,10 +13136,31 @@ function fieldsText(fields, card) {
 }
 const cardText = (card) => fieldsText(CARD_FIELDS, card);
 
+/**
+ * A card read back from its text in a report: the answer under each label, in the card's order.
+ * A label that is not found leaves its field out; a multi field splits on commas.
+ */
+function cardFromText(key, text) {
+  const { fields } = CARDS[key];
+  const lines = String(text).split('\n');
+  const at = fields.map((f) => lines.findIndex((l) => l.trim() === plain(f.label)));
+  const card = {};
+  fields.forEach((f, i) => {
+    if (at[i] < 0) return;
+    const next = at.slice(i + 1).find((x) => x > at[i]) ?? lines.length;
+    const value = lines.slice(at[i] + 1, next).join('\n').trim();
+    if (!value) return;
+    card[f.id] = f.kind === 'multi' ? value.split(', ').filter((o) => f.options.includes(o)) : value;
+  });
+  return card;
+}
+
 /** The project cards by storage key: fields, the file it downloads as, the title in the file and the report. */
 const CARDS = {
   karta: { fields: CARD_FIELDS, file: 'karta-zrodla.txt', title: () => t('bk.card.fileTitle') },
   karta2: { fields: QUERY_FIELDS, file: 'karta-zapytan.txt', title: () => t('bk.card.queryTitle') },
+  karta3a: { fields: SOURCE_FIELDS3, file: 'karta-trzech-zrodel.txt', title: () => t('bk.card.ch3SourcesTitle') },
+  karta3: { fields: REPORT_FIELDS3, file: 'raport-chatgpt.txt', title: () => t('bk.card.ch3ReportTitle') },
 };
 
 /** A project card as an exercise: fills and saves in the browser, done when every field is filled. */
@@ -12796,6 +13218,8 @@ function cardExercise(key) {
 
 const sourceCard = cardExercise('karta');
 const queryCard = cardExercise('karta2');
+const sourcesCard3 = cardExercise('karta3a');
+const reportCard3 = cardExercise('karta3');
 
 /**
  * The exercises of the chapter, for the summary, and under them the report for the teacher.
@@ -12821,10 +13245,16 @@ function summaryBlock(items, { onRefresh, course = '', fileName = 'raport.txt', 
   mount(host, list, report, personBox());
   draw();
   onRefresh?.(draw);
+  // A card field typed a moment ago must be in the report downloaded now, not after the next exercise.
+  let pending = 0;
+  onSaved(() => {
+    if (pending) return;
+    pending = setTimeout(() => { pending = 0; report.refresh(); }, 150);
+  });
   return host;
 }
 
-__modules["src/book/figures/project.js"] = { "CARD_FIELDS": CARD_FIELDS, "fieldsText": fieldsText, "cardText": cardText, "CARDS": CARDS, "sourceCard": sourceCard, "queryCard": queryCard, "summaryBlock": summaryBlock };
+__modules["src/book/figures/project.js"] = { "CARD_FIELDS": CARD_FIELDS, "fieldsText": fieldsText, "cardText": cardText, "cardFromText": cardFromText, "CARDS": CARDS, "cardExercise": cardExercise, "sourceCard": sourceCard, "queryCard": queryCard, "sourcesCard3": sourcesCard3, "reportCard3": reportCard3, "summaryBlock": summaryBlock };
 })();
 
 /* ===== src/book/figures/plan.js ===== */
@@ -14199,8 +14629,8 @@ const { rich, setFigureNumbers } = __modules["src/book/rich.js"];
 const { Workbench } = __modules["src/book/workbench.js"];
 const { stepsBlock, cardsBlock, tableBlock } = __modules["src/book/schemes.js"];
 const { lessonById } = __modules["src/lessons/index.js"];
-const { getProgress, reportFacts } = __modules["src/ui/progress.js"];
-const { isDone, getItem } = __modules["src/book/store.js"];
+const { getProgress, reportFacts, setProgress } = __modules["src/ui/progress.js"];
+const { isDone, getItem, setItem } = __modules["src/book/store.js"];
 const { brand, siteNav } = __modules["src/ui/site.js"];
 const { personLine } = __modules["src/ui/people.js"];
 const { tracesFigure } = __modules["src/book/figures/traces.js"];
@@ -14220,7 +14650,7 @@ const { decayFigure } = __modules["src/book/figures/decay.js"];
 const { agentExercise } = __modules["src/book/figures/agent.js"];
 const { traitsFigure, traitsExercise } = __modules["src/book/figures/traits.js"];
 const { ethicsExercise } = __modules["src/book/figures/ethics.js"];
-const { sourceCard, queryCard, summaryBlock } = __modules["src/book/figures/project.js"];
+const { sourceCard, queryCard, summaryBlock, CARDS, cardFromText } = __modules["src/book/figures/project.js"];
 const { courseMap, planFigure } = __modules["src/book/figures/plan.js"];
 const { searchmapFigure, windowFigure, querylogFigure, anchorFigure, breaksExercise } = __modules["src/book/figures/search.js"];
 const { resolutionFigure, pathFigure, dredgingFigure, toolFigure, clicksFigure, trendsUrlFigure } = __modules["src/book/figures/search2.js"];
@@ -14266,6 +14696,67 @@ const FIGURES = {
 
 /** What an exercise puts into the report as its answer, by id: () => text or null. Lessons give their accepted code. */
 const ANSWERS = {};
+/** The other way round: an answer from a report put back, by id: (text) => void. */
+const RESTORE = {};
+
+/**
+ * What a student's own report brings to this chapter, on another computer. Items are matched by
+ * their label, not their number, and the card by its title. Nothing done here is undone: a
+ * finished exercise stays as it is, and a filled card field keeps its text.
+ *
+ * @param {Object} chapter
+ * @param {Object} report  readReport() of a checked report
+ * @returns {{done: number, worked: number, total: number, unknown: number, card: boolean, apply: Function}}
+ *   `apply()` writes it for the person chosen at that moment
+ */
+function reportPlan(chapter, report) {
+  const norm = (s) => String(s).replace(/\s+/g, ' ').trim();
+  const byLabel = new Map(chapter.summary.map((it) => [norm(it.label), it]));
+  const pairs = [];
+  let unknown = 0;
+  for (const line of report.items || []) {
+    if (!line.status) continue;
+    const it = byLabel.get(norm(line.label));
+    if (it) pairs.push([it, line]); else unknown += 1;
+  }
+  const cardKey = chapter.card || 'karta';
+  const cardText = CARDS[cardKey] && (report.sections || []).find((x) => norm(x.title) === norm(CARDS[cardKey].title()))?.text;
+  const apply = () => {
+    for (const [it, line] of pairs) {
+      if (it.lesson) {
+        const p = getProgress(it.lesson);
+        if (p?.status === 'done') continue;
+        setProgress(it.lesson, line.status === 'done'
+          ? { status: 'done', doneAt: line.doneAt || Date.now(), attempts: line.attempts, hintsUsed: line.hintsUsed, solvedCode: line.answer, lastCode: line.answer }
+          : { status: 'seen', attempts: line.attempts, hintsUsed: line.hintsUsed });
+        continue;
+      }
+      if (line.status !== 'done' || isDone(it.id)) continue;
+      if (line.answer) RESTORE[it.id]?.(line.answer);
+      setItem(`done:${it.id}`, line.doneAt || Date.now());
+    }
+    if (cardText) {
+      const have = getItem(cardKey) || {};
+      const empty = (v) => v == null || (Array.isArray(v) ? !v.length : !String(v).trim());
+      const back = cardFromText(cardKey, cardText);
+      setItem(cardKey, { ...back, ...Object.fromEntries(Object.entries(have).filter(([, v]) => !empty(v))) });
+    }
+  };
+  return {
+    done: pairs.filter(([, l]) => l.status === 'done').length,
+    worked: pairs.length,
+    total: chapter.summary.length,
+    unknown,
+    card: !!cardText && Object.keys(cardFromText(cardKey, cardText)).length > 0,
+    apply,
+  };
+}
+
+/** The titles of further report sections in a chapter, where answers end (the card). */
+const reportSections = (chapter) => {
+  const key = chapter.card || 'karta';
+  return CARDS[key] ? [CARDS[key].title()] : [];
+};
 
 const EXERCISES = {
   mapa: quadrantsExercise,
@@ -14476,7 +14967,7 @@ function exerciseHead(b, minutes = true) {
     el('h3.bk-ex-title', b.title));
 }
 
-__modules["src/book/book.js"] = { "FIGURES": FIGURES, "ANSWERS": ANSWERS, "EXERCISES": EXERCISES, "figureNumbers": figureNumbers, "BookApp": BookApp };
+__modules["src/book/book.js"] = { "FIGURES": FIGURES, "ANSWERS": ANSWERS, "RESTORE": RESTORE, "reportPlan": reportPlan, "reportSections": reportSections, "EXERCISES": EXERCISES, "figureNumbers": figureNumbers, "BookApp": BookApp };
 })();
 
 /* ===== src/book/chapter1.js ===== */
@@ -14507,7 +14998,7 @@ const CHAPTER = {
   // where the work is done (author, 2026-10-08, D27). `parts` keep their minutes for the teacher's notes.
   minutes: false,
   plan: false,
-  siteNav: ['home', 'chapter2', 'trainer'],
+  siteNav: ['home', 'chapter2', 'chapter3', 'trainer'],
   number: 1,
   kicker: 'Warsztat analityki internetowej · Rozdział 1 z 5',
   title: 'Internet jako źródło danych o zachowaniach społecznych',

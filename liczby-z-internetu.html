@@ -910,6 +910,11 @@ textarea.rp-input { resize: vertical; font: 12.5px/1.5 var(--mono); white-space:
 .who-teacher, .who-link { padding: 0; border: 0; background: none; color: var(--ink-soft); font: inherit; font-size: 13px; text-decoration: underline; text-align: left; cursor: pointer; }
 .who-teacher:hover, .who-link:hover { color: var(--accent); }
 .who-close { justify-self: start; }
+/* "Masz raport z innego komputera?": a student's link, so it stands out from the teacher's */
+.who-bring { color: var(--accent); font-weight: 600; }
+.who-file-label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
+.who-file { max-width: 100%; font: inherit; font-size: 14px; font-weight: 400; }
+.who-bring-sum { margin: 6px 0 10px; padding-left: 1.2em; font-size: 14px; }
 .who-line, .who-box { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 8px 6px; font-size: 13px; color: var(--ink-soft); }
 .who-line-name { font-weight: 700; color: var(--ink); overflow-wrap: anywhere; }
 .who-danger { color: var(--err); font-weight: 700; }
@@ -3217,6 +3222,7 @@ const pl = {
   'ui.site.home': "← Strona kursu",
   'ui.site.chapter1': "Rozdział 1. Internet jako źródło danych",
   'ui.site.chapter2': "Rozdział 2. Zapytania w wyszukiwarkach",
+  'ui.site.chapter3': "Rozdział 3. Ruch i zachowania użytkowników",
   'ui.site.trainer': "Trener. 13 lekcji z liczenia",
   'ui.dataNote': "Kliknij, by zobaczyć całą tabelę. Dane są fikcyjne i służą do ćwiczeń. Wyjątkiem są dwie prawdziwe tabele, „sceny” i „opinie”.",
   'ui.about': "Kurs do przedmiotu „Warsztat analityki internetowej”. Opracowali dr Ilya Sulzhytski i Claude (Anthropic). Dane i dokumenty są fikcyjne. Prawdziwe są dwie tabele. Tabela sceny pochodzi z badania Sulzhytski i Howanitz (2025). Tabela opinie to opinie z Allegro ze zbioru Allegro Reviews (licencja CC BY-SA 4.0). Postęp zapisuje się tylko w tej przeglądarce.",
@@ -3793,6 +3799,30 @@ const pl = {
   'who.forgetAsk': "Usunąć postęp i odpowiedzi osoby {name}? Tego nie da się cofnąć.",
   'who.forgetYes': "Tak, usuń",
   'who.forgetNo': "Zostaw",
+  'bk.sh.files': "Pliki do pobrania",
+  'bk.sh.peek': "Zobacz początek pliku",
+  'bk.sh.source': "Źródło:",
+  'bk.sh.taken': "pobrane {date}.",
+  'bk.sh.steps': "W Excelu",
+  'bk.sh.empty': "Pole „{label}” jest puste.",
+  'bk.sh.wrongCount': "Nie zgadza się {k} z {n}.",
+  'bk.sh.answer': "W arkuszu:",
+  'bk.card.ch3SourcesTitle': "Karta trzech źródeł (rozdział 3). Warsztat analityki internetowej",
+  'bk.card.ch3ReportTitle': "Raport. ChatGPT w Polsce (rozdział 3). Warsztat analityki internetowej",
+  'bring.open': "Masz raport z innego komputera? Wczytaj go i pracuj dalej",
+  'bring.title': "Wczytaj swój raport",
+  'bring.say': "Wybierz plik raportu pobrany na innym komputerze albo wklej jego tekst. Wrócą wykonane ćwiczenia, Twój kod i karta. Raport musi mieć ostatnią linię z kodem kontrolnym.",
+  'bring.file': "Plik raportu (.txt)",
+  'bring.orPaste': "Albo wklej cały tekst raportu.",
+  'bring.placeholder': "Wklej tu swój raport",
+  'bring.date': "· raport z {date}",
+  'bring.found': "Z tej strony wróci {n} z {total} ćwiczeń.",
+  'bring.card': "Karta z raportu też wróci.",
+  'bring.unknown': "Liczba ćwiczeń pominiętych, bo nie ma ich na tej stronie, to {n}.",
+  'bring.nothing': "Raport jest nienaruszony, ale nie ma w nim żadnego ćwiczenia z tej strony.",
+  'bring.otherPage': "To raport z innej strony ({course}). Otwórz tamtą stronę i wczytaj go tam.",
+  'bring.cannotRead': "Nie udało się odczytać pliku. Otwórz go w Notatniku i wklej tekst poniżej.",
+  'bring.go': "Pracuj dalej jako {name}",
   // --- the report for the teacher (ui/report.js, ui/reportbox.js) ---------------------
   'rep.title': "Raport dla prowadzącego",
   'rep.nameLabel': "Imię i nazwisko",
@@ -8381,7 +8411,7 @@ __modules["src/lessons/index.js"] = { "LESSONS": LESSONS, "lessonById": lessonBy
  */
 const { el } = __modules["src/ui/dom.js"];
 const { t } = __modules["src/i18n/index.js"];
-const SITE_PAGES = { home: './', chapter1: 'rozdzial-1-internet-jako-zrodlo-danych.html', chapter2: 'rozdzial-2-zapytania-w-wyszukiwarkach.html', trainer: 'liczby-z-internetu.html' };
+const SITE_PAGES = { home: './', chapter1: 'rozdzial-1-internet-jako-zrodlo-danych.html', chapter2: 'rozdzial-2-zapytania-w-wyszukiwarkach.html', chapter3: 'rozdzial-3-ruch-i-zachowania-uzytkownikow.html', trainer: 'liczby-z-internetu.html' };
 
 function siteLinks(loc = typeof location === 'undefined' ? null : location) {
   return loc && /^https?:$/.test(loc.protocol) ? SITE_PAGES : null;
@@ -8542,7 +8572,70 @@ function verifyReports(text) {
   return out;
 }
 
-__modules["src/ui/report.js"] = { "buildReport": buildReport, "verifyReports": verifyReports };
+/**
+ * A student's own report read back in full, so the work can continue on another computer
+ * (the R trainer's "Przywróć postęp", D36 there). Only the last report in the text, and only
+ * when its check code holds: a report edited by hand brings nothing.
+ *
+ * The answers are read from the text as pasted, not from the normalised one, because the
+ * indentation of Python code matters. A downloaded file keeps it; a report pasted through an
+ * LMS may lose it, and then the code comes back flat (still marked done).
+ *
+ * @param {string} text
+ * @param {Object} [o]
+ * @param {string[]} [o.sections]  titles of the further sections (the card), where answers end
+ * @returns {{ok: boolean, reason?: string, name?: string, course?: string, date?: string,
+ *   items?: Array<{n, label, status: 'done'|'seen'|null, doneAt, attempts, hintsUsed, answer}>,
+ *   sections?: Array<{title, text}>}}
+ */
+function readReport(text, { sections = [] } = {}) {
+  const all = verifyReports(text);
+  const last = all[all.length - 1];
+  if (!last) return { ok: false, reason: 'noCode' };
+  if (!last.ok) return last;
+  const clean = (l) => l.replace(/[   \t]/g, ' ').replace(/ +/g, ' ').trim();
+  const raw = String(text).replace(/\r\n?/g, '\n').split('\n');
+  let end = raw.length - 1;
+  while (end >= 0 && !clean(raw[end]).startsWith(t('rep.code'))) end -= 1;
+  let start = end;
+  while (start > 0 && clean(raw[start]) !== t('rep.head')) start -= 1;
+  const body = raw.slice(start, end);
+  const titles = new Set(sections.map(clean));
+  const day = (s) => {
+    const m = s.match(/(\d\d)\.(\d\d)\.(\d{4})/);
+    return m ? new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]), 12).getTime() : null;
+  };
+  const count = (state, key) => Number(state.match(new RegExp(`${t(key).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} (\\d+)`))?.[1] || 0);
+  const items = [];
+  const found = [];
+  let into = null;    // the answer lines of the item read last
+  let section = null;
+  for (const line of body) {
+    const c = clean(line);
+    const m = !section && c.match(/^(\d+)\. (.+) → (.+)$/);
+    if (m) {
+      const state = m[3];
+      const done = state.startsWith(t('rep.done'));
+      const seen = !done && state.startsWith(t('rep.started'));
+      into = [];
+      items.push({ n: Number(m[1]), label: m[2], status: done ? 'done' : seen ? 'seen' : null, doneAt: done ? day(state) : null,
+        attempts: count(state, 'rep.attempts'), hintsUsed: count(state, 'rep.hints'), lines: into });
+    } else if (titles.has(c)) {
+      section = { title: c, lines: [] };
+      found.push(section);
+      into = null;
+    } else if (section) section.lines.push(line);
+    else if (into) into.push(line.startsWith('    ') ? line.slice(4) : line.trim() === '' ? '' : line);
+  }
+  const join = (lines) => lines.join('\n').replace(/^\n+|\s+$/g, '');
+  return {
+    ok: true, name: last.name, course: last.course, date: last.date,
+    items: items.map(({ lines, ...it }) => ({ ...it, answer: join(lines) || null })),
+    sections: found.map((s) => ({ title: s.title, text: join(s.lines) })),
+  };
+}
+
+__modules["src/ui/report.js"] = { "buildReport": buildReport, "verifyReports": verifyReports, "readReport": readReport };
 })();
 
 /* ===== src/ui/download.js ===== */
@@ -8627,15 +8720,17 @@ function reportPanel({ course, items, extra = () => [], fileName = 'raport.txt' 
   const draw = () => {
     const name = nameInput.value.replace(/\s+/g, ' ').trim();
     if (!name) { mount(out, el('p.rp-need', t('rep.needName'))); return; }
-    const text = buildReport({ course, name, items: items(), extra: extra() });
+    const fresh = () => buildReport({ course, name, items: items(), extra: extra() });
+    const text = fresh();
     const area = el('textarea.rp-input.rp-text', { readonly: true, rows: '12', 'aria-label': t('rep.title'), spellcheck: 'false' });
     area.value = text;
     const status = el('span.rp-status', { 'aria-live': 'polite' });
     mount(out,
       area,
       el('div.rp-bar',
-        el('button.ls-check', { type: 'button', onClick: async () => { status.textContent = t((await copyText(text, area)) ? 'rep.copied' : 'rep.copyFailed'); } }, t('rep.copy')),
-        el('button.rp-btn', { type: 'button', onClick: () => { if (!download(fileName, `${text}\n`)) status.textContent = t('rep.copyFailed'); } }, t('rep.download')),
+        // Built again on click: what was typed a moment ago is in it, even before the text redraws.
+        el('button.ls-check', { type: 'button', onClick: async () => { const now = fresh(); area.value = now; status.textContent = t((await copyText(now, area)) ? 'rep.copied' : 'rep.copyFailed'); } }, t('rep.copy')),
+        el('button.rp-btn', { type: 'button', onClick: () => { const now = fresh(); area.value = now; if (!download(fileName, `${now}\n`)) status.textContent = t('rep.copyFailed'); } }, t('rep.download')),
         status),
       el('p.rp-say', t('rep.say')));
   };
@@ -8679,6 +8774,7 @@ const { el, mount } = __modules["src/ui/dom.js"];
 const { t } = __modules["src/i18n/index.js"];
 const { MAX_NAME, people, enter, choose, forget, person } = __modules["src/ui/person.js"];
 const { checkPanel } = __modules["src/ui/reportbox.js"];
+const { readReport } = __modules["src/ui/report.js"];
 const pad = (n) => String(n).padStart(2, '0');
 const shortDate = (ms) => { const d = new Date(ms); return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}`; };
 
@@ -8702,8 +8798,12 @@ function toAnchor() {
  * Show "Kim jesteś?" in `host`, and call `start()` once someone is chosen.
  * @param {Element} host
  * @param {Function} start  builds the page into the same host
+ * @param {Object} [o]
+ * @param {Function} [o.restore]   (report) => reportPlan: lets a student continue from their own
+ *                                 report, made on another computer
+ * @param {string[]} [o.sections]  titles of the report's further sections (the card)
  */
-function gate(host, start) {
+function gate(host, start, { restore = null, sections = [] } = {}) {
   const go = (p) => {
     if (!p) return;
     mount(host);
@@ -8738,6 +8838,7 @@ function gate(host, start) {
         }, input, el('button.ls-check.who-start', { type: 'submit' }, t('who.start'))),
         el('p.who-hint', t('who.hint')),
         back,
+        restore ? el('button.who-teacher.who-bring', { type: 'button', onClick: showBring }, t('bring.open')) : null,
         el('button.who-teacher', { type: 'button', onClick: showCheck }, t('rep.checkTitle')))));
     setTimeout(() => { try { input.focus(); } catch { /* not on the page yet */ } }, 0);
   };
@@ -8746,6 +8847,49 @@ function gate(host, start) {
       el('h1.who-title', t('rep.checkTitle')),
       checkPanel(),
       el('button.rp-btn.who-close', { type: 'button', onClick: showWho }, t('who.backToNames')))));
+  // "Mam raport z innego komputera": a file or pasted text, checked, then continued as its person.
+  const showBring = () => {
+    const verdict = el('div.rp-verdicts', { 'aria-live': 'polite' });
+    const paste = el('textarea.rp-input.rp-paste', { rows: '6', placeholder: t('bring.placeholder'), 'aria-label': t('bring.title'), spellcheck: 'false' });
+    const judge = (text) => {
+      if (!String(text).trim()) { mount(verdict); return; }
+      const report = readReport(text, { sections });
+      if (!report.ok) { mount(verdict, el('div.rp-verdict.rp-bad', t(report.reason === 'noCode' ? 'rep.noCode' : 'rep.bad'))); return; }
+      const plan = restore(report);
+      if (!report.name || !plan.worked) {
+        mount(verdict, el('div.rp-verdict.rp-bad', plan.unknown && report.course ? t('bring.otherPage', { course: report.course }) : t('bring.nothing')));
+        return;
+      }
+      mount(verdict, el('div.rp-verdict.rp-ok',
+        el('b', report.name), ' ', t('bring.date', { date: report.date || '?' }),
+        el('ul.who-bring-sum',
+          el('li', t('bring.found', { n: plan.done, total: plan.total })),
+          plan.card ? el('li', t('bring.card')) : null,
+          plan.unknown ? el('li', t('bring.unknown', { n: plan.unknown })) : null),
+        el('button.ls-check.who-start', {
+          type: 'button',
+          onClick: () => { const p = enter(report.name); plan.apply(); go(p); },
+        }, t('bring.go', { name: report.name }))));
+    };
+    paste.addEventListener('input', () => judge(paste.value));
+    const file = el('input.who-file', {
+      type: 'file', accept: '.txt,text/plain', 'aria-label': t('bring.file'),
+      onChange: () => {
+        const f = file.files?.[0];
+        if (!f) return;
+        f.text().then((text) => { paste.value = text; judge(text); }).catch(() => mount(verdict, el('div.rp-verdict.rp-bad', t('bring.cannotRead'))));
+      },
+    });
+    mount(host, el('div.who',
+      el('div.who-card.who-card-wide', { role: 'dialog', 'aria-label': t('bring.title') },
+        el('h1.who-title', t('bring.title')),
+        el('p.who-say', t('bring.say')),
+        el('label.who-file-label', el('span', t('bring.file')), file),
+        el('p.who-hint', t('bring.orPaste')),
+        paste,
+        verdict,
+        el('button.rp-btn.who-close', { type: 'button', onClick: showWho }, t('who.backToNames')))));
+  };
   showWho();
 }
 
@@ -8947,7 +9091,7 @@ class App {
       el('div.menu-backdrop', { onClick: () => this.toggleMenu(false) }),
       el('nav.menu-panel', { 'aria-label': t('ui.lessons') },
         el('div.menu-head', el('span', t('ui.lessons')), el('button.menu-close', { type: 'button', 'aria-label': t('ui.close'), onClick: () => this.toggleMenu(false) }, '×')),
-        siteNav(['home', 'chapter1', 'chapter2']),
+        siteNav(['home', 'chapter1', 'chapter2', 'chapter3']),
         lessonsByModule().map(([module, lessons]) => el('div.menu-module',
           el('div.menu-module-name', `${module}. ${t(`module.${module}`)}`),
           lessons.map((lesson) => {
