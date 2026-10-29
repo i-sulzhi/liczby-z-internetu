@@ -12956,7 +12956,7 @@ const CHAPTER = {
       id: 's3-1', num: '3.1', title: 'Krok 1. Pytanie i źródła', meeting: 5,
       parts: [['teoria', 10], ['projekt', 15]],
       blocks: [
-        P('Pytanie raportu brzmi tak. **Jak Polacy zaczęli korzystać z ChatGPT?** Odpowiesz na nie z trzech otwartych źródeł. Każde patrzy na ludzi inaczej.'),
+        P('Pytanie raportu brzmi tak. **Jak Polacy zaczęli korzystać z ChatGPT?** Odpowiesz na nie z trzech otwartych źródeł. Każde patrzy na ludzi inaczej. Wikipedia i Trends pokażą zainteresowanie ChatGPT, a nie korzystanie z niego. O korzystaniu mówi tylko ankieta.'),
         { label: 'Trzy źródła raportu', cards: [
           { title: 'Wikipedia', text: 'Ile razy otwarto hasło „ChatGPT”. Ślad zachowania, dzień po dniu, z podziałem na ludzi, boty i urządzenia.' },
           { title: 'Google Trends', text: 'Jak często wpisywano „chatgpt” w Google. Ślad zachowania, indeks od 0 do 100.' },
@@ -13040,7 +13040,7 @@ const CHAPTER = {
       id: 's3-8', num: '3.8', title: 'Krok 8. Czy źródła mówią to samo?', meeting: 7,
       parts: [['cwiczenie', 25]],
       blocks: [
-        remind('Korelacja r mówi, czy dwie liczby rosną razem. Wynik z sieci sprawdza się drugim źródłem (podrozdział 2.6).'),
+        remind('Korelacja r mówi, czy dwie liczby zmieniają się razem. Wynik z sieci sprawdza się drugim źródłem (podrozdział 2.6).'),
         P('Wikipedia i Trends to dwa ślady tego samego zainteresowania. Czy zgadzają się tydzień po tygodniu?'),
         { exercise: 'cg8', reveal: true, num: 'Krok 8', title: 'Korelacja i poziom', toc: 'Krok 8. Korelacja i poziom' },
         { figure: 'cgscatter' },
@@ -15255,6 +15255,8 @@ const plr = (x) => x.toFixed(2).replace('.', ',');
 const src = (what) => el('div.fg-caption', what);
 const WIKI = 'Źródło: Wikimedia, odsłony hasła „ChatGPT” w polskiej Wikipedii, odczyt 29.10.2026.';
 const ROWS = `${E.s2.firstRow}:${E.s2.lastRow}`;
+const EU = Object.fromEntries(S.eurostat.map(([g, pl, eu]) => [g, { pl, eu }]));
+const YOUNG_OLD_PTS = pl1(EU['16–24 lata'].pl - EU['65–74 lata'].pl);
 // what figure 3.6 shows: Trends weeks averaged into months, its best month = 100
 const TWO = S.twoIndex;
 const TREND_TOP = TWO.reduce((a, b) => (b[2] > a[2] ? b : a))[0];
@@ -15279,7 +15281,7 @@ const SHEETS = {
       'Z tabeli przestawnej zrób wykres liniowy i znajdź najwyższy miesiąc.',
     ],
     fields: [
-      { id: 'march', label: 'Ile odsłon zrobili ludzie w marcu 2025 r.?', short: 'marzec 2025', expect: E.s2.march2025 },
+      { id: 'march', label: 'Ile było odsłon ludzi w marcu 2025 r.?', short: 'marzec 2025', expect: E.s2.march2025 },
       { id: 'peak', label: 'W którym miesiącu odsłon było najwięcej? Wpisz rok i miesiąc, na przykład 2024-11.', short: 'najwyższy miesiąc', expect: E.s2.peakMonth, kind: 'month' },
     ],
     wrong: {
@@ -15351,7 +15353,7 @@ const SHEETS = {
     steps: [
       'W wolnej kolumnie, na przykład J, wpisz dzień tygodnia, `=DZIEŃ.TYG(A2;2)` (`WEEKDAY`). Drugi argument 2 sprawia, że poniedziałek to 1, a niedziela to 7.',
       'Średnia odsłon w poniedziałki to `=ŚREDNIA.JEŻELI(J:J;1;B:B)` (`AVERAGEIF`). Sobota to 6.',
-      'Średnia z lipca i sierpnia 2025 r. Zaznacz te dni filtrem albo policz `=ŚREDNIA(B…:B…)` na ich wierszach.',
+      'Średnia z lipca i sierpnia 2025 r. potrzebuje kolumn `rok` i `miesiac` z kroku 2, `=ŚREDNIA.WARUNKÓW(B:B;H:H;2025;I:I;">=7";I:I;"<=8")` (`AVERAGEIFS`).',
     ],
     fields: [
       { id: 'mon', label: 'Średnio ile odsłon ma poniedziałek? Zaokrąglij do całości.', short: 'poniedziałek', expect: E.s5.mon, tol: 1 },
@@ -15408,7 +15410,7 @@ const SHEETS = {
       gap: (v) => (Math.abs(v - E.s7.gapPositive) < 0.15 ? 'Polska minus UE daje liczbę ujemną. Polska jest poniżej średniej.' : 'Weź wiersz „wszyscy (16–74 lata)” i odejmij UE od Polski.'),
       ratio: (v) => (Math.abs(v - E.s7.oldYoung) < 0.15 ? 'Odwrotnie. Podziel grupę 16–24 przez grupę 65–74.' : 'Podziel procent dla 16–24 lat przez procent dla 65–74 lat, oba z kolumny `polska_procent`.'),
     },
-    success: `Tak. Polska jest o ${pl1(-E.s7.gapAll)} pkt proc. poniżej średniej UE, a odsetek najmłodszych jest ${pl1(E.s7.youngOld)} raza wyższy niż najstarszych. Ślady w Wikipedii i Trends nie mówią, kto szukał. Ankieta to mówi, ale tylko raz w roku.`,
+    success: `Tak. Polska jest o ${pl1(-E.s7.gapAll)} pkt proc. poniżej średniej UE, a odsetek najmłodszych jest ${pl1(E.s7.youngOld)} raza wyższy niż najstarszych. Wśród najstarszych AI używa jednak tylko ${pl1(EU['65–74 lata'].pl)}%, więc iloraz łatwo się zmienia. Pewniejsza jest różnica, ${YOUNG_OLD_PTS} pkt proc.`,
   },
 
   cg8: {
