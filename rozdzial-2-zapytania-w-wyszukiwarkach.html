@@ -1651,6 +1651,9 @@ textarea.kc-input { resize: vertical; }
 .sh-file { display: grid; gap: 4px; min-width: 0; }
 .sh-file-btn { justify-self: start; max-width: 100%; padding: 4px 12px; border: 1px solid var(--line-strong); border-radius: 14px; background: transparent; color: var(--ink); font: 13px var(--mono); cursor: pointer; overflow-wrap: anywhere; text-align: left; }
 .sh-file-btn:hover { border-color: var(--accent); }
+.bk-wait { margin: 0; padding: 10px 14px; border: 1px dashed var(--line-strong); border-radius: 10px; color: var(--ink-soft); font-size: 14px; }
+.bk-after[hidden], .bk-wait[hidden] { display: none; }
+.bk-after { display: contents; }
 .sh-src { font-size: 12px; color: var(--ink-soft); overflow-wrap: anywhere; }
 .sh-src a { color: inherit; text-decoration: underline; }
 .sh-peek summary { cursor: pointer; font-size: 13px; color: var(--ink-soft); }
@@ -4607,6 +4610,9 @@ const pl = {
   'bk.sh.empty': "Pole „{label}” jest puste.",
   'bk.sh.wrongCount': "Nie zgadza się {k} z {n}.",
   'bk.sh.answer': "W arkuszu:",
+  'bk.sh.times100': "Wygląda na ułamek. Pomnóż wynik przez 100.",
+  'bk.sh.rounded': "Za mocno zaokrąglone. Podaj tyle miejsc po przecinku, ile mówi pytanie.",
+  'bk.revealWait': "Rysunek z wynikiem pokaże się tutaj, gdy sprawdzisz liczby.",
   'bk.card.ch3SourcesTitle': "Karta trzech źródeł (rozdział 3). Warsztat analityki internetowej",
   'bk.card.ch3ReportTitle': "Raport. ChatGPT w Polsce (rozdział 3). Warsztat analityki internetowej",
   'bring.open': "Masz raport z innego komputera? Wczytaj go i pracuj dalej",
@@ -12968,7 +12974,7 @@ const CHAPTER = {
       blocks: [
         remind('Odsłona hasła to ślad. Mierzy, że ktoś otworzył stronę, a nie, że ją przeczytał albo używa ChatGPT (podrozdział 1.5).'),
         P('Zacznij od ruchu. Ile razy dziennie ktoś otwierał hasło „ChatGPT” w polskiej Wikipedii? Dzienne liczby zsumujesz w miesiące.'),
-        { exercise: 'cg2', num: 'Krok 2', title: 'Odsłony w miesiącach', toc: 'Krok 2. Odsłony w miesiącach' },
+        { exercise: 'cg2', reveal: true, num: 'Krok 2', title: 'Odsłony w miesiącach', toc: 'Krok 2. Odsłony w miesiącach' },
         { figure: 'cgmonths' },
       ],
     },
@@ -12978,7 +12984,7 @@ const CHAPTER = {
       blocks: [
         remind('Dane internetowe są brudne. Część ruchu robią programy, a nie ludzie (podrozdział 1.7). W analityce stron wejście bez źródła to tak zwany ruch bezpośredni. Nie wiadomo, skąd przyszedł.'),
         P('Rysunek {rys:cgmonths} pokazał, że od kwietnia 2026 r. odsłony spadły kilka razy. Czy Polacy nagle przestali interesować się ChatGPT? Sprawdź dwie rzeczy. Kto czyta hasło i skąd przychodzi.'),
-        { exercise: 'cg3', num: 'Krok 3', title: 'Boty i źródła wejść', toc: 'Krok 3. Boty i źródła wejść' },
+        { exercise: 'cg3', reveal: true, num: 'Krok 3', title: 'Boty i źródła wejść', toc: 'Krok 3. Boty i źródła wejść' },
         { figure: 'cgagents' },
         { figure: 'cgsources' },
         P('To jest odpowiedź na zagadkę z kroku 2. Od kwietnia zniknął głównie ruch bez źródła, który wcześniej robił dwie trzecie wejść. Wejścia z wyszukiwarki spadły dużo mniej. Bez tego pliku łatwo napisać w raporcie, że Polacy stracili zainteresowanie ChatGPT.'),
@@ -12994,7 +13000,7 @@ const CHAPTER = {
       blocks: [
         remind('Udział zależy od mianownika (lekcja „Wskaźniki i mianowniki” w trenerze). Tu mianownikiem są odsłony ludzi w danym roku.'),
         P('Zachowania użytkowników to także sprzęt. Na czym Polacy czytają o ChatGPT?'),
-        { exercise: 'cg4', num: 'Krok 4', title: 'Udział telefonu', toc: 'Krok 4. Udział telefonu' },
+        { exercise: 'cg4', reveal: true, num: 'Krok 4', title: 'Udział telefonu', toc: 'Krok 4. Udział telefonu' },
         { figure: 'cgdevices' },
         P('W 2026 r. udział telefonu nagle spada. Z marca na kwiecień odsłony z telefonu spadły o ponad 80%, a z komputera prawie o połowę. Z odsłon, które wtedy zniknęły, dwie trzecie były z telefonu. Ten sam spadek widać więc w dwóch plikach, a razem mówią więcej niż każdy osobno.'),
       ],
@@ -13005,7 +13011,7 @@ const CHAPTER = {
       blocks: [
         remind('Na wykresie z sieci ruszają się sezon, zdarzenia i samo narzędzie (podrozdział 2.5). Sezon to ludzie.'),
         P('Kiedy Polacy otwierają hasło „ChatGPT”? Policz średnie dla dni tygodnia i dla wakacji.'),
-        { exercise: 'cg5', num: 'Krok 5', title: 'Dni tygodnia i wakacje', toc: 'Krok 5. Dni tygodnia i wakacje' },
+        { exercise: 'cg5', reveal: true, num: 'Krok 5', title: 'Dni tygodnia i wakacje', toc: 'Krok 5. Dni tygodnia i wakacje' },
         { figure: 'cgrhythm' },
         P('Wakacje 2025 r. to spadek o dwie trzecie wobec wiosny, a sobota o jedną czwartą wobec poniedziałku. Taki rytm pasuje bardziej do nauki i pracy niż do rozrywki.'),
       ],
@@ -13016,7 +13022,7 @@ const CHAPTER = {
       blocks: [
         remind('Indeks Trends to udział hasła, a nie liczba ludzi. 100 to szczyt wybranego okna (podrozdział 2.2).'),
         P('Wikipedia daje liczby, a Trends indeks. Żeby je porównać, Wikipedię też zamienisz na indeks, 100 w najwyższym miesiącu.'),
-        { exercise: 'cg6', num: 'Krok 6', title: 'Dwa indeksy', toc: 'Krok 6. Dwa indeksy' },
+        { exercise: 'cg6', reveal: true, num: 'Krok 6', title: 'Dwa indeksy', toc: 'Krok 6. Dwa indeksy' },
         { figure: 'cgtwo' },
       ],
     },
@@ -13026,7 +13032,7 @@ const CHAPTER = {
       blocks: [
         remind('Ślady nie mówią, kto je zostawił. O tym, kto jest w danych, mówi dopiero inne źródło (podrozdział 1.4).'),
         P('Wikipedia i Trends nie wiedzą, ile lat ma czytelnik. Eurostat zapytał o to ludzi wprost.'),
-        { exercise: 'cg7', num: 'Krok 7', title: 'Ankieta Eurostatu', toc: 'Krok 7. Ankieta Eurostatu' },
+        { exercise: 'cg7', reveal: true, num: 'Krok 7', title: 'Ankieta Eurostatu', toc: 'Krok 7. Ankieta Eurostatu' },
         { figure: 'cgeuro' },
       ],
     },
@@ -13036,7 +13042,7 @@ const CHAPTER = {
       blocks: [
         remind('Korelacja r mówi, czy dwie liczby rosną razem. Wynik z sieci sprawdza się drugim źródłem (podrozdział 2.6).'),
         P('Wikipedia i Trends to dwa ślady tego samego zainteresowania. Czy zgadzają się tydzień po tygodniu?'),
-        { exercise: 'cg8', num: 'Krok 8', title: 'Korelacja i poziom', toc: 'Krok 8. Korelacja i poziom' },
+        { exercise: 'cg8', reveal: true, num: 'Krok 8', title: 'Korelacja i poziom', toc: 'Krok 8. Korelacja i poziom' },
         { figure: 'cgscatter' },
       ],
     },
@@ -14630,7 +14636,7 @@ const { Workbench } = __modules["src/book/workbench.js"];
 const { stepsBlock, cardsBlock, tableBlock } = __modules["src/book/schemes.js"];
 const { lessonById } = __modules["src/lessons/index.js"];
 const { getProgress, reportFacts, setProgress } = __modules["src/ui/progress.js"];
-const { isDone, getItem, setItem } = __modules["src/book/store.js"];
+const { isDone, getItem, setItem, onSaved } = __modules["src/book/store.js"];
 const { brand, siteNav } = __modules["src/ui/site.js"];
 const { personLine } = __modules["src/ui/people.js"];
 const { tracesFigure } = __modules["src/book/figures/traces.js"];
@@ -14886,7 +14892,23 @@ class BookApp {
       el('div.bk-sec-head',
         meta.length ? el('div.bk-sec-meta', meta) : null,
         el('h2.bk-sec-title', el('span.bk-sec-num', s.num), ' ', s.title)),
-      s.blocks.map((b) => this.renderBlock(b)));
+      this.renderBlocks(s.blocks));
+  }
+
+  /**
+   * The blocks of a section. After an exercise marked `reveal`, the rest of the section (its
+   * figures and conclusions show the answer) stays hidden until the exercise is done.
+   */
+  renderBlocks(blocks) {
+    const at = blocks.findIndex((b) => b.exercise && b.reveal);
+    if (at < 0 || at === blocks.length - 1) return blocks.map((b) => this.renderBlock(b));
+    const id = blocks[at].exercise;
+    const wait = el('p.bk-wait', t('bk.revealWait'));
+    const after = el('div.bk-after', blocks.slice(at + 1).map((b) => this.renderBlock(b)));
+    const sync = () => { const done = isDone(id); after.hidden = !done; wait.hidden = done; };
+    sync();
+    onSaved((key) => { if (key === `done:${id}`) sync(); });
+    return [...blocks.slice(0, at + 1).map((b) => this.renderBlock(b)), wait, after];
   }
 
   renderBlock(b) {
