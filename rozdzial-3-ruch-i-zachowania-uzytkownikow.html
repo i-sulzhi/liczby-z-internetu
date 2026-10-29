@@ -12982,7 +12982,7 @@ const CHAPTER = {
       id: 's3-3', num: '3.3', title: 'Krok 3. Ludzie czy boty? Skąd przyszli?', meeting: 5,
       parts: [['cwiczenie', 35]],
       blocks: [
-        remind('Dane internetowe są brudne. Część ruchu robią programy, a nie ludzie (podrozdział 1.7). W analityce stron wejście bez źródła to tak zwany ruch bezpośredni. Nie wiadomo, skąd przyszedł.'),
+        remind('Dane internetowe są brudne. Część ruchu robią programy, a nie ludzie (podrozdział 1.7). W analityce stron wejście bez źródła to tak zwany ruch bezpośredni (Beasley 2014). Nie wiadomo, skąd przyszedł.'),
         P('Rysunek {rys:cgmonths} pokazał, że od kwietnia 2026 r. odsłony spadły kilka razy. Czy Polacy nagle przestali interesować się ChatGPT? Sprawdź dwie rzeczy. Kto czyta hasło i skąd przychodzi.'),
         { exercise: 'cg3', reveal: true, num: 'Krok 3', title: 'Boty i źródła wejść', toc: 'Krok 3. Boty i źródła wejść' },
         { figure: 'cgagents' },
@@ -13009,11 +13009,11 @@ const CHAPTER = {
       id: 's3-5', num: '3.5', title: 'Krok 5. Rytm', meeting: 6,
       parts: [['cwiczenie', 25]],
       blocks: [
-        remind('Na wykresie z sieci ruszają się sezon, zdarzenia i samo narzędzie (podrozdział 2.5). Sezon to ludzie.'),
+        remind('Na wykresie z sieci ruszają się sezon, zdarzenia i samo narzędzie (podrozdział 2.5). Wakacje i rok szkolny zostawiają w danych ludzie, a nie boty.'),
         P('Kiedy Polacy otwierają hasło „ChatGPT”? Policz średnie dla dni tygodnia i dla wakacji.'),
         { exercise: 'cg5', reveal: true, num: 'Krok 5', title: 'Dni tygodnia i wakacje', toc: 'Krok 5. Dni tygodnia i wakacje' },
         { figure: 'cgrhythm' },
-        P('Wakacje 2025 r. to spadek o dwie trzecie wobec wiosny, a sobota o jedną czwartą wobec poniedziałku. Taki rytm pasuje bardziej do nauki i pracy niż do rozrywki.'),
+        P('Wakacje 2025 r. to spadek o dwie trzecie wobec wiosny (marzec–maj), a sobota o jedną czwartą wobec poniedziałku. Taki rytm pasuje bardziej do nauki i pracy niż do rozrywki.'),
       ],
     },
     {
@@ -15255,6 +15255,12 @@ const plr = (x) => x.toFixed(2).replace('.', ',');
 const src = (what) => el('div.fg-caption', what);
 const WIKI = 'Źródło: Wikimedia, odsłony hasła „ChatGPT” w polskiej Wikipedii, odczyt 29.10.2026.';
 const ROWS = `${E.s2.firstRow}:${E.s2.lastRow}`;
+// what figure 3.6 shows: Trends weeks averaged into months, its best month = 100
+const TWO = S.twoIndex;
+const TREND_TOP = TWO.reduce((a, b) => (b[2] > a[2] ? b : a))[0];
+const TREND_MAY = Math.round(TWO.find((r) => r[0] === '2026-05')[2]);
+const MONTH_PL = ['styczeń', 'luty', 'marzec', 'kwiecień', 'maj', 'czerwiec', 'lipiec', 'sierpień', 'wrzesień', 'październik', 'listopad', 'grudzień'];
+const monthName = (ym) => `${MONTH_PL[Number(ym.slice(5)) - 1]} ${ym.slice(0, 4)} r.`;
 /** An axis label short enough for a phone: 120000 -> "120 tys." */
 const tick = (v) => (v >= 1000 ? `${fmtNum(Math.round(v / 100) / 10)} tys.` : fmtNum(Math.round(v)));
 
@@ -15357,7 +15363,7 @@ const SHEETS = {
       sat: (v) => (Math.abs(v - E.s5.friAsSix) <= 1 ? '`DZIEŃ.TYG` bez drugiego argumentu liczy od niedzieli, więc 6 to piątek. Wpisz `=DZIEŃ.TYG(A2;2)`.' : 'Weź średnią z kolumny `ludzie` tylko dla dni z numerem 6.'),
       summer: 'Weź dni od 1 lipca do 31 sierpnia 2025 r., czyli 62 dni, i policz ich średnią w kolumnie `ludzie`.',
     },
-    success: `Tak. Poniedziałek ma średnio ${fmtNum(E.s5.mon)} odsłon, a sobota ${fmtNum(E.s5.sat)}. W wakacje 2025 r. było ${fmtNum(E.s5.summer2025)} na dzień, a wiosną tego roku ${fmtNum(E.s5.spring2025)}. Taki rytm pasuje bardziej do nauki i pracy niż do rozrywki.`,
+    success: `Tak. Poniedziałek ma średnio ${fmtNum(E.s5.mon)} odsłon, a sobota ${fmtNum(E.s5.sat)}. W wakacje 2025 r. było ${fmtNum(E.s5.summer2025)} na dzień, a wiosną, od marca do maja, ${fmtNum(E.s5.spring2025)}.`,
   },
 
   cg6: {
@@ -15366,7 +15372,7 @@ const SHEETS = {
     files: [file('chatgpt-trends.csv', [SRC.trends], true)],
     steps: [
       'Nie otwieraj tego pliku dwuklikiem. Trends rozdziela kolumny przecinkiem, a polski Excel czeka na średnik, więc cały wiersz trafiłby do jednej kolumny.',
-      'Dane, Z pliku tekstowego/CSV. Pochodzenie pliku 65001 Unicode (UTF-8), ogranicznik przecinek, potem Załaduj. Nad nagłówkiem zostaną dwa wiersze opisu, to nie przeszkadza.',
+      'Dane, Z tekstu/CSV. Pochodzenie pliku 65001 Unicode (UTF-8), ogranicznik przecinek, potem Załaduj. Nad nagłówkiem zostaną dwa wiersze opisu, to nie przeszkadza.',
       'Znajdź tydzień z wartością 100, na przykład filtrem. Tydzień w Trends zaczyna się w niedzielę.',
       'Wróć do pliku z dniami. Indeks Wikipedii dla jednego miesiąca to 100 razy odsłony tego miesiąca podzielone przez odsłony najwyższego miesiąca z kroku 2. Dla maja 2026 r. to `=100*SUMA.WARUNKÓW(B:B;H:H;2026;I:I;5)/SUMA.WARUNKÓW(B:B;H:H;2025;I:I;4)`.',
     ],
@@ -15380,12 +15386,12 @@ const SHEETS = {
         : v === 0 ? 'Wyszło 0. Sprawdź, czy dzielisz maj 2026 r. przez kwiecień 2025 r., a nie przez sumę wszystkich miesięcy.'
           : 'Indeks to 100 razy odsłony z maja 2026 r., podzielone przez odsłony najwyższego miesiąca.'),
     },
-    success: `Tak. Trends ma szczyt w tygodniu od 26 października 2025 r. Wikipedia miała go pół roku wcześniej, a w maju 2026 r. spadła do ${E.s6.wikiMay2026} na 100. Trends w tym samym miesiącu to około ${E.s6.trendsMay2026}.`,
+    success: `Tak. Trends ma szczyt w tygodniu od 26 października 2025 r. Wikipedia miała go pół roku wcześniej, a w maju 2026 r. spadła do ${E.s6.wikiMay2026} na 100. Trends na rysunku poniżej ma w tym miesiącu około ${TREND_MAY} na 100.`,
   },
 
   cg7: {
     id: 'cg7',
-    say: 'Dwa pierwsze źródła to ślady. Trzecie to ankieta. Eurostat pytał w 2025 r., kto w ostatnich trzech miesiącach używał narzędzi generatywnej AI, takich jak ChatGPT. Procent liczy się od wszystkich osób w grupie, także tych bez internetu.',
+    say: 'Dwa pierwsze źródła to ślady. Trzecie to ankieta. Eurostat pytał w 2025 r., kto w ostatnich trzech miesiącach używał narzędzi generatywnej AI, takich jak ChatGPT (Eurostat 2026). Procent liczy się od wszystkich osób w grupie, także tych bez internetu.',
     files: [file('genai-eurostat-2025.csv', [SRC.euro])],
     steps: [
       'Otwórz plik dwuklikiem. Procenty mają przecinek dziesiętny, więc Excel czyta je jako liczby.',
@@ -15525,7 +15531,7 @@ function sourcesFigure({ num: n = 'Rysunek' } = {}) {
   };
   draw();
   return frame(n, 'Krok 3. Skąd przyszli czytelnicy hasła „ChatGPT”, 2026 r.', host,
-    src('Źródło: Wikimedia Clickstream, polska Wikipedia, styczeń–czerwiec 2026 r., odczyt 29.10.2026. Pary z mniej niż 10 wejściami Wikimedia pomija.'));
+    src('Źródło: Wikimedia Clickstream, polska Wikipedia, styczeń–czerwiec 2026 r., odczyt 29.10.2026. Pary z mniej niż 10 wejściami Wikimedia pomija (Wulczyn i Taraborelli 2015).'));
 }
 
 function devicesFigure({ num: n = 'Rysunek' } = {}) {
@@ -15563,7 +15569,7 @@ function twoIndexFigure({ num: n = 'Rysunek' } = {}) {
     legend([['sq-leg-a', 'Wikipedia, odsłony ludzi'], ['sq-leg-b', 'Trends, „chatgpt”']]),
     el('div.sq-wrap', monthLines({ months, ymax: 100, marks: [months.indexOf('2026-04')], fmt: (v) => fmtNum(Math.round(v)), aria: 'Indeks Wikipedii i indeks Trends dla ChatGPT w kolejnych miesiącach',
       series: [{ values: S.twoIndex.map((r) => r[1]), cls: 'sq-line', name: 'Wikipedia' }, { values: S.twoIndex.map((r) => r[2]), cls: 'sq-line2', name: 'Trends' }] })),
-    el('div.sq-read', 'Każda linia ma 100 w swoim najwyższym miesiącu. W 2023 r. i na początku 2024 r. idą blisko siebie. Latem 2024 r. Wikipedia nagle skacze, a Trends nie. Szczyt Wikipedii to kwiecień 2025 r., a Trends październik 2025 r. Od kwietnia 2026 r. Wikipedia spada prawie do zera, a Trends powoli.'),
+    el('div.sq-read', `Każda linia ma 100 w swoim najwyższym miesiącu. W 2023 r. i na początku 2024 r. idą blisko siebie. Latem 2024 r. Wikipedia nagle skacze, a Trends nie. Szczyt Wikipedii to kwiecień 2025 r., a Trends ${monthName(TREND_TOP)}, bo najwyższy tydzień zaczął się 26 października. Od kwietnia 2026 r. Wikipedia spada prawie do zera, a Trends powoli.`),
     src('Źródła: Wikimedia (odsłony) i Google Trends (hasło „chatgpt”, Polska, tygodnie uśrednione w miesiące), odczyt 29.10.2026.'));
 }
 
