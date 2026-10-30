@@ -15374,7 +15374,7 @@ const SHEETS = {
     files: [file('chatgpt-trends.csv', [SRC.trends], true)],
     steps: [
       'Otwórz plik dwuklikiem. Trends rozdziela kolumny przecinkiem, a polski Excel czeka na średnik, więc cały wiersz trafi do kolumny A, na przykład `2022-11-27,1`.',
-      'Zaznacz kolumnę A. Dane, Tekst jako kolumny, Rozdzielany, Dalej. Zaznacz Przecinek i kliknij Zakończ. Daty trafią do kolumny A, a wartości do kolumny B.',
+      'Zaznacz kolumnę A. Dane, Tekst jako kolumny, Rozdzielany, Dalej. Zaznacz Przecinek i kliknij Zakończ. Daty trafią do kolumny A, a wartości do kolumny B. W Excelu w przeglądarce okno jest prostsze i od razu ma zaznaczoną spację. Odznacz ją, zostaw sam przecinek i zastosuj.',
       'Nad nagłówkiem zostaną dwa wiersze opisu, to nie przeszkadza. W nagłówku może się popsuć litera „ń”, bo plik jest w UTF-8. Liczbom to nie szkodzi.',
       'Znajdź tydzień z wartością 100, na przykład filtrem. Tydzień w Trends zaczyna się w niedzielę.',
       'Wróć do pliku z dniami. Indeks Wikipedii dla jednego miesiąca to 100 razy odsłony tego miesiąca podzielone przez odsłony najwyższego miesiąca z kroku 2. Dla maja 2026 r. to `=100*SUMA.WARUNKÓW(B:B;H:H;2026;I:I;5)/SUMA.WARUNKÓW(B:B;H:H;2025;I:I;4)`.',
