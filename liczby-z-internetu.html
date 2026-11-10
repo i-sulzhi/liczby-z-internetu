@@ -3223,6 +3223,7 @@ const pl = {
   'ui.site.chapter1': "Rozdział 1. Internet jako źródło danych",
   'ui.site.chapter2': "Rozdział 2. Zapytania w wyszukiwarkach",
   'ui.site.chapter3': "Rozdział 3. Ruch i zachowania użytkowników",
+  'ui.site.chapter4': "Rozdział 4. Dane z YouTube",
   'ui.site.trainer': "Trener. 13 lekcji z liczenia",
   'ui.dataNote': "Kliknij, by zobaczyć całą tabelę. Dane są fikcyjne i służą do ćwiczeń. Wyjątkiem są dwie prawdziwe tabele, „sceny” i „opinie”.",
   'ui.about': "Kurs do przedmiotu „Warsztat analityki internetowej”. Opracowali dr Ilya Sulzhytski i Claude (Anthropic). Dane i dokumenty są fikcyjne. Prawdziwe są dwie tabele. Tabela sceny pochodzi z badania Sulzhytski i Howanitz (2025). Tabela opinie to opinie z Allegro ze zbioru Allegro Reviews (licencja CC BY-SA 4.0). Postęp zapisuje się tylko w tej przeglądarce.",
@@ -3812,6 +3813,7 @@ const pl = {
   'bk.revealWait': "Rysunek z wynikiem pokaże się tutaj, gdy sprawdzisz liczby.",
   'bk.card.ch3SourcesTitle': "Karta trzech źródeł (rozdział 3). Warsztat analityki internetowej",
   'bk.card.ch3ReportTitle': "Raport. ChatGPT w Polsce (rozdział 3). Warsztat analityki internetowej",
+  'bk.card.ch4ReportTitle': "Karta korpusu (rozdział 4). Warsztat analityki internetowej",
   'bring.open': "Masz raport z innego komputera? Wczytaj go i pracuj dalej",
   'bring.title': "Wczytaj swój raport",
   'bring.say': "Wybierz plik raportu pobrany na innym komputerze albo wklej jego tekst. Wrócą wykonane ćwiczenia, Twój kod i karta. Raport musi mieć ostatnią linię z kodem kontrolnym.",
@@ -8414,7 +8416,7 @@ __modules["src/lessons/index.js"] = { "LESSONS": LESSONS, "lessonById": lessonBy
  */
 const { el } = __modules["src/ui/dom.js"];
 const { t } = __modules["src/i18n/index.js"];
-const SITE_PAGES = { home: './', chapter1: 'rozdzial-1-internet-jako-zrodlo-danych.html', chapter2: 'rozdzial-2-zapytania-w-wyszukiwarkach.html', chapter3: 'rozdzial-3-ruch-i-zachowania-uzytkownikow.html', trainer: 'liczby-z-internetu.html' };
+const SITE_PAGES = { home: './', chapter1: 'rozdzial-1-internet-jako-zrodlo-danych.html', chapter2: 'rozdzial-2-zapytania-w-wyszukiwarkach.html', chapter3: 'rozdzial-3-ruch-i-zachowania-uzytkownikow.html', chapter4: 'rozdzial-4-dane-z-youtube.html', trainer: 'liczby-z-internetu.html' };
 
 function siteLinks(loc = typeof location === 'undefined' ? null : location) {
   return loc && /^https?:$/.test(loc.protocol) ? SITE_PAGES : null;
@@ -9094,7 +9096,7 @@ class App {
       el('div.menu-backdrop', { onClick: () => this.toggleMenu(false) }),
       el('nav.menu-panel', { 'aria-label': t('ui.lessons') },
         el('div.menu-head', el('span', t('ui.lessons')), el('button.menu-close', { type: 'button', 'aria-label': t('ui.close'), onClick: () => this.toggleMenu(false) }, '×')),
-        siteNav(['home', 'chapter1', 'chapter2', 'chapter3']),
+        siteNav(['home', 'chapter1', 'chapter2', 'chapter3', 'chapter4']),
         lessonsByModule().map(([module, lessons]) => el('div.menu-module',
           el('div.menu-module-name', `${module}. ${t(`module.${module}`)}`),
           lessons.map((lesson) => {
