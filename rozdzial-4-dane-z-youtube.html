@@ -14855,12 +14855,12 @@ const CHAPTER = {
         P('Badacze nie kopiują filmów ręcznie. Skrypt pyta YouTube przez **API**, czyli wejście dla programów, i dostaje tabele z liczbami. Taki zbiór filmów i komentarzy to **korpus**.'),
         { label: 'Droga danych', cards: [
           { title: 'Zapytanie', text: 'Skrypt wysyła słowo, na przykład „manosfera”, i okres, na przykład kwiecień 2026 r.' },
-          { title: 'Strony wyników', text: 'YouTube oddaje wyniki po kawałku. Jedna odpowiedź to jedna strona, najwyżej 50 filmów.' },
+          { title: 'Strony wyników', text: 'YouTube oddaje wyniki po kawałku. Jedna odpowiedź to jedna strona, zwykle około 50 filmów.' },
           { title: 'Filmy', text: 'Dla każdego filmu skrypt pobiera liczby. Wyświetlenia, polubienia, komentarze, język.' },
           { title: 'Komentarze', text: 'Na koniec skrypt pobiera same komentarze i odpowiedzi pod nimi.' },
         ] },
-        P('Taki skrypt pisze dziś zwykle asystent AI, czyli **agent**. Tak było w projekcie doktorskim o polskiej manosferze na YouTube. Pierwszą wersję skryptu asystent napisał z krótkiego opisu celu. Skrypt działał, nie zgłaszał błędów i oddał tysiące filmów. Dopiero przegląd kodu i danych pokazał, ile po drodze zgubił.'),
-        P('Z tego przeglądu powstała lista reguł. Drugą wersję napisał agent, który dostał ją na start. To normalny sposób pracy. Agent nie zna celu badania, dopóki mu go nie opiszesz. Reguły zapisuje się w pliku **AGENTS.md**, który agent czyta przed pracą.'),
+        P('Taki skrypt pisze dziś coraz częściej asystent AI, czyli **agent**. Tak było w projekcie doktorskim o polskiej manosferze na YouTube. Pierwszą wersję skryptu asystent napisał z krótkiego opisu celu. Skrypt doszedł do końca, ani razu się nie zatrzymał i oddał tysiące filmów. Dopiero przegląd kodu i danych pokazał, ile po drodze zgubił.'),
+        P('Z tego przeglądu powstała lista reguł. Drugą wersję napisał agent, który dostał ją na start. To normalny sposób pracy. Agent nie zna celu badania, dopóki mu go nie opiszesz. Reguły zapisuje się w pliku **AGENTS.md**, który wiele agentów czyta przed pracą.'),
         P('W części A przejdziesz siedem miejsc, w których pierwsza wersja coś zgubiła. W każdym wybierzesz regułę dla agenta i sprawdzisz liczbę, która pokazuje problem. Z reguł złoży się twój AGENTS.md.'),
         remind('Narzędzie zbiera tylko to, o co je zapytano. Duże źródła danych bywają niekompletne i dryfują (podrozdział 1.7).'),
         { note: 'Liczby z drugiej wersji pochodzą z jej testu. Pliki w części B mają wymyślone wiersze o tych samych sumach i udziałach, a filmy i kanały mają numery zamiast nazw. Komentarzy, tytułów i autorów nie pokazujemy wcale.', tone: 'info' },
@@ -14964,7 +14964,7 @@ const CHAPTER = {
         P('Skrypt zebrał komentarze kilka miesięcy po publikacji filmów. A gdyby zrobił to dzień albo tydzień po niej? Plik mówi, kiedy przyszedł każdy zebrany komentarz.'),
         step('yk6', 'Krok 11', 'Dzień zbierania zmienia korpus', 'Krok 11. Czas komentarzy'),
         { figure: 'yttiming' },
-        P('To jeszcze jedna reguła do twojego AGENTS.md. Zapisuj dzień i godzinę zbierania w każdym pliku.'),
+        P('Stąd ostatnia reguła twojego AGENTS.md. Dzień i godzinę zbierania trzeba zapisać w każdym pliku. Ten krok dopisał ją do pliku na rysunku w podrozdziale 4.8.'),
       ],
     },
     {
@@ -15010,6 +15010,7 @@ const CHAPTER = {
 
   datasets: [
     { name: 'YouTube Data API v3', url: 'https://developers.google.com/youtube/v3/docs', what: 'Wejście dla programów do danych YouTube. Wyszukiwanie, liczby filmów, komentarze. Wymaga klucza i ma dzienny limit.', licence: 'Warunki YouTube API Services.' },
+    { name: 'YouTube Data API, limity', url: 'https://developers.google.com/youtube/data/determine_quota_cost', what: 'Ile kosztuje każde wywołanie. Od 1 czerwca 2026 r. wyszukiwanie ma osobny limit, domyślnie 100 wywołań dziennie.', licence: 'Dokumentacja Google.' },
     { name: 'AGENTS.md', url: 'https://agents.md/', what: 'Prosty format pliku z instrukcjami dla agentów, którzy piszą kod.', licence: 'Otwarty format.' },
     { name: 'Pliki tego rozdziału', url: 'https://developers.google.com/youtube/v3/docs/videos', what: 'Wymyślone wiersze na wzór testu projektu doktorskiego z kwietnia 2026 r. Sumy i udziały jak w teście, filmy i kanały bez nazw.', licence: 'Dane wymyślone do nauki.' },
   ],
@@ -15199,7 +15200,8 @@ const EXPECT = {
   "withStatus": 407,
   "allVideos": 408,
   "coverage": 1.01,
-  "transcripts": 16
+  "transcripts": 16,
+  "dupRows": 97
  },
  "s1": {
   "calls": 2296,
@@ -15345,7 +15347,7 @@ const SHEETS = {
 
   yk4: {
     id: 'yk4',
-    say: 'Ten sam plik z filmami. Ile komentarzy przypada na 1000 wyświetleń? Odpowiedź ma dwie wersje, dla całego korpusu i dla typowego filmu. Kilka filmów ma wyłączone komentarze, w kolumnie `komentarze` mają pustą komórkę.',
+    say: 'Pracuj dalej w tym samym arkuszu z filmami. Ile komentarzy przypada na 1000 wyświetleń? Odpowiedź ma dwie wersje, dla całego korpusu i dla typowego filmu. Kilka filmów ma wyłączone komentarze, w kolumnie `komentarze` mają pustą komórkę.',
     files: [VIDEOS],
     steps: [
       `Cały korpus to suma komentarzy podzielona przez sumę wyświetleń, razy 1000, \`=SUMA(F2:F${LAST})/SUMA(D2:D${LAST})*1000\`.`,
@@ -15371,7 +15373,7 @@ const SHEETS = {
 
   yk5: {
     id: 'yk5',
-    say: 'Ten sam plik z filmami. Czy wyświetlenia rozkładają się po równo? Sprawdź, ile filmów zbiera połowę wszystkich wyświetleń.',
+    say: 'Pracuj dalej w tym samym arkuszu z filmami. Czy wyświetlenia rozkładają się po równo? Sprawdź, ile filmów zbiera połowę wszystkich wyświetleń.',
     files: [VIDEOS],
     steps: [
       'Zaznacz całą tabelę. Dane, Sortuj, kolumna `wyswietlenia`, od największych do najmniejszych.',
@@ -15587,7 +15589,7 @@ const BRIEFS = {
   ag1: {
     id: 'ag1',
     title: 'Plan',
-    situation: `Pełny plan projektu to ${E.s1.queries} zapytań, każde w każdym z ${E.s1.months} miesięcy od 2020 r. Na jedno zapytanie w miesiącu przypadają średnio ${E.s1.pages} strony wyników. Jedna strona to jedno wywołanie wyszukiwania. YouTube pozwala na ${E.s1.perDay} takich wywołań dziennie. Policz plan w Excelu albo na kartce, a potem wybierz regułę.`,
+    situation: `Pełny plan projektu to ${E.s1.queries} zapytań, każde w każdym z ${E.s1.months} miesięcy od 2020 r. Na jedno zapytanie w miesiącu przypadają średnio ${E.s1.pages} strony wyników. Jedna strona to jedno wywołanie wyszukiwania. Od czerwca 2026 r. nowy projekt może domyślnie wykonać ${E.s1.perDay} takich wywołań dziennie. Policz plan w Excelu albo na kartce, a potem wybierz regułę.`,
     question: 'Którą regułę dopisać do AGENTS.md?',
     options: [
       { text: 'Zbierz jak najwięcej filmów. Limit nie gra roli.', why: 'Limit decyduje o tym, ile dni trwa zbieranie. Agent nie policzy tego sam, jeśli go o to nie poprosisz.' },
@@ -15612,7 +15614,7 @@ const BRIEFS = {
   ag2: {
     id: 'ag2',
     title: 'Klucz',
-    situation: 'Do API potrzeba klucza z Google Cloud. To hasło projektu. W pierwszej wersji klucz był wpisany w plik skryptu. Plik leżał na wspólnym dysku i krążył w paczce zip. Taki klucz trzeba unieważnić i zrobić nowy.',
+    situation: 'Do API potrzeba klucza z Google Cloud. To hasło projektu. W pierwszej wersji klucz był wpisany w plik skryptu. Plik leżał na wspólnym dysku i krążył w paczce zip. Taki klucz trzeba unieważnić i zrobić nowy. Bezpieczniej trzymać klucz w zmiennej środowiskowej. To ustawienie twojego komputera, które skrypt odczytuje, ale którego nie ma w żadnym pliku.',
     question: 'Którą regułę dopisać do AGENTS.md?',
     options: [
       { text: 'Wpisz klucz na początku skryptu, żeby działał od razu.', why: 'Tak było w pierwszej wersji. Każdy, kto dostanie plik, dostaje też klucz i limit projektu.' },
@@ -15626,7 +15628,7 @@ const BRIEFS = {
   ag3: {
     id: 'ag3',
     title: 'Zapytania',
-    situation: 'Tak wyglądała lista zapytań w pierwszej wersji skryptu. Po piątej frazie brakuje przecinków. Python nie zgłasza wtedy błędu, tylko skleja sąsiednie napisy w jeden. Skrypt wypisał w logu liczbę zapytań, ale nikt jej nie porównał z planem.',
+    situation: 'Tak wyglądała lista zapytań w pierwszej wersji skryptu. Po piątej frazie brakuje przecinków. Python dzieli listę na elementy w miejscach przecinków. Bez przecinka nie zgłasza błędu, tylko skleja sąsiednie napisy w jeden element. Skrypt wypisał w logu liczbę zapytań, ale nikt jej nie porównał z planem.',
     code: S.v2Queries,
     question: 'Którą regułę dopisać do AGENTS.md?',
     options: [
@@ -15636,7 +15638,7 @@ const BRIEFS = {
     ],
     rule: '**Zapytania.** Przed startem wypisz listę zapytań i ich liczbę, bez powtórzeń. Gdy nie zgadza się z planem, zatrzymaj się.',
     fields: [
-      { id: 'items', label: 'Ile elementów ma ta lista dla Pythona? Każdy element kończy się przecinkiem.', short: 'elementy listy', expect: E.a.v2Items },
+      { id: 'items', label: 'Ile elementów ma ta lista dla Pythona?', short: 'elementy listy', expect: E.a.v2Items },
     ],
     wrong: {
       items: (v) => (v === E.a.v2Lines ? 'To liczba linii. Bez przecinka Python łączy napisy, więc elementów jest mniej.'
@@ -15649,11 +15651,11 @@ const BRIEFS = {
   ag4: {
     id: 'ag4',
     title: 'Strony',
-    situation: `Pierwsza wersja brała z każdego zapytania jedną stronę wyników, najwyżej 50 filmów. Kolejną stronę YouTube daje wtedy, gdy odpowiedź ma pole \`nextPageToken\`. Druga wersja szła po stronach do końca. W teście jedno zapytanie z jednego miesiąca dało taki log. Stron ${E.a.pages}, trafień ${E.a.hits}, różnych filmów ${E.a.videos}.`,
+    situation: `Pierwsza wersja brała z każdego zapytania jedną stronę wyników, czyli około 50 filmów. Kolejną stronę YouTube daje wtedy, gdy odpowiedź ma pole \`nextPageToken\`. Jedno zapytanie daje jednak najwyżej kilkaset wyników, więc druga wersja pytała osobno o każdy miesiąc i szła po stronach do końca. Trafienie to jedna pozycja na liście wyników. W teście jedno zapytanie z jednego miesiąca dało ${E.a.pages} stron i ${E.a.hits} trafień, ale tylko ${E.a.videos} różnych filmów.`,
     question: 'Którą regułę dopisać do AGENTS.md?',
     options: [
       { text: 'Pobieraj kolejne strony, dopóki odpowiedź ma `nextPageToken`, osobno dla każdego miesiąca. Wypisz liczbę stron, trafień i różnych filmów.', right: true },
-      { text: 'Ustaw `maxResults` na 500, żeby dostać wszystko naraz.', why: 'API oddaje najwyżej 50 wyników na stronę. Więcej daje tylko pobieranie kolejnych stron.' },
+      { text: 'Ustaw `maxResults` na 500, żeby dostać wszystko naraz.', why: 'Parametr `maxResults` przyjmuje najwyżej 50. Więcej daje tylko pobieranie kolejnych stron.' },
       { text: 'Weź tylko pierwszą stronę, bo najtrafniejsze filmy są na górze.', why: 'Tak powstaje korpus z samych najpopularniejszych filmów. Badanie potrzebuje wszystkich, które pasują.' },
     ],
     rule: '**Strony.** Pobieraj kolejne strony wyników, dopóki jest `nextPageToken`, osobno dla każdego miesiąca. Wypisz liczbę stron, trafień i różnych filmów.',
@@ -15671,7 +15673,7 @@ const BRIEFS = {
   ag5: {
     id: 'ag5',
     title: 'Komentarze',
-    situation: `Pod filmem są komentarze główne, a pod nimi odpowiedzi. API oddaje je osobno. Pierwsza wersja zbierała tylko komentarze główne i nie zgłaszała przy tym żadnego błędu. Druga zbierała oba rodzaje. Jej log z testu podaje komentarze główne ${fmtNum(E.s2.top)} i odpowiedzi ${fmtNum(E.s2.replies)}.`,
+    situation: `Pod filmem są komentarze główne, a pod nimi odpowiedzi. API oddaje je osobno. YouTube podaje też przy każdym filmie, ile ma komentarzy. To licznik, z którym można porównać to, co zebrano. Pierwsza wersja zbierała tylko komentarze główne i nie zgłaszała przy tym żadnego błędu. Druga zbierała oba rodzaje. Jej log z testu podaje komentarze główne ${fmtNum(E.s2.top)} i odpowiedzi ${fmtNum(E.s2.replies)}.`,
     question: 'Którą regułę dopisać do AGENTS.md?',
     options: [
       { text: 'Zbieraj tylko komentarze główne, odpowiedzi to szum.', why: 'To decyzja badawcza, a nie techniczna. Agent nie może jej podjąć po cichu.' },
@@ -15693,7 +15695,7 @@ const BRIEFS = {
   ag6: {
     id: 'ag6',
     title: 'Błędy',
-    situation: 'Pierwsza wersja miała też pobrać napisy filmów. Każda próba kończyła się tym samym błędem, bo nowa wersja biblioteki nie miała już potrzebnej funkcji. Skrypt zapisywał błąd i szedł dalej. Na końcu nie było ani jednej transkrypcji. Komentarze trzymał w pamięci i zapisywał dopiero po ostatnim filmie.',
+    situation: 'Pierwsza wersja miała też pobrać transkrypcje, czyli napisy filmów. Robiła to gotowym modułem, czyli biblioteką. Nowa wersja biblioteki nie miała już potrzebnej funkcji, więc każda próba kończyła się tym samym błędem. Skrypt zapisywał błąd i szedł dalej. Na końcu nie było ani jednej transkrypcji. Do tego komentarze trzymał w pamięci i zapisywał dopiero po ostatnim filmie. Awaria w połowie oznaczałaby utratę wszystkich. Są też błędy normalne. Część filmów ma po prostu wyłączone komentarze.',
     question: 'Którą regułę dopisać do AGENTS.md?',
     options: [
       { text: 'Przy każdym błędzie przejdź do następnego filmu, żeby skrypt się nie zatrzymał.', why: 'Tak było w pierwszej wersji. Ten sam błąd przy każdym filmie to błąd skryptu, a nie filmu.' },
@@ -15724,7 +15726,7 @@ const BRIEFS = {
         : v === E.a.statusOk + E.a.statusZero ? 'Dodaj też filmy z wyłączonymi komentarzami.'
           : 'Dodaj trzy liczby z wiersza o statusach komentarzy.'),
     },
-    success: `Tak. ${E.a.withStatus} z ${E.a.allVideos}. Jednego filmu brakuje, choć raport mówi, że wszystko jest w porządku. Słowo „gotowe” od agenta to jeszcze nie dowód. Dowodem są liczby, które się zgadzają.`,
+    success: `Tak. ${E.a.withStatus} z ${E.a.allVideos}. Pod jednym filmem skrypt nie skończył zbierać komentarzy, choć raport mówi, że wszystko jest w porządku. Druga wersja umie wznowić pracę, więc wystarczy uruchomić ją jeszcze raz. Słowo „gotowe” od agenta to jeszcze nie dowód. Dowodem są liczby, które się zgadzają.`,
   },
 };
 
@@ -15806,8 +15808,12 @@ function restoreBrief(def, text) {
 // ---------------------------------------------------------------- AGENTS.md
 
 /** The student's AGENTS.md: a goal line and the rules of the solved steps, in order. */
+/** Part B adds one rule too: the day of collection (step 11, exercise yk6). */
+const EXTRA_RULES = [{ id: 'yk6', rule: '**Data.** Zapisuj dzień i godzinę zbierania w każdym pliku i w raporcie.' }];
+const ALL_RULES = () => [...Object.values(BRIEFS), ...EXTRA_RULES];
+
 function agentsText(done = isDone) {
-  const rules = Object.values(BRIEFS).filter((d) => done(d.id)).map((d) => `- ${d.rule}`);
+  const rules = ALL_RULES().filter((d) => done(d.id)).map((d) => `- ${d.rule}`);
   return [
     '# AGENTS.md. Zbieranie danych z YouTube',
     '',
@@ -15824,13 +15830,13 @@ function agentsText(done = isDone) {
 function agentsFigure({ num: n = 'Rysunek' } = {}) {
   const host = el('div');
   const draw = () => {
-    const k = Object.keys(BRIEFS).filter((id) => isDone(id)).length;
-    const all = Object.keys(BRIEFS).length;
+    const k = ALL_RULES().filter((d) => isDone(d.id)).length;
+    const all = ALL_RULES().length;
     mount(host,
       el('pre.sh-pre.br-md', agentsText()),
       el('div.sh-bar', el('button.sh-file-btn', { type: 'button', onClick: () => download('AGENTS.md', agentsText()) }, '⬇ AGENTS.md')),
       el('div.sq-read', k < all
-        ? `Masz ${k} z ${all} reguł. Każdy rozwiązany krok dopisuje jedną.`
+        ? `Masz ${k} z ${all} reguł. Każdy krok części A dopisuje jedną, a ostatnią dopisze krok 11.`
         : 'Masz wszystkie reguły. Taki plik dajesz agentowi razem z celem badania. Pobierz go, przyda się w projekcie.'));
   };
   draw();
@@ -15869,8 +15875,8 @@ function runFigure({ num: n = 'Rysunek' } = {}) {
       toggles([['v1', 'Wersja 1, krótki opis celu'], ['v2', 'Wersja 2, zlecenie z regułami']], st.v, (v) => { st.v = v; draw(); }),
       el('div.br-run', rows),
       el('div.sq-read', st.v === 'v1'
-        ? 'Pierwsza wersja działała bez żadnego komunikatu o błędzie. Braki pokazał dopiero osobny przegląd kodu i danych.'
-        : 'Druga wersja na końcu wypisuje raport. Każda liczba odpowiada jednej regule, więc da się ją sprawdzić. Także wtedy, gdy podsumowanie brzmi dobrze.'));
+        ? 'Pierwsza wersja doszła do końca i ani razu się nie zatrzymała. Braki pokazał dopiero osobny przegląd kodu i danych.'
+        : `Druga wersja na końcu wypisuje raport. Każda liczba odpowiada jednej regule, więc da się ją sprawdzić. Transkrypcje bierze tylko po polsku, stąd ich mało. Zebranych komentarzy wyszło trochę więcej, niż podaje YouTube, bo raport policzył ${E.a.dupRows} komentarzy dwa razy. To też trzeba umieć zauważyć.`));
   };
   draw();
   return frame(n, 'Zapis dwóch wersji skryptu. Co zostawiły w logu', host,
@@ -15879,7 +15885,7 @@ function runFigure({ num: n = 'Rysunek' } = {}) {
 
 const FIGURES_BRIEF = { agentsmd: agentsFigure, ytrun: runFigure };
 
-__modules["src/book/figures/brief.js"] = { "BRIEFS": BRIEFS, "checkBrief": checkBrief, "briefExercise": briefExercise, "briefExercises": briefExercises, "briefAnswer": briefAnswer, "restoreBrief": restoreBrief, "agentsText": agentsText, "agentsFigure": agentsFigure, "runFigure": runFigure, "FIGURES_BRIEF": FIGURES_BRIEF };
+__modules["src/book/figures/brief.js"] = { "BRIEFS": BRIEFS, "checkBrief": checkBrief, "briefExercise": briefExercise, "briefExercises": briefExercises, "briefAnswer": briefAnswer, "restoreBrief": restoreBrief, "EXTRA_RULES": EXTRA_RULES, "agentsText": agentsText, "agentsFigure": agentsFigure, "runFigure": runFigure, "FIGURES_BRIEF": FIGURES_BRIEF };
 })();
 
 /* ===== src/book/main4.js ===== */
