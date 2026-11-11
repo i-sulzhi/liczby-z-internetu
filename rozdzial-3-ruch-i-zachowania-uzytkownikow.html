@@ -1784,6 +1784,33 @@ textarea.kc-input { resize: vertical; }
 .ap-dot.ap-dot-on { background: var(--accent); }
 @media (prefers-reduced-motion: reduce) { .ap-ask, .ap-answer, .ap-panel, .ap-meter-fill, .ap-new td { animation: none; } .ap-ask { left: 100%; transform: translateX(-100%); } .ap-answer { left: 0; } }
 
+/* ---- chapter 4, part B: formulas played on a small sheet (figures/sheetanim.js) */
+.sa-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sa-chip { padding: 4px 9px; border: 1px solid var(--line-strong); border-radius: 14px; background: transparent; color: var(--ink); font: 12px var(--mono); cursor: pointer; overflow-wrap: anywhere; text-align: left; }
+.sa-chip:hover { border-color: var(--accent); }
+.sa-chip-wrong { border-color: var(--err); border-style: dashed; }
+.sa-chip-on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.sa-chip-wrong.sa-chip-on { background: var(--err); border-color: var(--err); }
+.sa-bar { display: flex; gap: 8px; align-items: center; padding: 4px 8px; border: 1px solid var(--line); border-radius: var(--radius); font: 12px var(--mono); min-width: 0; }
+.sa-bar code { overflow-wrap: anywhere; }
+.sa-fx { font-style: italic; color: var(--ink-soft); }
+.sa-wrap { max-width: 100%; overflow-x: auto; }
+.sa-grid { border-collapse: collapse; font: 12px var(--mono); }
+.sa-grid th { padding: 2px 6px; background: var(--bg-sunken); color: var(--ink-soft); font-weight: 400; border: 1px solid var(--line); }
+.sa-cell { min-width: 3.2em; padding: 3px 7px; border: 1px solid var(--line); text-align: right; transition: background .25s, box-shadow .25s; }
+.sa-head { text-align: left; color: var(--ink-soft); font-size: 11px; }
+.sa-ref { background: var(--warn-bg); box-shadow: inset 0 0 0 2px var(--warn); }
+.sa-new { animation: mc-pop .35s ease-out; background: var(--ok-bg); }
+.sa-bad { background: var(--err-bg); box-shadow: inset 0 0 0 2px var(--err); }
+.sa-skip { color: var(--ink-faint); background: repeating-linear-gradient(45deg, transparent 0 4px, var(--bg-sunken) 4px 8px); }
+.sa-result { display: flex; gap: 8px; align-items: baseline; font: 13px var(--mono); animation: mc-pop .35s ease-out; }
+.sa-result span { color: var(--ink-soft); }
+.sa-line { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font: 12px var(--mono); }
+.sa-line-label { color: var(--ink-soft); font-family: inherit; }
+.sa-pill { padding: 2px 7px; border-radius: 10px; background: var(--bg-sunken); }
+.sa-pill.sa-mid { background: var(--accent); color: #fff; }
+@media (prefers-reduced-motion: reduce) { .sa-new, .sa-result { animation: none; } .sa-cell { transition: none; } }
+
 /* ---- chapter 3 figures (figures/chatgpt.js) */
 .cg-stacks { display: grid; gap: 6px; min-width: 0; }
 .cg-stack-row { display: grid; grid-template-columns: minmax(0, 8em) minmax(0, 1fr) 4.5em; gap: 8px; align-items: center; font-size: 13px; }

@@ -1784,6 +1784,33 @@ textarea.kc-input { resize: vertical; }
 .ap-dot.ap-dot-on { background: var(--accent); }
 @media (prefers-reduced-motion: reduce) { .ap-ask, .ap-answer, .ap-panel, .ap-meter-fill, .ap-new td { animation: none; } .ap-ask { left: 100%; transform: translateX(-100%); } .ap-answer { left: 0; } }
 
+/* ---- chapter 4, part B: formulas played on a small sheet (figures/sheetanim.js) */
+.sa-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sa-chip { padding: 4px 9px; border: 1px solid var(--line-strong); border-radius: 14px; background: transparent; color: var(--ink); font: 12px var(--mono); cursor: pointer; overflow-wrap: anywhere; text-align: left; }
+.sa-chip:hover { border-color: var(--accent); }
+.sa-chip-wrong { border-color: var(--err); border-style: dashed; }
+.sa-chip-on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.sa-chip-wrong.sa-chip-on { background: var(--err); border-color: var(--err); }
+.sa-bar { display: flex; gap: 8px; align-items: center; padding: 4px 8px; border: 1px solid var(--line); border-radius: var(--radius); font: 12px var(--mono); min-width: 0; }
+.sa-bar code { overflow-wrap: anywhere; }
+.sa-fx { font-style: italic; color: var(--ink-soft); }
+.sa-wrap { max-width: 100%; overflow-x: auto; }
+.sa-grid { border-collapse: collapse; font: 12px var(--mono); }
+.sa-grid th { padding: 2px 6px; background: var(--bg-sunken); color: var(--ink-soft); font-weight: 400; border: 1px solid var(--line); }
+.sa-cell { min-width: 3.2em; padding: 3px 7px; border: 1px solid var(--line); text-align: right; transition: background .25s, box-shadow .25s; }
+.sa-head { text-align: left; color: var(--ink-soft); font-size: 11px; }
+.sa-ref { background: var(--warn-bg); box-shadow: inset 0 0 0 2px var(--warn); }
+.sa-new { animation: mc-pop .35s ease-out; background: var(--ok-bg); }
+.sa-bad { background: var(--err-bg); box-shadow: inset 0 0 0 2px var(--err); }
+.sa-skip { color: var(--ink-faint); background: repeating-linear-gradient(45deg, transparent 0 4px, var(--bg-sunken) 4px 8px); }
+.sa-result { display: flex; gap: 8px; align-items: baseline; font: 13px var(--mono); animation: mc-pop .35s ease-out; }
+.sa-result span { color: var(--ink-soft); }
+.sa-line { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font: 12px var(--mono); }
+.sa-line-label { color: var(--ink-soft); font-family: inherit; }
+.sa-pill { padding: 2px 7px; border-radius: 10px; background: var(--bg-sunken); }
+.sa-pill.sa-mid { background: var(--accent); color: #fff; }
+@media (prefers-reduced-motion: reduce) { .sa-new, .sa-result { animation: none; } .sa-cell { transition: none; } }
+
 /* ---- chapter 3 figures (figures/chatgpt.js) */
 .cg-stacks { display: grid; gap: 6px; min-width: 0; }
 .cg-stack-row { display: grid; grid-template-columns: minmax(0, 8em) minmax(0, 1fr) 4.5em; gap: 8px; align-items: center; font-size: 13px; }
@@ -15039,7 +15066,8 @@ const CHAPTER = {
       blocks: [
         P('Część B. Agent przyniósł pliki. Teraz sprawdzasz je sam, w Excelu. Pliki mają średniki, więc polski Excel otworzy je dwuklikiem.'),
         remind('Udział zależy od mianownika. Zanim podasz procent, powiedz, z czego on jest.'),
-        P('Skrypt prosił YouTube o wyniki po polsku. Czy dostał polskie filmy? Kod języka ma różne zapisy, a wielu filmom go brakuje. Oba szczegóły zmieniają wynik.'),
+        P('Skrypt prosił YouTube o wyniki po polsku. Czy dostał polskie filmy? Najpierw zobacz formuły na sześciu filmach.'),
+        { figure: 'salang' },
         step('yk3', 'Krok 8', 'Po jakiemu mówi korpus?', 'Krok 8. Język'),
         { figure: 'ytlang' },
         P('Słowo „manosfera” istnieje też po hiszpańsku i portugalsku. Prośba o polskie wyniki to dla YouTube tylko wskazówka, a nie filtr.'),
@@ -15050,7 +15078,8 @@ const CHAPTER = {
       parts: [['cwiczenie', 18]],
       blocks: [
         remind('Średnią ciągną wartości skrajne, a mediana to środek listy (lekcja „Średnia czy mediana” w trenerze). Zaangażowanie porównuje się po przeliczeniu na tę samą podstawę (lekcja „Zaangażowanie”).'),
-        P('Komentarze na 1000 wyświetleń to popularna miara zaangażowania. Można ją policzyć dla całego korpusu albo dla każdego filmu osobno. To dwie różne liczby.'),
+        P('Komentarze na 1000 wyświetleń to popularna miara zaangażowania. Dla całego korpusu i dla typowego filmu wychodzą dwie różne liczby.'),
+        { figure: 'saratio' },
         step('yk4', 'Krok 9', 'Korpus czy typowy film?', 'Krok 9. Komentarze na 1000 wyświetleń'),
         { figure: 'ytratio' },
       ],
@@ -15061,6 +15090,7 @@ const CHAPTER = {
       blocks: [
         remind('Aktywność w sieci jest nierówna. Mała część użytkowników robi większość wpisów (podrozdział 1.4). Z filmami jest tak samo.'),
         { figure: 'ytsort' },
+        { figure: 'saanchor' },
         step('yk5', 'Krok 10', 'Ile filmów zbiera połowę?', 'Krok 10. Skupienie wyświetleń'),
         { figure: 'ytconc' },
         P('Gdy kilka filmów ma większość wyświetleń, każda suma po korpusie mówi głównie o nich. To wyjaśnia też krok 9. Wynik korpusu jest daleko od typowego filmu.'),
@@ -15072,6 +15102,7 @@ const CHAPTER = {
       blocks: [
         remind('Dane z sieci dryfują. Dlatego zapisuje się je od razu, razem z datą pobrania (podrozdział 1.7).'),
         { figure: 'ytclock' },
+        { figure: 'satiming' },
         step('yk6', 'Krok 11', 'Dzień zbierania zmienia korpus', 'Krok 11. Czas komentarzy'),
         { figure: 'yttiming' },
         P('Stąd ostatnia reguła twojego AGENTS.md. Dzień i godzinę zbierania trzeba zapisać w każdym pliku. Ten krok dopisał ją do pliku na rysunku w podrozdziale 4.8.'),
@@ -16430,6 +16461,282 @@ const MADE_UP_NUMBERS = {
 __modules["src/book/figures/mechanics.js"] = { "listElements": listElements, "commaFigure": commaFigure, "pagesFigure": pagesFigure, "threadFigure": threadFigure, "statusFigure": statusFigure, "sortFigure": sortFigure, "clockFigure": clockFigure, "API_SCENES": API_SCENES, "apiFigure": apiFigure, "FIGURES_MECH": FIGURES_MECH, "MADE_UP_NUMBERS": MADE_UP_NUMBERS };
 })();
 
+/* ===== src/book/figures/sheetanim.js ===== */
+(function () {
+/**
+ * Chapter 4, part B: what an Excel formula does, row by row (docs/chapter4-plan.md, D50).
+ *
+ * One small sheet (6 to 8 rows of invented data, marked as such), the formulas of a step as
+ * buttons. A click plays the formula on the sheet: the cells it reads light up, the cells it
+ * writes fill one row after another, as when a formula is copied down; an aggregate shows its
+ * result under the sheet. Wrong variants (without LEWY, without JEŻELI, without $) sit next to
+ * the right ones, so the learner sees what changes. Every value is computed here from the data,
+ * never typed, and none equals an answer of the chapter (test/book4.mjs).
+ *
+ * setup = { id, title, note, cols: [[letter, header]], rows: {letter: [values]}, steps: [step] }
+ * step  = { label, wrong?, needs?, refill?, say(get, state), kind: 'row'|'agg'|'colsum',
+ *           row:    { target, refs(r), value(get, r), formula(r) }
+ *           agg:    { refs(get), result(get), extra?(get) }
+ *           colsum: { cols } }
+ */
+const { el, mount } = __modules["src/ui/dom.js"];
+const { frame } = __modules["src/book/figures/common.js"];
+const { fmtNum } = __modules["src/core/format.js"];
+const reduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const num = (v) => (typeof v === 'number' ? fmtNum(Math.round(v * 100) / 100) : v);
+const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+
+/** The sheet's cells as a map {"C3": value}, rows from 2 (row 1 holds the headers). */
+function baseCells(setup) {
+  const cells = {};
+  for (const [col] of setup.cols) (setup.rows[col] || []).forEach((v, i) => { cells[`${col}${i + 2}`] = v; });
+  return cells;
+}
+
+function sheetAnim(setup) {
+  return ({ num: n = 'Rysunek' } = {}) => {
+    const last = 1 + Math.max(...Object.values(setup.rows).map((r) => r.length));
+    const st = { cells: baseCells(setup), refs: new Set(), fresh: new Set(), bad: new Set(), skip: new Set(), step: -1, bar: '', result: null, extra: null };
+    let timer = null;
+    const get = (c) => st.cells[c];
+    const host = el('div');
+    const draw = () => {
+      const s = setup.steps[st.step];
+      const rowsN = setup.steps.some((x) => x.kind === 'colsum') ? last + 1 : last;
+      mount(host,
+        el('div.sa-chips', setup.steps.map((x, i) => el('button', {
+          type: 'button', class: ['sa-chip', x.wrong ? 'sa-chip-wrong' : '', i === st.step ? 'sa-chip-on' : ''].filter(Boolean).join(' '),
+          onClick: () => play(i),
+        }, x.label))),
+        el('div.sa-bar', el('span.sa-fx', 'fx'), el('code', st.bar || 'kliknij formułę powyżej')),
+        el('div.sa-wrap', el('table.sa-grid',
+          el('tr', el('th', ''), setup.cols.map(([c]) => el('th', c))),
+          range(1, rowsN).map((r) => el('tr',
+            el('th', r === last + 1 ? 'suma' : String(r)),
+            setup.cols.map(([c, head]) => {
+              const key = `${c}${r}`;
+              const v = r === 1 ? head : st.cells[key];
+              const cls = ['sa-cell', r === 1 ? 'sa-head' : '', st.refs.has(key) ? 'sa-ref' : '', st.fresh.has(key) ? 'sa-new' : '', st.bad.has(key) ? 'sa-bad' : '', st.skip.has(key) ? 'sa-skip' : ''].filter(Boolean).join(' ');
+              return el('td', { class: cls }, v == null || v === '' ? '' : num(v));
+            }))))),
+        st.result != null ? el('div.sa-result', el('span', 'wynik'), el('b', num(st.result))) : null,
+        st.extra,
+        el('div.sq-read', s ? s.say(get, st) : 'Każdy przycisk to jedna formuła z kroków poniżej. Przyciski z czerwoną ramką to częste błędy.'));
+    };
+    const clearMarks = () => { st.refs = new Set(); st.fresh = new Set(); st.bad = new Set(); st.skip = new Set(); st.result = null; st.extra = null; };
+    const run = (s, done) => {
+      clearTimeout(timer);
+      const instant = reduced();
+      if (s.kind === 'row') {
+        const rows = range(2, last).filter((r) => setup.rows[setup.cols[0][0]][r - 2] !== undefined);
+        for (const r of rows) delete st.cells[`${s.row.target}${r}`];
+        let k = 0;
+        const next = () => {
+          const r = rows[k];
+          st.refs = new Set(s.row.refs(r));
+          const v = s.row.value(get, r);
+          st.cells[`${s.row.target}${r}`] = v;
+          st.fresh.add(`${s.row.target}${r}`);
+          if (s.row.bad?.(get, r)) st.bad.add(`${s.row.target}${r}`);
+          st.bar = s.row.formula(r);
+          k += 1;
+          if (k < rows.length && !instant) { draw(); timer = setTimeout(next, 420); } else { if (instant) { while (k < rows.length) next(); } st.refs = new Set(); draw(); done?.(); }
+        };
+        next();
+        return;
+      }
+      if (s.kind === 'colsum') {
+        let k = 0;
+        const next = () => {
+          const c = s.colsum.cols[k];
+          const cells = range(2, last).map((r) => `${c}${r}`);
+          st.refs = new Set(cells);
+          st.cells[`${c}${last + 1}`] = cells.reduce((a, x) => a + (Number(get(x)) || 0), 0);
+          st.fresh.add(`${c}${last + 1}`);
+          st.bar = `=SUMA(${c}2:${c}${last})`;
+          k += 1;
+          if (k < s.colsum.cols.length && !instant) { draw(); timer = setTimeout(next, 520); } else { if (instant) { while (k < s.colsum.cols.length) next(); } st.refs = new Set(); draw(); done?.(); }
+        };
+        next();
+        return;
+      }
+      st.refs = new Set(s.agg.refs(get));
+      if (s.agg.skip) st.skip = new Set(s.agg.skip(get));
+      st.bar = s.label;
+      draw();
+      timer = setTimeout(() => { st.result = s.agg.result(get); st.extra = s.agg.extra?.(get) || null; draw(); done?.(); }, instant ? 0 : 650);
+    };
+    const play = (i) => {
+      const s = setup.steps[i];
+      clearMarks();
+      st.step = i;
+      // a step that needs a helper column fills it first, without the film
+      for (const need of s.needs || []) {
+        const dep = setup.steps.find((x) => x.id === need);
+        const filled = dep && range(2, last).some((r) => st.cells[`${dep.row.target}${r}`] != null && st.cells[`${dep.row.target}${r}`] !== '');
+        // `refill`: the step needs the right column, whatever variant was clicked before
+        if (dep && (s.refill || !filled)) {
+          for (const r of range(2, last)) if (setup.rows[setup.cols[0][0]][r - 2] !== undefined) st.cells[`${dep.row.target}${r}`] = dep.row.value(get, r);
+        }
+      }
+      run(s);
+    };
+    draw();
+    return frame(n, setup.title, host, el('div.fg-caption', `Przykład wymyślony. ${setup.note}`));
+  };
+}
+
+// ---------------------------------------------------------------- the four setups
+
+const S = (vals) => vals;
+const isNum = (v) => typeof v === 'number';
+
+/** Step 8: language codes. */
+const LANG = {
+  id: 'salang',
+  title: 'Formuły kroku 8 na sześciu filmach. Kliknij formułę',
+  note: 'Sześć filmów i ich kody języka, jeden bez kodu.',
+  cols: [['A', 'film'], ['C', 'jezyk_audio'], ['G', '']],
+  rows: { A: S(['film_1', 'film_2', 'film_3', 'film_4', 'film_5', 'film_6']), C: S(['pl', 'en-US', '', 'en', 'es-419', 'en-GB']) },
+  steps: [
+    { id: 'left', label: '=LEWY(C2;2)', kind: 'row',
+      row: { target: 'G', refs: (r) => [`C${r}`], value: (get, r) => String(get(`C${r}`) || '').slice(0, 2), formula: (r) => `=LEWY(C${r};2)` },
+      say: () => 'LEWY bierze dwie pierwsze litery. „en-US” i „en-GB” stają się „en”, a pusta komórka zostaje pusta.' },
+    { label: '=ILE.NIEPUSTYCH(C2:C7)', kind: 'agg',
+      agg: { refs: (get) => range(2, 7).map((r) => `C${r}`).filter((c) => get(c)), skip: (get) => range(2, 7).map((r) => `C${r}`).filter((c) => !get(c)), result: (get) => range(2, 7).filter((r) => get(`C${r}`)).length },
+      say: () => 'Liczą się tylko komórki z kodem. Film bez kodu nie wchodzi do mianownika.' },
+    { label: '=LICZ.JEŻELI(G:G;"en")', kind: 'agg', needs: ['left'],
+      agg: { refs: (get) => range(2, 7).map((r) => `G${r}`).filter((c) => get(c) === 'en'), result: (get) => range(2, 7).filter((r) => get(`G${r}`) === 'en').length },
+      say: () => 'W kolumnie G każdy angielski kod to już „en”, więc liczą się wszystkie trzy.' },
+    { label: '=LICZ.JEŻELI(C:C;"en")', wrong: true, kind: 'agg',
+      agg: { refs: (get) => range(2, 7).map((r) => `C${r}`).filter((c) => get(c) === 'en'), result: (get) => range(2, 7).filter((r) => get(`C${r}`) === 'en').length },
+      say: () => 'Bez kolumny G formuła szuka dokładnie „en”. „en-US” i „en-GB” przepadają.' },
+  ],
+};
+
+/** Step 9: comments per 1000 views. */
+const D9 = [1200, 300, 4000, 500, 150, 2000];
+const F9 = [3, '', 40, 1, 0, 6];
+const ratioCol = (zero) => (get, r) => {
+  const f = get(`F${r}`);
+  if (f === '' || f == null) return zero ? 0 : '';
+  return (1000 * f) / get(`D${r}`);
+};
+const hValues = (get) => range(2, 7).map((r) => get(`H${r}`)).filter(isNum).sort((a, b) => a - b);
+const median = (xs) => (xs.length % 2 ? xs[(xs.length - 1) / 2] : (xs[xs.length / 2 - 1] + xs[xs.length / 2]) / 2);
+const RATIO = {
+  id: 'saratio',
+  title: 'Formuły kroku 9 na sześciu filmach. Kliknij formułę',
+  note: 'Sześć filmów, jeden ma wyłączone komentarze.',
+  cols: [['D', 'wyswietlenia'], ['F', 'komentarze'], ['H', '']],
+  rows: { D: S(D9), F: S(F9) },
+  steps: [
+    { id: 'if', label: '=JEŻELI(F2="";"";F2/D2*1000)', kind: 'row',
+      row: { target: 'H', refs: (r) => [`F${r}`, `D${r}`], value: ratioCol(false), formula: (r) => `=JEŻELI(F${r}="";"";F${r}/D${r}*1000)` },
+      say: () => 'Film z pustą komórką dostaje pustą komórkę. Reszta to komentarze na 1000 wyświetleń.' },
+    { label: '=F2/D2*1000', wrong: true, kind: 'row',
+      row: { target: 'H', refs: (r) => [`F${r}`, `D${r}`], value: ratioCol(true), bad: (get, r) => get(`F${r}`) === '', formula: (r) => `=F${r}/D${r}*1000` },
+      say: () => 'Bez JEŻELI pusta komórka liczy się jak zero. Film z wyłączonymi komentarzami dostaje 0.' },
+    { label: '=MEDIANA(H2:H7)', kind: 'agg', needs: ['if'],
+      agg: {
+        refs: (get) => range(2, 7).map((r) => `H${r}`).filter((c) => isNum(get(c))),
+        result: (get) => median(hValues(get)),
+        extra: (get) => {
+          const xs = hValues(get);
+          const mid = xs.length % 2 ? [(xs.length - 1) / 2] : [xs.length / 2 - 1, xs.length / 2];
+          return el('div.sa-line', el('span.sa-line-label', 'od najmniejszej'), xs.map((x, i) => el(`span.sa-pill${mid.includes(i) ? '.sa-mid' : ''}`, num(x))));
+        },
+      },
+      say: (get) => (hValues(get).length === 6
+        ? 'Zero z pustej komórki weszło do listy i przesunęło środek. To ten sam film, który ma wyłączone komentarze.'
+        : 'MEDIANA ustawia wartości od najmniejszej i bierze środek. Pustą komórkę pomija.') },
+    { label: '=SUMA(F2:F7)/SUMA(D2:D7)*1000', kind: 'agg',
+      agg: { refs: () => range(2, 7).flatMap((r) => [`F${r}`, `D${r}`]), result: (get) => (1000 * range(2, 7).reduce((a, r) => a + (Number(get(`F${r}`)) || 0), 0)) / range(2, 7).reduce((a, r) => a + get(`D${r}`), 0) },
+      say: () => 'Cały korpus to suma przez sumę. Film z największą liczbą wyświetleń waży tu najwięcej.' },
+  ],
+};
+
+/** Step 10: the running sum and the $ anchor. */
+const D10 = [4800, 2300, 1500, 610, 310, 120];
+const cumAt = (get, r) => range(2, r).reduce((a, x) => a + get(`D${x}`), 0);
+const ANCHOR = {
+  id: 'saanchor',
+  title: 'Formuły kroku 10 na sześciu filmach, już posortowanych. Kliknij formułę',
+  note: 'Sześć filmów od najczęściej oglądanego.',
+  cols: [['A', 'film'], ['D', 'wyswietlenia'], ['I', '']],
+  rows: { A: S(['film_1', 'film_2', 'film_3', 'film_4', 'film_5', 'film_6']), D: S(D10) },
+  steps: [
+    { id: 'cum', label: '=SUMA($D$2:D2)', kind: 'row',
+      row: { target: 'I', refs: (r) => range(2, r).map((x) => `D${x}`), value: cumAt, formula: (r) => `=SUMA($D$2:D${r})` },
+      say: () => 'Znak $ trzyma początek zakresu. Kopiowana w dół formuła obejmuje coraz więcej wierszy.' },
+    { label: '=SUMA(D2:D2)', wrong: true, kind: 'row',
+      row: { target: 'I', refs: (r) => [`D${r}`], value: (get, r) => get(`D${r}`), bad: () => true, formula: (r) => `=SUMA(D${r}:D${r})` },
+      say: () => 'Bez $ zakres przesuwa się razem z formułą. Każdy wiersz sumuje tylko siebie.' },
+    { label: '=SUMA(D2:D7)/2', kind: 'agg', needs: ['cum'], refill: true,
+      agg: {
+        refs: (get) => { const half = cumAt(get, 7) / 2; const r = range(2, 7).find((x) => get(`I${x}`) >= half); return [`I${r}`]; },
+        result: (get) => cumAt(get, 7) / 2,
+      },
+      say: (get) => {
+        const half = cumAt(get, 7) / 2;
+        const r = range(2, 7).find((x) => get(`I${x}`) >= half);
+        return `Połowę przekracza suma w wierszu ${r}. Filmów jest o jeden mniej, ${r - 1}, bo wiersz 1 to nagłówek.`;
+      } },
+  ],
+};
+
+/** Step 11: column sums and shares. */
+const TIMING = {
+  id: 'satiming',
+  title: 'Formuły kroku 11 na czterech filmach. Kliknij formułę',
+  note: 'Cztery filmy i ich komentarze w czterech okresach.',
+  cols: [['B', 'dzien_1'], ['C', 'dni_2_7'], ['D', 'dni_8_30'], ['E', 'pozniej']],
+  rows: { B: S([5, 12, 0, 3]), C: S([2, 6, 1, 3]), D: S([1, 3, 0, 2]), E: S([0, 4, 0, 1]) },
+  steps: [
+    { id: 'sums', label: '=SUMA(B2:B5)', kind: 'colsum', colsum: { cols: ['B', 'C', 'D', 'E'] },
+      say: () => 'Pod każdą kolumną jej suma. Wszystkie komentarze to suma czterech sum.' },
+    { label: '=B6/SUMA(B6:E6)*100', kind: 'agg', needs: [],
+      agg: { refs: () => ['B6', 'C6', 'D6', 'E6'], result: (get) => (100 * colSum(get, 'B')) / allSum(get) },
+      say: () => 'Pierwszy dzień przez wszystkie komentarze. Tyle miałby skrypt dzień po publikacji.' },
+    { label: '=(B6+C6)/SUMA(B6:E6)*100', kind: 'agg',
+      agg: { refs: () => ['B6', 'C6', 'D6', 'E6'], result: (get) => (100 * (colSum(get, 'B') + colSum(get, 'C'))) / allSum(get) },
+      say: () => 'Tydzień po publikacji skrypt ma pierwszy dzień i dni 2–7 razem.' },
+    { label: '=C6/SUMA(B6:E6)*100', wrong: true, kind: 'agg',
+      agg: { refs: () => ['C6', 'B6', 'D6', 'E6'], result: (get) => (100 * colSum(get, 'C')) / allSum(get) },
+      say: () => 'Same dni 2–7 to nie tydzień. Brakuje komentarzy z pierwszego dnia.' },
+  ],
+};
+// the share steps read the sums from the data, so they work before the sums are clicked
+function colSum(get, c) { return range(2, 5).reduce((a, r) => a + (Number(get(`${c}${r}`)) || 0), 0); }
+function allSum(get) { return ['B', 'C', 'D', 'E'].reduce((a, c) => a + colSum(get, c), 0); }
+
+const SETUPS = [LANG, RATIO, ANCHOR, TIMING];
+const FIGURES_SA = Object.fromEntries(SETUPS.map((s) => [s.id, sheetAnim(s)]));
+
+/** Every result the four sheets can show, for the leak test. */
+function sheetAnimResults() {
+  const out = [];
+  for (const s of SETUPS) {
+    const cells = baseCells(s);
+    const get = (c) => cells[c];
+    for (const st of s.steps) {
+      if (st.kind === 'row') {
+        for (const r of range(2, 1 + s.rows[s.cols[0][0]].length)) { const v = st.row.value(get, r); cells[`${st.row.target}${r}`] = v; if (isNum(v)) out.push(v); }
+      } else if (st.kind === 'agg') {
+        for (const need of st.needs || []) {
+          const dep = s.steps.find((x) => x.id === need);
+          for (const r of range(2, 1 + s.rows[s.cols[0][0]].length)) cells[`${dep.row.target}${r}`] = dep.row.value(get, r);
+        }
+        out.push(st.agg.result(get));
+      }
+    }
+  }
+  return out;
+}
+
+__modules["src/book/figures/sheetanim.js"] = { "sheetAnim": sheetAnim, "LANG": LANG, "RATIO": RATIO, "ANCHOR": ANCHOR, "TIMING": TIMING, "SETUPS": SETUPS, "FIGURES_SA": FIGURES_SA, "sheetAnimResults": sheetAnimResults };
+})();
+
 /* ===== src/book/main4.js ===== */
 (function () {
 /**
@@ -16446,10 +16753,11 @@ const { gate } = __modules["src/ui/people.js"];
 const { FIGURES4, SHEETS, sheetExercises } = __modules["src/book/figures/youtube.js"];
 const { FIGURES_BRIEF, BRIEFS, briefExercises, briefAnswer, restoreBrief } = __modules["src/book/figures/brief.js"];
 const { FIGURES_MECH } = __modules["src/book/figures/mechanics.js"];
+const { FIGURES_SA } = __modules["src/book/figures/sheetanim.js"];
 const { sheetAnswer, restoreSheet } = __modules["src/book/figures/sheet.js"];
 /** Make the engine chapter 4: figures, exercises, what goes into the report and back. */
 function setUp4() {
-  Object.assign(FIGURES, FIGURES4, FIGURES_BRIEF, FIGURES_MECH);
+  Object.assign(FIGURES, FIGURES4, FIGURES_BRIEF, FIGURES_MECH, FIGURES_SA);
   Object.assign(EXERCISES, briefExercises, sheetExercises);
   for (const [id, def] of Object.entries(BRIEFS)) {
     ANSWERS[id] = () => briefAnswer(def);
