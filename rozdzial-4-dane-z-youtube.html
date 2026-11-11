@@ -1682,6 +1682,68 @@ textarea.kc-input { resize: vertical; }
 .br-run-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--line); }
 .br-run-val { font-family: var(--mono); overflow-wrap: anywhere; }
 
+/* ---- chapter 4, figure 4.1: the pipeline of one search (figures/brief.js) */
+.pp-flow { display: grid; gap: 6px; min-width: 0; }
+.pp-row { display: grid; grid-template-columns: minmax(0, 7.5em) minmax(0, 1fr) 4.5em; gap: 8px; align-items: center; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: transparent; color: var(--ink); font: inherit; font-size: 13px; text-align: left; cursor: pointer; }
+.pp-row:hover { border-color: var(--accent); }
+.pp-row.pp-on { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.pp-row.pp-wait { opacity: .45; }
+.pp-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pp-track { display: block; height: 14px; border-radius: 3px; background: var(--bg-sunken); overflow: hidden; min-width: 0; }
+.pp-fill { display: block; height: 100%; background: var(--accent); transform-origin: left center; }
+.pp-new .pp-fill { animation: pp-grow .55s ease-out; }
+@keyframes pp-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .pp-new .pp-fill { animation: none; } }
+.pp-num { font: 12px var(--mono); text-align: right; white-space: nowrap; }
+
+/* ---- chapter 4, mechanism figures (figures/mechanics.js) */
+@keyframes mc-pop { from { transform: scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes mc-blink { 50% { opacity: .15; } }
+.mc-pop { animation: mc-pop .35s ease-out; }
+.mc-code { padding: 8px 10px; border-radius: var(--radius); background: var(--code-bg); font: 13px/1.7 var(--mono); }
+.mc-line { white-space: pre; }
+.mc-comma { min-width: 1.6em; margin-left: 2px; padding: 0 4px; border: 1px dashed var(--line-strong); border-radius: 4px; background: transparent; color: var(--ink); font: 700 13px var(--mono); cursor: pointer; }
+.mc-comma.mc-none { border-color: var(--err); color: var(--err); }
+.mc-items { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.mc-item { padding: 3px 8px; border-radius: 12px; background: var(--bg-sunken); font: 13px var(--mono); overflow-wrap: anywhere; animation: mc-pop .35s ease-out; }
+.mc-item.mc-glued { background: var(--warn-bg); outline: 1px solid var(--warn); }
+.mc-pages { display: grid; gap: 8px; min-width: 0; }
+.mc-page { padding: 8px; border: 1px solid var(--line-strong); border-radius: var(--radius); }
+.mc-page-head { font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+.mc-page-items { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+.mc-vid { padding: 2px 7px; border-radius: 10px; background: var(--bg-sunken); font-size: 12px; }
+.mc-vid.mc-again { background: var(--warn-bg); outline: 1px solid var(--warn); }
+.mc-token { font: 12px var(--mono); color: var(--accent); overflow-wrap: anywhere; }
+.mc-counters { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 13px var(--mono); }
+.mc-tree { display: grid; gap: 6px; }
+.mc-top { padding: 4px 8px; border-radius: var(--radius); background: var(--bg-sunken); font-size: 13px; }
+.mc-replies { display: grid; gap: 3px; margin: 3px 0 0 18px; overflow: hidden; max-height: 12em; transition: max-height .45s ease, opacity .45s ease; }
+.mc-reply { padding: 2px 8px; border-left: 3px solid var(--warn); font-size: 12px; }
+.mc-cut .mc-replies { max-height: 0; opacity: 0; }
+.mc-dots { display: grid; grid-template-columns: repeat(auto-fill, minmax(9px, 1fr)); gap: 2px; min-width: 0; }
+.mc-dot { aspect-ratio: 1; border-radius: 2px; }
+.mc-st-ok, .sq-leg.mc-st-ok::before { background: var(--accent); }
+.mc-st-zero, .sq-leg.mc-st-zero::before { background: var(--line-strong); }
+.mc-st-off, .sq-leg.mc-st-off::before { background: var(--warn); }
+.mc-st-miss, .sq-leg.mc-st-miss::before { background: var(--err); }
+.mc-dot.mc-st-miss { animation: mc-blink 1.2s ease-in-out infinite; outline: 2px solid var(--err); }
+.mc-bars { position: relative; min-width: 0; }
+.mc-bar-row { position: absolute; left: 0; right: 0; height: 20px; display: grid; grid-template-columns: minmax(0, 1fr) 4em 3em; gap: 6px; align-items: center; font: 12px var(--mono); transition: top .6s ease; }
+.mc-still .mc-bar-row { transition: none; }
+.mc-bar-track { display: block; height: 12px; border-radius: 3px; background: var(--bg-sunken); overflow: hidden; }
+.mc-bar-fill { display: block; height: 100%; background: var(--accent); }
+.mc-bar-num, .mc-bar-cum { text-align: right; }
+.mc-bar-cum { color: var(--ink-soft); }
+.mc-half { box-shadow: 0 2px 0 var(--err); }
+.mc-half .mc-bar-cum { color: var(--err); font-weight: 700; }
+.mc-cols { display: flex; align-items: flex-end; height: 110px; gap: 0; border-bottom: 1px solid var(--line-strong); }
+.mc-col { display: block; background: var(--line-strong); border-right: 1px solid var(--bg-panel); transition: background .2s; }
+.mc-col.mc-got { background: var(--accent); }
+.mc-col.mc-later { background: repeating-linear-gradient(45deg, var(--line-strong) 0 4px, transparent 4px 8px); }
+.mc-axis { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-soft); }
+.mc-range { width: 100%; margin: 6px 0; }
+@media (prefers-reduced-motion: reduce) { .mc-pop, .mc-item, .mc-dot.mc-st-miss { animation: none; } .mc-replies, .mc-bar-row { transition: none; } }
+
 /* ---- chapter 3 figures (figures/chatgpt.js) */
 .cg-stacks { display: grid; gap: 6px; min-width: 0; }
 .cg-stack-row { display: grid; grid-template-columns: minmax(0, 8em) minmax(0, 1fr) 4.5em; gap: 8px; align-items: center; font-size: 13px; }
@@ -14852,18 +14914,10 @@ const CHAPTER = {
       id: 's4-1', num: '4.1', title: 'Skrypt pisze AI. Kto pilnuje danych?', meeting: 8,
       parts: [['teoria', 10]],
       blocks: [
-        P('Badacze nie kopiują filmów ręcznie. Skrypt pyta YouTube przez **API**, czyli wejście dla programów, i dostaje tabele z liczbami. Taki zbiór filmów i komentarzy to **korpus**.'),
-        { label: 'Droga danych', cards: [
-          { title: 'Zapytanie', text: 'Skrypt wysyła słowo, na przykład „manosfera”, i okres, na przykład kwiecień 2026 r.' },
-          { title: 'Strony wyników', text: 'YouTube oddaje wyniki po kawałku. Jedna odpowiedź to jedna strona, zwykle około 50 filmów.' },
-          { title: 'Filmy', text: 'Dla każdego filmu skrypt pobiera liczby. Wyświetlenia, polubienia, komentarze, język.' },
-          { title: 'Komentarze', text: 'Na koniec skrypt pobiera same komentarze i odpowiedzi pod nimi.' },
-        ] },
-        P('Taki skrypt pisze dziś coraz częściej asystent AI, czyli **agent**. Tak było w projekcie doktorskim o polskiej manosferze na YouTube. Pierwszą wersję skryptu asystent napisał z krótkiego opisu celu. Skrypt doszedł do końca, ani razu się nie zatrzymał i oddał tysiące filmów. Dopiero przegląd kodu i danych pokazał, ile po drodze zgubił.'),
-        P('Z tego przeglądu powstała lista reguł. Drugą wersję napisał agent, który dostał ją na start. To normalny sposób pracy. Agent nie zna celu badania, dopóki mu go nie opiszesz. Reguły zapisuje się w pliku **AGENTS.md**, który wiele agentów czyta przed pracą.'),
-        P('W części A przejdziesz siedem miejsc, w których pierwsza wersja coś zgubiła. W każdym wybierzesz regułę dla agenta i sprawdzisz liczbę, która pokazuje problem. Z reguł złoży się twój AGENTS.md.'),
-        remind('Narzędzie zbiera tylko to, o co je zapytano. Duże źródła danych bywają niekompletne i dryfują (podrozdział 1.7).'),
-        { note: 'Liczby z drugiej wersji pochodzą z jej testu. Pliki w części B mają wymyślone wiersze o tych samych sumach i udziałach, a filmy i kanały mają numery zamiast nazw. Komentarzy, tytułów i autorów nie pokazujemy wcale.', tone: 'info' },
+        P('Skrypt pyta YouTube przez **API**, czyli wejście dla programów, i zbiera **korpus**, czyli zbiór filmów i komentarzy. W prawdziwym projekcie doktorskim pierwszą wersję skryptu napisał asystent AI z krótkiego opisu celu. Drugą napisał agent, który dostał listę reguł. Zobacz, co każda zebrała z tego samego wyszukiwania.'),
+        { figure: 'ytpipe' },
+        P('Wersja 1 doszła do końca i ani razu się nie zatrzymała. Braki pokazał dopiero przegląd. W części A ułożysz reguły dla agenta, które je wyłapują. Zapiszesz je w pliku **AGENTS.md**, który wiele agentów czyta przed pracą.'),
+        { note: 'Pliki tego rozdziału mają wymyślone wiersze o tych samych sumach i udziałach co test. Filmy i kanały mają numery zamiast nazw. Komentarzy, tytułów i autorów nie pokazujemy.', tone: 'info' },
       ],
     },
     {
@@ -14886,6 +14940,7 @@ const CHAPTER = {
       id: 's4-4', num: '4.4', title: 'Krok 3. Lista zapytań', meeting: 8,
       parts: [['cwiczenie', 12]],
       blocks: [
+        { figure: 'ytcomma' },
         step('ag3', 'Krok 3', 'Ile zapytań naprawdę poszło?', 'Krok 3. Lista zapytań', false),
       ],
     },
@@ -14893,6 +14948,7 @@ const CHAPTER = {
       id: 's4-5', num: '4.5', title: 'Krok 4. Wszystkie strony wyników', meeting: 8,
       parts: [['cwiczenie', 10]],
       blocks: [
+        { figure: 'ytpages' },
         step('ag4', 'Krok 4', 'Trafienia czy filmy?', 'Krok 4. Strony wyników', false),
       ],
     },
@@ -14900,7 +14956,7 @@ const CHAPTER = {
       id: 's4-6', num: '4.6', title: 'Krok 5. Komentarze i odpowiedzi', meeting: 8,
       parts: [['cwiczenie', 12]],
       blocks: [
-        remind('Udział zależy od mianownika (lekcja „Wskaźniki i mianowniki” w trenerze).'),
+        { figure: 'ytthread' },
         step('ag5', 'Krok 5', 'Ile rozmowy znika bez odpowiedzi?', 'Krok 5. Komentarze i odpowiedzi'),
         { figure: 'ytreplies' },
       ],
@@ -14918,7 +14974,8 @@ const CHAPTER = {
       blocks: [
         P('Tak wyglądają obie wersje od strony tego, co zostawiły w logu. Przełącz na wersję 2 i przeczytaj jej raport.'),
         { figure: 'ytrun' },
-        step('ag7', 'Krok 7', 'Czy „gotowe” znaczy gotowe?', 'Krok 7. Zapis przebiegu', false),
+        step('ag7', 'Krok 7', 'Czy „gotowe” znaczy gotowe?', 'Krok 7. Zapis przebiegu'),
+        { figure: 'ytstatus' },
         { figure: 'agentsmd' },
         P('Agent z takim plikiem nie przestaje się mylić. Ale jego błędy widać w liczbach, zanim trafią do analizy. Jak zbudować agenta do analizy danych, zobaczysz na jednym z kolejnych spotkań.'),
       ],
@@ -14950,7 +15007,7 @@ const CHAPTER = {
       parts: [['cwiczenie', 18]],
       blocks: [
         remind('Aktywność w sieci jest nierówna. Mała część użytkowników robi większość wpisów (podrozdział 1.4). Z filmami jest tak samo.'),
-        P('Korpus ma kilkaset filmów. Czy każdy znaczy w nim tyle samo? Posortuj filmy i policz, ile z nich zbiera połowę wszystkich wyświetleń.'),
+        { figure: 'ytsort' },
         step('yk5', 'Krok 10', 'Ile filmów zbiera połowę?', 'Krok 10. Skupienie wyświetleń'),
         { figure: 'ytconc' },
         P('Gdy kilka filmów ma większość wyświetleń, każda suma po korpusie mówi głównie o nich. To wyjaśnia też krok 9. Wynik korpusu jest daleko od typowego filmu.'),
@@ -14961,7 +15018,7 @@ const CHAPTER = {
       parts: [['cwiczenie', 12]],
       blocks: [
         remind('Dane z sieci dryfują. Dlatego zapisuje się je od razu, razem z datą pobrania (podrozdział 1.7).'),
-        P('Skrypt zebrał komentarze kilka miesięcy po publikacji filmów. A gdyby zrobił to dzień albo tydzień po niej? Plik mówi, kiedy przyszedł każdy zebrany komentarz.'),
+        { figure: 'ytclock' },
         step('yk6', 'Krok 11', 'Dzień zbierania zmienia korpus', 'Krok 11. Czas komentarzy'),
         { figure: 'yttiming' },
         P('Stąd ostatnia reguła twojego AGENTS.md. Dzień i godzinę zbierania trzeba zapisać w każdym pliku. Ten krok dopisał ją do pliku na rysunku w podrozdziale 4.8.'),
@@ -15203,6 +15260,22 @@ const EXPECT = {
   "transcripts": 16,
   "dupRows": 97
  },
+ "pipe": {
+  "v1": {
+   "pages": 1,
+   "hits": 53,
+   "videos": 53,
+   "comments": 484,
+   "transcripts": 0
+  },
+  "v2": {
+   "pages": 9,
+   "hits": 451,
+   "videos": 408,
+   "comments": 17632,
+   "transcripts": 16
+  }
+ },
  "s1": {
   "calls": 2296,
   "days": 23,
@@ -15283,7 +15356,7 @@ const EXPECT = {
  }
 };
 
-const SERIES = {"v2Queries": "[\n    \"red pill polska\",\n    \"manosfera\",\n    \"mgtow polska\",\n    \"incel polska\",\n    \"przegryw\",\n    \"samiec alfa\"\n    \"black pill polska\"\n    \"pua polska\"\n    \"samiec alfa\"\n    \"męskość\"\n    \"wzorce męskości\"\n    \"relacje damsko-męskie\"\n    \"prawa mężczyzn\"\n    \"samiec sigma\"\n    \"samiec beta\",\n]", "replies": [9212, 8420], "languages": [["en", 130], ["es", 28], ["pl", 7], ["it", 5], ["pt", 5], ["inne", 4]], "languagesMissing": 229, "ratioBins": [["0", 162], ["0.5", 31], ["1", 44], ["2", 76], ["5", 56], ["10", 20], ["20", 9], ["50", 6]], "cumViews": [12.59, 25.12, 33.26, 39.9, 44.86, 49.75, 53.87, 56.92, 59.54, 61.73, 63.66, 65.46, 67.2, 68.86, 70.1, 71.35, 72.58, 73.62, 74.55, 75.42, 76.22, 76.85, 77.41, 77.96, 78.48, 79.0, 79.48, 79.94, 80.4, 80.83, 81.22, 81.61, 81.99, 82.34, 82.67, 82.99, 83.31, 83.62, 83.93, 84.22, 84.51, 84.77, 85.03, 85.27, 85.5, 85.74, 85.97, 86.18, 86.38, 86.57, 86.77, 86.96, 87.15, 87.33, 87.51, 87.68, 87.84, 88.0, 88.16, 88.32, 88.47, 88.62, 88.77, 88.9, 89.04, 89.18, 89.31, 89.44, 89.57, 89.7, 89.83, 89.95, 90.07, 90.19, 90.3, 90.41, 90.52, 90.63, 90.74, 90.84, 90.94, 91.04, 91.13, 91.23, 91.32, 91.41, 91.5, 91.59, 91.68, 91.76, 91.85, 91.93, 92.01, 92.09, 92.17, 92.25, 92.33, 92.4, 92.47, 92.55, 92.62, 92.69, 92.76, 92.83, 92.9, 92.97, 93.03, 93.1, 93.16, 93.22, 93.29, 93.35, 93.41, 93.47, 93.53, 93.59, 93.65, 93.71, 93.77, 93.82, 93.88, 93.94, 94.0, 94.05, 94.11, 94.16, 94.21, 94.27, 94.32, 94.37, 94.42, 94.47, 94.52, 94.57, 94.62, 94.67, 94.72, 94.77, 94.82, 94.87, 94.92, 94.96, 95.01, 95.06, 95.1, 95.15, 95.2, 95.24, 95.29, 95.33, 95.38, 95.42, 95.47, 95.51, 95.55, 95.6, 95.64, 95.68, 95.73, 95.77, 95.81, 95.85, 95.89, 95.93, 95.97, 96.01, 96.04, 96.08, 96.12, 96.16, 96.2, 96.24, 96.27, 96.31, 96.35, 96.39, 96.42, 96.46, 96.49, 96.53, 96.57, 96.6, 96.64, 96.67, 96.71, 96.74, 96.78, 96.81, 96.85, 96.88, 96.92, 96.95, 96.99, 97.02, 97.05, 97.09, 97.12, 97.16, 97.19, 97.22, 97.26, 97.29, 97.32, 97.35, 97.38, 97.42, 97.45, 97.48, 97.51, 97.54, 97.57, 97.6, 97.63, 97.66, 97.69, 97.72, 97.74, 97.77, 97.8, 97.83, 97.86, 97.88, 97.91, 97.94, 97.96, 97.99, 98.02, 98.04, 98.07, 98.09, 98.12, 98.14, 98.17, 98.19, 98.22, 98.24, 98.27, 98.29, 98.32, 98.34, 98.36, 98.39, 98.41, 98.43, 98.46, 98.48, 98.5, 98.53, 98.55, 98.57, 98.59, 98.62, 98.64, 98.66, 98.68, 98.7, 98.72, 98.74, 98.76, 98.78, 98.81, 98.83, 98.85, 98.87, 98.89, 98.91, 98.93, 98.95, 98.97, 98.99, 99.01, 99.03, 99.05, 99.07, 99.09, 99.1, 99.12, 99.14, 99.16, 99.17, 99.19, 99.21, 99.22, 99.24, 99.26, 99.27, 99.29, 99.3, 99.32, 99.33, 99.35, 99.36, 99.38, 99.39, 99.41, 99.42, 99.44, 99.45, 99.46, 99.48, 99.49, 99.5, 99.51, 99.53, 99.54, 99.55, 99.56, 99.57, 99.58, 99.6, 99.61, 99.62, 99.63, 99.64, 99.65, 99.66, 99.67, 99.68, 99.69, 99.7, 99.7, 99.71, 99.72, 99.73, 99.74, 99.75, 99.76, 99.76, 99.77, 99.78, 99.79, 99.79, 99.8, 99.81, 99.81, 99.82, 99.83, 99.83, 99.84, 99.85, 99.85, 99.86, 99.86, 99.87, 99.87, 99.88, 99.88, 99.89, 99.89, 99.9, 99.9, 99.91, 99.91, 99.92, 99.92, 99.92, 99.93, 99.93, 99.93, 99.94, 99.94, 99.94, 99.95, 99.95, 99.95, 99.95, 99.96, 99.96, 99.96, 99.96, 99.97, 99.97, 99.97, 99.97, 99.97, 99.98, 99.98, 99.98, 99.98, 99.98, 99.98, 99.98, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0], "timing": [7104, 5420, 1856, 3155]};
+const SERIES = {"v2Queries": "[\n    \"red pill polska\",\n    \"manosfera\",\n    \"mgtow polska\",\n    \"incel polska\",\n    \"przegryw\",\n    \"samiec alfa\"\n    \"black pill polska\"\n    \"pua polska\"\n    \"samiec alfa\"\n    \"męskość\"\n    \"wzorce męskości\"\n    \"relacje damsko-męskie\"\n    \"prawa mężczyzn\"\n    \"samiec sigma\"\n    \"samiec beta\",\n]", "statusDots": "ozodoooooooooooooozdoozzozzoooozooozooozozozozoo-zozzozozzoooozozzozzozoooooozzzooozzoozooozzoozozzozzozozoozooozozooozozozozooozozooozzzzoozoooooooozozoozzooozooozoozzozzozzozzozozozoozoozzooozzooozzoozzozoooozozzzooozozoooozozoozzzzzoooozozoozzzzozooooozzzzozooozooooozzoooooozooozzooozzoooozooooozzoozoozoooooozzzzozoozozooozozoozzozoozoooooooooozzooodooozooozoozooozooozozooozzzzdooozozoooozoozzoooooozoo", "replies": [9212, 8420], "languages": [["en", 130], ["es", 28], ["pl", 7], ["it", 5], ["pt", 5], ["inne", 4]], "languagesMissing": 229, "ratioBins": [["0", 162], ["0.5", 31], ["1", 44], ["2", 76], ["5", 56], ["10", 20], ["20", 9], ["50", 6]], "cumViews": [12.59, 25.12, 33.26, 39.9, 44.86, 49.75, 53.87, 56.92, 59.54, 61.73, 63.66, 65.46, 67.2, 68.86, 70.1, 71.35, 72.58, 73.62, 74.55, 75.42, 76.22, 76.85, 77.41, 77.96, 78.48, 79.0, 79.48, 79.94, 80.4, 80.83, 81.22, 81.61, 81.99, 82.34, 82.67, 82.99, 83.31, 83.62, 83.93, 84.22, 84.51, 84.77, 85.03, 85.27, 85.5, 85.74, 85.97, 86.18, 86.38, 86.57, 86.77, 86.96, 87.15, 87.33, 87.51, 87.68, 87.84, 88.0, 88.16, 88.32, 88.47, 88.62, 88.77, 88.9, 89.04, 89.18, 89.31, 89.44, 89.57, 89.7, 89.83, 89.95, 90.07, 90.19, 90.3, 90.41, 90.52, 90.63, 90.74, 90.84, 90.94, 91.04, 91.13, 91.23, 91.32, 91.41, 91.5, 91.59, 91.68, 91.76, 91.85, 91.93, 92.01, 92.09, 92.17, 92.25, 92.33, 92.4, 92.47, 92.55, 92.62, 92.69, 92.76, 92.83, 92.9, 92.97, 93.03, 93.1, 93.16, 93.22, 93.29, 93.35, 93.41, 93.47, 93.53, 93.59, 93.65, 93.71, 93.77, 93.82, 93.88, 93.94, 94.0, 94.05, 94.11, 94.16, 94.21, 94.27, 94.32, 94.37, 94.42, 94.47, 94.52, 94.57, 94.62, 94.67, 94.72, 94.77, 94.82, 94.87, 94.92, 94.96, 95.01, 95.06, 95.1, 95.15, 95.2, 95.24, 95.29, 95.33, 95.38, 95.42, 95.47, 95.51, 95.55, 95.6, 95.64, 95.68, 95.73, 95.77, 95.81, 95.85, 95.89, 95.93, 95.97, 96.01, 96.04, 96.08, 96.12, 96.16, 96.2, 96.24, 96.27, 96.31, 96.35, 96.39, 96.42, 96.46, 96.49, 96.53, 96.57, 96.6, 96.64, 96.67, 96.71, 96.74, 96.78, 96.81, 96.85, 96.88, 96.92, 96.95, 96.99, 97.02, 97.05, 97.09, 97.12, 97.16, 97.19, 97.22, 97.26, 97.29, 97.32, 97.35, 97.38, 97.42, 97.45, 97.48, 97.51, 97.54, 97.57, 97.6, 97.63, 97.66, 97.69, 97.72, 97.74, 97.77, 97.8, 97.83, 97.86, 97.88, 97.91, 97.94, 97.96, 97.99, 98.02, 98.04, 98.07, 98.09, 98.12, 98.14, 98.17, 98.19, 98.22, 98.24, 98.27, 98.29, 98.32, 98.34, 98.36, 98.39, 98.41, 98.43, 98.46, 98.48, 98.5, 98.53, 98.55, 98.57, 98.59, 98.62, 98.64, 98.66, 98.68, 98.7, 98.72, 98.74, 98.76, 98.78, 98.81, 98.83, 98.85, 98.87, 98.89, 98.91, 98.93, 98.95, 98.97, 98.99, 99.01, 99.03, 99.05, 99.07, 99.09, 99.1, 99.12, 99.14, 99.16, 99.17, 99.19, 99.21, 99.22, 99.24, 99.26, 99.27, 99.29, 99.3, 99.32, 99.33, 99.35, 99.36, 99.38, 99.39, 99.41, 99.42, 99.44, 99.45, 99.46, 99.48, 99.49, 99.5, 99.51, 99.53, 99.54, 99.55, 99.56, 99.57, 99.58, 99.6, 99.61, 99.62, 99.63, 99.64, 99.65, 99.66, 99.67, 99.68, 99.69, 99.7, 99.7, 99.71, 99.72, 99.73, 99.74, 99.75, 99.76, 99.76, 99.77, 99.78, 99.79, 99.79, 99.8, 99.81, 99.81, 99.82, 99.83, 99.83, 99.84, 99.85, 99.85, 99.86, 99.86, 99.87, 99.87, 99.88, 99.88, 99.89, 99.89, 99.9, 99.9, 99.91, 99.91, 99.92, 99.92, 99.92, 99.93, 99.93, 99.93, 99.94, 99.94, 99.94, 99.95, 99.95, 99.95, 99.95, 99.96, 99.96, 99.96, 99.96, 99.97, 99.97, 99.97, 99.97, 99.97, 99.98, 99.98, 99.98, 99.98, 99.98, 99.98, 99.98, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0], "timing": [7104, 5420, 1856, 3155]};
 
 __modules["src/book/data/ch4.js"] = { "FILES": FILES, "EXPECT": EXPECT, "SERIES": SERIES };
 })();
@@ -15373,7 +15446,7 @@ const SHEETS = {
 
   yk5: {
     id: 'yk5',
-    say: 'Pracuj dalej w tym samym arkuszu z filmami. Czy wyświetlenia rozkładają się po równo? Sprawdź, ile filmów zbiera połowę wszystkich wyświetleń.',
+    say: 'Pracuj dalej w tym samym arkuszu z filmami. Ile filmów z góry listy zbiera połowę wszystkich wyświetleń?',
     files: [VIDEOS],
     steps: [
       'Zaznacz całą tabelę. Dane, Sortuj, kolumna `wyswietlenia`, od największych do najmniejszych.',
@@ -15399,7 +15472,7 @@ const SHEETS = {
 
   yk6: {
     id: 'yk6',
-    say: 'Jeden wiersz na film. Kolumny mówią, ile zebranych komentarzy przyszło w pierwszym dniu po publikacji, w dniach 2–7, w dniach 8–30 i później. Skrypt zbierał komentarze po kilku miesiącach.',
+    say: 'Skrypt zebrał komentarze kilka miesięcy po publikacji. Plik mówi o każdym filmie, ile zebranych komentarzy przyszło w pierwszym dniu, w dniach 2–7, w dniach 8–30 i później.',
     files: [TIMING],
     steps: [
       `Pod ostatnim wierszem zsumuj każdą z czterech kolumn, na przykład \`=SUMA(B2:B${LAST})\`.`,
@@ -15628,7 +15701,7 @@ const BRIEFS = {
   ag3: {
     id: 'ag3',
     title: 'Zapytania',
-    situation: 'Tak wyglądała lista zapytań w pierwszej wersji skryptu. Po piątej frazie brakuje przecinków. Python dzieli listę na elementy w miejscach przecinków. Bez przecinka nie zgłasza błędu, tylko skleja sąsiednie napisy w jeden element. Skrypt wypisał w logu liczbę zapytań, ale nikt jej nie porównał z planem.',
+    situation: 'Tak wyglądała lista zapytań w pierwszej wersji skryptu. Skrypt wypisał w logu, ile zapytań widzi, ale nikt nie porównał tej liczby z planem.',
     code: S.v2Queries,
     question: 'Którą regułę dopisać do AGENTS.md?',
     options: [
@@ -15651,7 +15724,7 @@ const BRIEFS = {
   ag4: {
     id: 'ag4',
     title: 'Strony',
-    situation: `Pierwsza wersja brała z każdego zapytania jedną stronę wyników, czyli około 50 filmów. Kolejną stronę YouTube daje wtedy, gdy odpowiedź ma pole \`nextPageToken\`. Jedno zapytanie daje jednak najwyżej kilkaset wyników, więc druga wersja pytała osobno o każdy miesiąc i szła po stronach do końca. Trafienie to jedna pozycja na liście wyników. W teście jedno zapytanie z jednego miesiąca dało ${E.a.pages} stron i ${E.a.hits} trafień, ale tylko ${E.a.videos} różnych filmów.`,
+    situation: `Pierwsza wersja brała z każdego zapytania tylko pierwszą stronę. Druga szła po stronach do końca, osobno dla każdego miesiąca, bo jedno zapytanie daje najwyżej kilkaset wyników. W teście jedno zapytanie z jednego miesiąca dało ${E.a.pages} stron i ${E.a.hits} trafień, ale tylko ${E.a.videos} różnych filmów.`,
     question: 'Którą regułę dopisać do AGENTS.md?',
     options: [
       { text: 'Pobieraj kolejne strony, dopóki odpowiedź ma `nextPageToken`, osobno dla każdego miesiąca. Wypisz liczbę stron, trafień i różnych filmów.', right: true },
@@ -15673,7 +15746,7 @@ const BRIEFS = {
   ag5: {
     id: 'ag5',
     title: 'Komentarze',
-    situation: `Pod filmem są komentarze główne, a pod nimi odpowiedzi. API oddaje je osobno. YouTube podaje też przy każdym filmie, ile ma komentarzy. To licznik, z którym można porównać to, co zebrano. Pierwsza wersja zbierała tylko komentarze główne i nie zgłaszała przy tym żadnego błędu. Druga zbierała oba rodzaje. Jej log z testu podaje komentarze główne ${fmtNum(E.s2.top)} i odpowiedzi ${fmtNum(E.s2.replies)}.`,
+    situation: `Pierwsza wersja zbierała tylko komentarze główne. Druga zbierała też odpowiedzi i porównywała wynik z licznikiem, który YouTube podaje przy każdym filmie. Jej log z testu podaje komentarze główne ${fmtNum(E.s2.top)} i odpowiedzi ${fmtNum(E.s2.replies)}.`,
     question: 'Którą regułę dopisać do AGENTS.md?',
     options: [
       { text: 'Zbieraj tylko komentarze główne, odpowiedzi to szum.', why: 'To decyzja badawcza, a nie techniczna. Agent nie może jej podjąć po cichu.' },
@@ -15883,9 +15956,302 @@ function runFigure({ num: n = 'Rysunek' } = {}) {
     el('div.fg-caption', 'Wersja 1 według przeglądu jej kodu i logu. Wersja 2 według raportu z testu, kwiecień 2026 r., przetłumaczonego i skróconego do liczb.'));
 }
 
-const FIGURES_BRIEF = { agentsmd: agentsFigure, ytrun: runFigure };
+// ---------------------------------------------------------------- the pipeline (4.1)
 
-__modules["src/book/figures/brief.js"] = { "BRIEFS": BRIEFS, "checkBrief": checkBrief, "briefExercise": briefExercise, "briefExercises": briefExercises, "briefAnswer": briefAnswer, "restoreBrief": restoreBrief, "EXTRA_RULES": EXTRA_RULES, "agentsText": agentsText, "agentsFigure": agentsFigure, "runFigure": runFigure, "FIGURES_BRIEF": FIGURES_BRIEF };
+/** The stages of one search, as the scraper walks them; `why` says what each version decided there. */
+const STAGES = [
+  { key: 'pages', name: 'strony wyników', why: { v1: 'Wersja 1 bierze tylko pierwszą stronę.', v2: 'Wersja 2 idzie po stronach, dopóki YouTube daje następną.' } },
+  { key: 'hits', name: 'trafienia', why: { v1: 'Jedna strona to około 50 pozycji na liście wyników.', v2: 'Na wszystkich stronach jest więcej pozycji, część się powtarza.' } },
+  { key: 'videos', name: 'różne filmy', why: { v1: 'Z jednej strony zostaje tyle filmów, ile na niej było.', v2: 'Powtórki odpadają, liczą się różne filmy.' } },
+  { key: 'comments', name: 'komentarze', why: { v1: 'Tylko komentarze główne, bez odpowiedzi, i tylko pod tymi filmami.', v2: 'Komentarze główne i odpowiedzi pod wszystkimi filmami.' } },
+  { key: 'transcripts', name: 'transkrypcje', why: { v1: 'Każda próba kończy się tym samym błędem biblioteki.', v2: 'Tylko polskie transkrypcje, tam gdzie są.' } },
+];
+const reduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/**
+ * Figure 4.1: one test search ("manosfera", April 2026) through the scraper, stage by stage.
+ * Version 1 is the same test by version 1's rules (first page only, no replies), computed on this
+ * chapter's rows (tools/make_ch4.py, EXPECT.pipe); version 2 is what the test collected. The bars
+ * grow one stage at a time, so the learner sees where the corpus thins out; a tap on a stage says
+ * what was decided there.
+ */
+function pipeFigure({ num: n = 'Rysunek' } = {}) {
+  const P = E.pipe;
+  const st = { v: 'v1', shown: STAGES.length, pick: 0, fresh: -1 };
+  const host = el('div');
+  let timer = null;
+  const pct = (k, v) => Math.max(P[v][k] ? 1.5 : 0, (100 * P[v][k]) / P.v2[k]);
+  const draw = () => {
+    const s = STAGES[st.pick];
+    mount(host,
+      toggles([['v1', 'Wersja 1, krótki opis celu'], ['v2', 'Wersja 2, zlecenie z regułami']], st.v, (v) => { st.v = v; play(); }),
+      el('div.pp-flow', STAGES.map((g, i) => el('button', {
+        type: 'button', class: ['pp-row', i === st.pick ? 'pp-on' : '', i < st.shown ? '' : 'pp-wait', i === st.fresh ? 'pp-new' : ''].filter(Boolean).join(' '),
+        'aria-pressed': String(i === st.pick), onClick: () => { st.pick = i; st.fresh = -1; draw(); },
+      }, el('span.pp-name', g.name),
+      el('span.pp-track', el('span.pp-fill', { style: `width:${i < st.shown ? pct(g.key, st.v).toFixed(1) : 0}%` })),
+      el('span.pp-num', i < st.shown ? fmtNum(P[st.v][g.key]) : ''),
+      ))),
+      el('div.sq-read', `${s.name[0].toUpperCase()}${s.name.slice(1)}. ${s.why[st.v]} Wersja 1 ma ${fmtNum(P.v1[s.key])}, wersja 2 ma ${fmtNum(P.v2[s.key])}.`),
+      el('div.sh-bar', el('button.fg-toggle', { type: 'button', onClick: () => play() }, '▶ Jeszcze raz')));
+  };
+  // the stages appear one after another; with reduced motion, all at once
+  const play = () => {
+    clearTimeout(timer);
+    if (reduced()) { st.shown = STAGES.length; st.fresh = -1; draw(); return; }
+    st.shown = 0; st.fresh = -1; draw();
+    const next = () => {
+      st.shown += 1; st.pick = st.shown - 1; st.fresh = st.pick; draw();
+      if (st.shown < STAGES.length) timer = setTimeout(next, 650);
+    };
+    timer = setTimeout(next, 250);
+  };
+  draw();
+  return frame(n, 'Jedno wyszukiwanie w dwóch wersjach skryptu, etap po etapie', host,
+    el('div.fg-caption', 'Test „manosfera”, kwiecień 2026 r. Wersja 2 to wynik testu. Wersja 1 to ten sam test policzony według jej zasad. Długość paska to część wyniku wersji 2.'));
+}
+
+const FIGURES_BRIEF = { agentsmd: agentsFigure, ytrun: runFigure, ytpipe: pipeFigure };
+
+__modules["src/book/figures/brief.js"] = { "BRIEFS": BRIEFS, "checkBrief": checkBrief, "briefExercise": briefExercise, "briefExercises": briefExercises, "briefAnswer": briefAnswer, "restoreBrief": restoreBrief, "EXTRA_RULES": EXTRA_RULES, "agentsText": agentsText, "agentsFigure": agentsFigure, "runFigure": runFigure, "pipeFigure": pipeFigure, "FIGURES_BRIEF": FIGURES_BRIEF };
+})();
+
+/* ===== src/book/figures/mechanics.js ===== */
+(function () {
+/**
+ * Chapter 4: pictures of the mechanisms, so the text before each step can be short
+ * (docs/chapter4-plan.md, D47). Five of them stand BEFORE a step and work on a small invented
+ * example, so they never give the step's answer: a missing comma glues strings (step 3), pages
+ * follow nextPageToken and repeat videos (step 4), replies hang under top-level comments (step 5),
+ * a running sum after sorting (step 10), the day of collection (step 11). One stands AFTER step 7
+ * and draws the real statuses of the test's videos.
+ *
+ * Every invented example says so in its caption; its numbers are chosen so that none equals an
+ * answer of the chapter (test/book4.mjs checks it).
+ */
+const { el, mount } = __modules["src/ui/dom.js"];
+const { frame, toggles } = __modules["src/book/figures/common.js"];
+const { fmtNum } = __modules["src/core/format.js"];
+const { EXPECT: E, SERIES: S } = __modules["src/book/data/ch4.js"];
+const MADE_UP = (what) => el('div.fg-caption', `Przykład wymyślony. ${what}`);
+const reduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+/** 1 element, 2 elementy, 5 elementów */
+const plural = (k, one, few, many) => (k === 1 ? one : k % 10 >= 2 && k % 10 <= 4 && (k % 100 < 12 || k % 100 > 14) ? few : many);
+
+// ---------------------------------------------------------------- step 3: commas
+
+const PHRASES = ['kawa', 'herbata', 'sok jabłkowy', 'woda'];
+
+/** The elements Python sees: a phrase without a comma after it joins the next one. */
+function listElements(phrases, commas) {
+  const out = [];
+  let cur = '';
+  phrases.forEach((p, i) => {
+    cur += p;
+    if (commas[i] || i === phrases.length - 1) { out.push(cur); cur = ''; }
+  });
+  return out;
+}
+
+function commaFigure({ num: n = 'Rysunek' } = {}) {
+  const st = { commas: [true, false, true, true] };
+  const host = el('div');
+  const draw = (fresh = -1) => {
+    const items = listElements(PHRASES, st.commas);
+    mount(host,
+      el('div.mc-code',
+        el('div', '['),
+        PHRASES.map((p, i) => el('div.mc-line', `    "${p}"`,
+          el('button', {
+            type: 'button', class: ['mc-comma', st.commas[i] ? 'mc-has' : 'mc-none', i === fresh ? 'mc-pop' : ''].filter(Boolean).join(' '),
+            'aria-label': st.commas[i] ? `usuń przecinek po „${p}”` : `dopisz przecinek po „${p}”`,
+            onClick: () => { st.commas[i] = !st.commas[i]; draw(i); },
+          }, st.commas[i] ? ',' : '␣'))),
+        el('div', ']')),
+      el('div.sh-files-label', `Python widzi ${items.length} ${plural(items.length, 'element', 'elementy', 'elementów')}`),
+      el('div.mc-items', items.map((x) => el(`span.mc-item${x.length > 14 ? '.mc-glued' : ''}`, `"${x}"`))),
+      el('div.sq-read', items.length < PHRASES.length
+        ? 'Bez przecinka Python nie zgłasza błędu. Skleja dwa napisy w jeden element, a takiej frazy nikt nie wpisuje w YouTube.'
+        : 'Każda fraza jest osobnym elementem. Tyle zapytań pójdzie do YouTube.'));
+  };
+  draw();
+  return frame(n, 'Jak Python czyta listę napisów. Kliknij miejsce po frazie, żeby dopisać albo usunąć przecinek', host,
+    MADE_UP('Cztery napisy, w drugim wierszu brakuje przecinka.'));
+}
+
+// ---------------------------------------------------------------- step 4: pages
+
+const PAGES = [
+  { items: ['A', 'B', 'C', 'D', 'E'], token: 'STRONA2' },
+  { items: ['F', 'G', 'E', 'H', 'I'], token: 'STRONA3' },
+  { items: ['J', 'K', 'L', 'M'], token: null },
+];
+
+function pagesFigure({ num: n = 'Rysunek' } = {}) {
+  const st = { k: 1 };
+  const host = el('div');
+  const draw = () => {
+    const shown = PAGES.slice(0, st.k);
+    const seen = new Set();
+    const hits = shown.flatMap((p) => p.items).length;
+    mount(host,
+      el('div.mc-pages', shown.map((p, i) => el(`div.mc-page${i === st.k - 1 ? '.mc-pop' : ''}`,
+        el('div.mc-page-head', `strona ${i + 1}`),
+        el('div.mc-page-items', p.items.map((v) => {
+          const again = seen.has(v); seen.add(v);
+          return el(`span.mc-vid${again ? '.mc-again' : ''}`, { title: again ? 'ten film był już wcześniej' : null }, `film ${v}`);
+        })),
+        el('div.mc-token', p.token ? `nextPageToken: ${p.token}` : 'brak nextPageToken, koniec')))),
+      el('div.mc-counters',
+        el('span', `strony ${shown.length}`), el('span', `trafienia ${hits}`), el('span', `różne filmy ${seen.size}`)),
+      el('div.sh-bar',
+        st.k < PAGES.length
+          ? el('button.fg-toggle', { type: 'button', onClick: () => { st.k += 1; draw(); } }, `▶ Weź stronę ${st.k + 1} (${PAGES[st.k - 1].token})`)
+          : el('button.fg-toggle', { type: 'button', onClick: () => { st.k = 1; draw(); } }, '↺ Od początku')),
+      el('div.sq-read', st.k < PAGES.length
+        ? 'Odpowiedź kończy się polem nextPageToken. Skrypt odsyła je do YouTube i dostaje następną stronę.'
+        : 'Brak nextPageToken znaczy koniec. Film E był na dwóch stronach, więc trafień jest więcej niż różnych filmów.'));
+  };
+  draw();
+  return frame(n, 'Strona po stronie. Kolejną stronę daje pole nextPageToken', host,
+    MADE_UP('Trzy strony wyników po kilka filmów, jeden film powtarza się na stronie 2.'));
+}
+
+// ---------------------------------------------------------------- step 5: replies
+
+const THREADS = [
+  { who: 'komentarz 1', replies: 3 },
+  { who: 'komentarz 2', replies: 0 },
+  { who: 'komentarz 3', replies: 2 },
+];
+
+function threadFigure({ num: n = 'Rysunek' } = {}) {
+  const st = { mode: 'all' };
+  const host = el('div');
+  const top = THREADS.length;
+  const rep = THREADS.reduce((a, t) => a + t.replies, 0);
+  const tree = el('div.mc-tree', THREADS.map((t) => el('div.mc-thread',
+    el('div.mc-top', t.who),
+    el('div.mc-replies', Array.from({ length: t.replies }, (_, i) => el('div.mc-reply', `odpowiedź ${i + 1}`))))));
+  const count = el('div.mc-counters');
+  const read = el('div.sq-read');
+  const sync = () => {
+    tree.classList.toggle('mc-cut', st.mode === 'top');
+    const got = st.mode === 'top' ? top : top + rep;
+    mount(count, el('span', `YouTube podaje ${top + rep}`), el('span', `skrypt zebrał ${got}`));
+    mount(read, st.mode === 'top'
+      ? `Skrypt bez odpowiedzi oddaje ${top} z ${top + rep}. Błędu nie ma, odpowiedzi po prostu nie przychodzą.`
+      : 'Odpowiedzi wiszą pod komentarzami głównymi. API oddaje je osobnym pytaniem.');
+  };
+  const tg = el('div');
+  const drawToggles = () => mount(tg, toggles([['all', 'Z odpowiedziami'], ['top', 'Tylko komentarze główne']], st.mode, (v) => { st.mode = v; sync(); drawToggles(); }));
+  drawToggles();
+  mount(host, tg, tree, count, read);
+  sync();
+  return frame(n, 'Rozmowa pod filmem. Co zostaje, gdy skrypt nie pyta o odpowiedzi', host,
+    MADE_UP('Trzy komentarze główne i pięć odpowiedzi.'));
+}
+
+// ---------------------------------------------------------------- step 7: the statuses (after the check)
+
+const STATUS = { o: ['mc-st-ok', 'są komentarze'], z: ['mc-st-zero', 'zero komentarzy'], d: ['mc-st-off', 'wyłączone'], '-': ['mc-st-miss', 'brak statusu'] };
+
+function statusFigure({ num: n = 'Rysunek' } = {}) {
+  const dots = [...S.statusDots];
+  const missing = dots.filter((d) => d === '-').length;
+  return frame(n, `${fmtNum(dots.length)} filmów testu. Każdy kwadrat to jeden film`,
+    el('div.sq-legend', Object.values(STATUS).map(([cls, name]) => el(`span.sq-leg.${cls}`, name))),
+    el('div.mc-dots', dots.map((d) => el(`span.mc-dot.${STATUS[d][0]}`, { title: STATUS[d][1] }))),
+    el('div.sq-read', `Raport kończy się słowami „wszystkie sprawdzenia zaliczone”, a ${missing} ${plural(missing, 'kwadrat', 'kwadraty', 'kwadratów')} miga. Pod tym filmem skrypt nie skończył zbierać komentarzy.`),
+    el('div.fg-caption', 'Wiersze wymyślone na wzór testu, statusy jak w teście.'));
+}
+
+// ---------------------------------------------------------------- step 10: sort, then a running sum
+
+const VIEWS = [120, 2300, 40, 610, 4800, 75, 310, 1500, 18, 230];
+
+function sortFigure({ num: n = 'Rysunek' } = {}) {
+  const total = VIEWS.reduce((a, b) => a + b, 0);
+  const order = VIEWS.map((v, i) => i).sort((a, b) => VIEWS[b] - VIEWS[a]);
+  const st = { sorted: false };
+  const ROW = 24;
+  const cums = VIEWS.map(() => el('span.mc-bar-cum'));
+  const rows = VIEWS.map((v, i) => el('div.mc-bar-row',
+    el('span.mc-bar-track', el('span.mc-bar-fill', { style: `width:${Math.max(1, (100 * v) / Math.max(...VIEWS)).toFixed(1)}%` })),
+    el('span.mc-bar-num', fmtNum(v)),
+    cums[i]));
+  const box = el('div.mc-bars', { style: `height:${VIEWS.length * ROW}px` }, rows);
+  const read = el('div.sq-read');
+  const place = () => {
+    const pos = st.sorted ? order : VIEWS.map((_, i) => i);
+    let run = 0;
+    let cross = -1;
+    pos.forEach((idx, k) => {
+      run += VIEWS[idx];
+      if (cross < 0 && run >= total / 2) cross = k;
+      const r = rows[idx];
+      r.style.top = `${k * ROW}px`;
+      cums[idx].textContent = `${Math.round((100 * run) / total)}%`;
+    });
+    rows.forEach((r, idx) => r.classList.toggle('mc-half', pos.indexOf(idx) === cross));
+    read.textContent = st.sorted
+      ? `Po sortowaniu suma narastająca przekracza połowę już po ${cross + 1} ${plural(cross + 1, 'filmie', 'filmach', 'filmach')}. Prawa kolumna to suma od góry jako część wszystkich wyświetleń.`
+      : `Bez sortowania suma narastająca dodaje filmy w kolejności pliku. Połowę przekracza dopiero po ${cross + 1} filmach, i ta liczba nic nie znaczy.`;
+  };
+  const tg = el('div');
+  const drawToggles = () => mount(tg, toggles([[false, 'Kolejność pliku'], [true, 'Od największych']], st.sorted, (v) => { st.sorted = v; place(); drawToggles(); }));
+  drawToggles();
+  const host = el('div', tg, box, read);
+  if (reduced()) box.classList.add('mc-still');
+  place();
+  return frame(n, 'Suma narastająca. Najpierw sortowanie, potem dodawanie od góry', host,
+    MADE_UP('Dziesięć filmów i ich wyświetlenia.'));
+}
+
+// ---------------------------------------------------------------- step 11: the day of collection
+
+/** Comments of one invented video by day after publication (day 1 first). */
+const DAYS = [30, 14, 8, 6, 5, 4, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0];
+const LATER = 12;
+
+function clockFigure({ num: n = 'Rysunek' } = {}) {
+  const all = DAYS.reduce((a, b) => a + b, 0) + LATER;
+  const st = { day: 3 };
+  const W = 100 / (DAYS.length + 2);
+  const cols = DAYS.map((c, i) => el('span.mc-col', { style: `height:${Math.max(2, (100 * c) / DAYS[0]).toFixed(1)}%;width:${W.toFixed(2)}%` , title: `dzień ${i + 1}: ${c}` }));
+  const later = el('span.mc-col.mc-later', { style: `height:${(100 * LATER) / DAYS[0]}%;width:${(2 * W).toFixed(2)}%`, title: `później: ${LATER}` });
+  const slider = el('input.mc-range', { type: 'range', min: '1', max: String(DAYS.length), value: String(st.day), 'aria-label': 'dzień zbierania' });
+  const read = el('div.sq-read');
+  const sync = () => {
+    const got = DAYS.slice(0, st.day).reduce((a, b) => a + b, 0);
+    cols.forEach((c, i) => c.classList.toggle('mc-got', i < st.day));
+    read.textContent = `Skrypt zbiera ${st.day}. dnia po publikacji. Ma ${got} z ${all} komentarzy, które film ma dziś. Przesuń suwak, żeby zmienić dzień zbierania.`;
+  };
+  slider.addEventListener('input', () => { st.day = Number(slider.value); sync(); });
+  sync();
+  return frame(n, 'Dzień zbierania. Skrypt widzi tylko komentarze, które już są', el('div',
+    el('div.mc-cols', cols, later),
+    el('div.mc-axis', el('span', 'dzień 1'), el('span', `dzień ${DAYS.length}`), el('span', 'później')),
+    slider, read),
+  MADE_UP('Jeden film i jego komentarze dzień po dniu.'));
+}
+
+const FIGURES_MECH = {
+  ytcomma: commaFigure, ytpages: pagesFigure, ytthread: threadFigure,
+  ytstatus: statusFigure, ytsort: sortFigure, ytclock: clockFigure,
+};
+
+/** What the invented examples show, for the leak test: none may equal an answer. */
+const MADE_UP_NUMBERS = {
+  commaElements: listElements(PHRASES, [true, false, true, true]).length,
+  pagesHits: PAGES.flatMap((p) => p.items).length,
+  pagesVideos: new Set(PAGES.flatMap((p) => p.items)).size,
+  threadAll: THREADS.length + THREADS.reduce((a, t) => a + t.replies, 0),
+  threadTop: THREADS.length,
+  clockAll: DAYS.reduce((a, b) => a + b, 0) + LATER,
+};
+
+__modules["src/book/figures/mechanics.js"] = { "listElements": listElements, "commaFigure": commaFigure, "pagesFigure": pagesFigure, "threadFigure": threadFigure, "statusFigure": statusFigure, "sortFigure": sortFigure, "clockFigure": clockFigure, "FIGURES_MECH": FIGURES_MECH, "MADE_UP_NUMBERS": MADE_UP_NUMBERS };
 })();
 
 /* ===== src/book/main4.js ===== */
@@ -15903,6 +16269,7 @@ const { CHAPTER, REPORT_FIELDS4 } = __modules["src/book/chapter4.js"];
 const { gate } = __modules["src/ui/people.js"];
 const { FIGURES4, SHEETS, sheetExercises } = __modules["src/book/figures/youtube.js"];
 const { FIGURES_BRIEF, BRIEFS, briefExercises, briefAnswer, restoreBrief } = __modules["src/book/figures/brief.js"];
+const { FIGURES_MECH } = __modules["src/book/figures/mechanics.js"];
 const { sheetAnswer, restoreSheet } = __modules["src/book/figures/sheet.js"];
 const { CARDS, cardExercise } = __modules["src/book/figures/project.js"];
 const { t } = __modules["src/i18n/index.js"];
@@ -15913,7 +16280,7 @@ const corpusCard = cardExercise('karta4');
 
 /** Make the engine chapter 4: figures, exercises, what goes into the report and back. */
 function setUp4() {
-  Object.assign(FIGURES, FIGURES4, FIGURES_BRIEF);
+  Object.assign(FIGURES, FIGURES4, FIGURES_BRIEF, FIGURES_MECH);
   Object.assign(EXERCISES, briefExercises, sheetExercises, { karta4: corpusCard });
   for (const [id, def] of Object.entries(BRIEFS)) {
     ANSWERS[id] = () => briefAnswer(def);

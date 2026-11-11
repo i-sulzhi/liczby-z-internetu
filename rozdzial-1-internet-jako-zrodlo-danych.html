@@ -1682,6 +1682,68 @@ textarea.kc-input { resize: vertical; }
 .br-run-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--line); }
 .br-run-val { font-family: var(--mono); overflow-wrap: anywhere; }
 
+/* ---- chapter 4, figure 4.1: the pipeline of one search (figures/brief.js) */
+.pp-flow { display: grid; gap: 6px; min-width: 0; }
+.pp-row { display: grid; grid-template-columns: minmax(0, 7.5em) minmax(0, 1fr) 4.5em; gap: 8px; align-items: center; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: transparent; color: var(--ink); font: inherit; font-size: 13px; text-align: left; cursor: pointer; }
+.pp-row:hover { border-color: var(--accent); }
+.pp-row.pp-on { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.pp-row.pp-wait { opacity: .45; }
+.pp-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pp-track { display: block; height: 14px; border-radius: 3px; background: var(--bg-sunken); overflow: hidden; min-width: 0; }
+.pp-fill { display: block; height: 100%; background: var(--accent); transform-origin: left center; }
+.pp-new .pp-fill { animation: pp-grow .55s ease-out; }
+@keyframes pp-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .pp-new .pp-fill { animation: none; } }
+.pp-num { font: 12px var(--mono); text-align: right; white-space: nowrap; }
+
+/* ---- chapter 4, mechanism figures (figures/mechanics.js) */
+@keyframes mc-pop { from { transform: scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes mc-blink { 50% { opacity: .15; } }
+.mc-pop { animation: mc-pop .35s ease-out; }
+.mc-code { padding: 8px 10px; border-radius: var(--radius); background: var(--code-bg); font: 13px/1.7 var(--mono); }
+.mc-line { white-space: pre; }
+.mc-comma { min-width: 1.6em; margin-left: 2px; padding: 0 4px; border: 1px dashed var(--line-strong); border-radius: 4px; background: transparent; color: var(--ink); font: 700 13px var(--mono); cursor: pointer; }
+.mc-comma.mc-none { border-color: var(--err); color: var(--err); }
+.mc-items { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.mc-item { padding: 3px 8px; border-radius: 12px; background: var(--bg-sunken); font: 13px var(--mono); overflow-wrap: anywhere; animation: mc-pop .35s ease-out; }
+.mc-item.mc-glued { background: var(--warn-bg); outline: 1px solid var(--warn); }
+.mc-pages { display: grid; gap: 8px; min-width: 0; }
+.mc-page { padding: 8px; border: 1px solid var(--line-strong); border-radius: var(--radius); }
+.mc-page-head { font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+.mc-page-items { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+.mc-vid { padding: 2px 7px; border-radius: 10px; background: var(--bg-sunken); font-size: 12px; }
+.mc-vid.mc-again { background: var(--warn-bg); outline: 1px solid var(--warn); }
+.mc-token { font: 12px var(--mono); color: var(--accent); overflow-wrap: anywhere; }
+.mc-counters { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 13px var(--mono); }
+.mc-tree { display: grid; gap: 6px; }
+.mc-top { padding: 4px 8px; border-radius: var(--radius); background: var(--bg-sunken); font-size: 13px; }
+.mc-replies { display: grid; gap: 3px; margin: 3px 0 0 18px; overflow: hidden; max-height: 12em; transition: max-height .45s ease, opacity .45s ease; }
+.mc-reply { padding: 2px 8px; border-left: 3px solid var(--warn); font-size: 12px; }
+.mc-cut .mc-replies { max-height: 0; opacity: 0; }
+.mc-dots { display: grid; grid-template-columns: repeat(auto-fill, minmax(9px, 1fr)); gap: 2px; min-width: 0; }
+.mc-dot { aspect-ratio: 1; border-radius: 2px; }
+.mc-st-ok, .sq-leg.mc-st-ok::before { background: var(--accent); }
+.mc-st-zero, .sq-leg.mc-st-zero::before { background: var(--line-strong); }
+.mc-st-off, .sq-leg.mc-st-off::before { background: var(--warn); }
+.mc-st-miss, .sq-leg.mc-st-miss::before { background: var(--err); }
+.mc-dot.mc-st-miss { animation: mc-blink 1.2s ease-in-out infinite; outline: 2px solid var(--err); }
+.mc-bars { position: relative; min-width: 0; }
+.mc-bar-row { position: absolute; left: 0; right: 0; height: 20px; display: grid; grid-template-columns: minmax(0, 1fr) 4em 3em; gap: 6px; align-items: center; font: 12px var(--mono); transition: top .6s ease; }
+.mc-still .mc-bar-row { transition: none; }
+.mc-bar-track { display: block; height: 12px; border-radius: 3px; background: var(--bg-sunken); overflow: hidden; }
+.mc-bar-fill { display: block; height: 100%; background: var(--accent); }
+.mc-bar-num, .mc-bar-cum { text-align: right; }
+.mc-bar-cum { color: var(--ink-soft); }
+.mc-half { box-shadow: 0 2px 0 var(--err); }
+.mc-half .mc-bar-cum { color: var(--err); font-weight: 700; }
+.mc-cols { display: flex; align-items: flex-end; height: 110px; gap: 0; border-bottom: 1px solid var(--line-strong); }
+.mc-col { display: block; background: var(--line-strong); border-right: 1px solid var(--bg-panel); transition: background .2s; }
+.mc-col.mc-got { background: var(--accent); }
+.mc-col.mc-later { background: repeating-linear-gradient(45deg, var(--line-strong) 0 4px, transparent 4px 8px); }
+.mc-axis { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-soft); }
+.mc-range { width: 100%; margin: 6px 0; }
+@media (prefers-reduced-motion: reduce) { .mc-pop, .mc-item, .mc-dot.mc-st-miss { animation: none; } .mc-replies, .mc-bar-row { transition: none; } }
+
 /* ---- chapter 3 figures (figures/chatgpt.js) */
 .cg-stacks { display: grid; gap: 6px; min-width: 0; }
 .cg-stack-row { display: grid; grid-template-columns: minmax(0, 8em) minmax(0, 1fr) 4.5em; gap: 8px; align-items: center; font-size: 13px; }
