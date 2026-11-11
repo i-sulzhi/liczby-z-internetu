@@ -1786,7 +1786,7 @@ textarea.kc-input { resize: vertical; }
 
 /* ---- chapter 4, part B: JSON, files, features, join (figures/datapath.js) */
 .dp-json { display: flex; flex-direction: column; padding: 8px 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-sunken); font: 12px/1.55 var(--mono); max-width: 100%; overflow-x: auto; }
-.dp-line { white-space: pre; color: var(--ink-soft); }
+.dp-line { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink-soft); min-width: 0; }
 .dp-key { display: block; width: 100%; padding: 1px 6px; border: 0; border-left: 3px solid transparent; background: transparent; color: var(--ink); font: inherit; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; cursor: pointer; }
 .dp-key.dp-go { border-left-color: var(--accent); }
 .dp-key.dp-drop { color: var(--ink-faint); border-left-style: dashed; border-left-color: var(--line-strong); }
@@ -1799,6 +1799,8 @@ textarea.kc-input { resize: vertical; }
 .dp-say-drop { background: var(--bg-sunken); color: var(--ink-soft); }
 .dp-target { display: flex; flex-direction: column; gap: 4px; animation: mc-pop .35s ease-out; }
 .dp-to { font: 600 12px var(--mono); color: var(--accent); overflow-wrap: anywhere; }
+.dp-host { min-width: 0; }
+.dp-target, .fl-panel > * { min-width: 0; }
 .dp-wrap { max-width: 100%; overflow-x: auto; }
 .dp-grid { border-collapse: collapse; font: 12px var(--mono); }
 .dp-grid th { padding: 2px 6px; background: var(--bg-sunken); color: var(--ink-soft); font-weight: 400; border: 1px solid var(--line); text-align: left; }
@@ -1829,6 +1831,44 @@ textarea.kc-input { resize: vertical; }
 .dp-play { display: flex; flex-wrap: wrap; gap: 6px; }
 .dp-profile-head { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; }
 @media (prefers-reduced-motion: reduce) { .dp-say, .dp-target, .dp-count, .dp-feat { animation: none; } .dp-grid td { transition: none; } }
+
+/* ---- chapter 4, 4.15: the whole way as a pipeline (figures/datapath.js, ytflow) */
+.fl-track { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 4px; margin: 0; padding: 0; list-style: none; counter-reset: none; }
+.fl-node { position: relative; min-width: 0; }
+.fl-node:not(:last-child)::after { content: ''; position: absolute; top: 50%; right: -5px; width: 6px; height: 2px; background: var(--line-strong); }
+.fl-node button { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 100%; min-height: 3.6em; padding: 6px 2px; border: 1px solid var(--line-strong); border-top-width: 4px; border-radius: var(--radius); background: var(--bg); color: var(--ink); font: 12px var(--sans); cursor: pointer; transition: background .3s, transform .3s; }
+.fl-node button:hover { background: var(--bg-sunken); }
+.fl-num { font: 700 11px var(--mono); color: var(--ink-soft); }
+.fl-name { font-weight: 700; overflow-wrap: anywhere; text-align: center; }
+.fl-loop { font-size: 13px; color: var(--accent); }
+.fl-api button { border-top-color: var(--ok); }
+.fl-agent button { border-top-color: var(--warn); }
+.fl-ty button { border-top-color: var(--accent); }
+.fl-past button { background: var(--bg-sunken); color: var(--ink-soft); }
+.fl-on button { background: var(--warn-bg); box-shadow: 0 0 0 2px var(--accent); transform: translateY(-2px); }
+.fl-on.fl-node::before { content: ''; position: absolute; left: 50%; bottom: -9px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--accent); animation: mc-pop .4s ease-out; }
+.fl-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; font-size: 12px; color: var(--ink-soft); }
+.fl-leg::before { content: ''; display: inline-block; width: 14px; height: 4px; margin-right: 5px; vertical-align: middle; border-radius: 2px; }
+.fl-leg.fl-api::before { background: var(--ok); }
+.fl-leg.fl-agent::before { background: var(--warn); }
+.fl-leg.fl-ty::before { background: var(--accent); }
+.fl-panel { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius); animation: mc-pop .4s ease-out; min-width: 0; }
+.fl-head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+.fl-badge { font: 700 11px var(--mono); color: var(--ink-soft); }
+.fl-who { font-size: 12px; color: var(--ink-soft); }
+.fl-link { margin-left: auto; font-size: 13px; }
+.fl-shape { font-size: 13px; color: var(--ink-soft); }
+.fl-pages, .fl-files { display: flex; flex-wrap: wrap; gap: 6px; }
+.fl-page, .fl-file { display: flex; flex-direction: column; padding: 4px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-sunken); font: 11px var(--mono); animation: mc-pop .4s ease-out both; }
+.fl-file b { overflow-wrap: anywhere; }
+.fl-page span, .fl-file span { color: var(--ink-soft); }
+.fl-page:last-child span { color: var(--err); }
+.fl-src-filmy { background: var(--warn-bg); }
+.fl-src-status { background: var(--ok-bg); }
+.fl-src-czas { background: var(--bg-sunken); }
+.fl-from { font-size: 10px; color: var(--ink-soft); border: 0 !important; }
+@media (max-width: 640px) { .fl-track { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 12px; } .fl-node::after { display: none; } .fl-link { margin-left: 0; } }
+@media (prefers-reduced-motion: reduce) { .fl-panel, .fl-page, .fl-file, .fl-on.fl-node::before { animation: none; } .fl-node button { transition: none; } }
 
 /* ---- chapter 4, part B: formulas played on a small sheet (figures/sheetanim.js) */
 .sa-chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -15184,6 +15224,8 @@ const CHAPTER = {
       id: 's4-15', num: '4.15', title: 'Wnioski. Pytania do twoich danych', meeting: 9,
       parts: [['projekt', 4], ['dyskusja', 4]],
       blocks: [
+        P('Cała droga w jednym miejscu. Odtwórz ją albo kliknij etap, a link zaprowadzi cię do jego podrozdziału.'),
+        { figure: 'ytflow' },
         P('Te same pytania zadasz danym w swoim projekcie. Pod każdym jest przykład z tego rozdziału.'),
         { label: 'Pytania do twoich danych', cards: QUESTIONS4.map((x, i) => ({ title: `${i + 1}. ${x.q}`, text: x.here })) },
         { discuss: { who: 'w parach, po 3 minuty', prompts: [
@@ -16835,6 +16877,7 @@ __modules["src/book/figures/sheetanim.js"] = { "sheetAnim": sheetAnim, "LANG": L
  *   ytjoin     how a lookup by id joins two tables: exact, without FALSE, and starting from search hits
  *              (an invented example, before step 12)
  *   ytprofile  the profile of the joined table: one row per film, how full each column is (after step 12)
+ *   ytflow     the whole way as one animated pipeline, plan to one table, each stage linked to its section
  *
  * The JSON and the file rows are the chapter's synthetic rows (film_001 ...), never real ids or texts.
  * The join picture uses invented numbers; test/book4.mjs checks none of them equals an answer.
@@ -16950,7 +16993,7 @@ const CALLS = {
 
 function jsonFigure({ num: n = 'Rysunek' } = {}) {
   const st = { call: 'videos', line: -1 };
-  const host = el('div');
+  const host = el('div.dp-host');
   const draw = () => {
     const call = CALLS[st.call];
     if (st.line < 0) st.line = call.lines.findIndex((l) => l.map?.file);
@@ -16997,7 +17040,7 @@ const FOLLOW = ['film_001', 'film_034'];
 
 function filesFigure({ num: n = 'Rysunek' } = {}) {
   const st = { id: null };
-  const host = el('div');
+  const host = el('div.dp-host');
   const draw = () => {
     mount(host,
       el('div.dp-follow', el('span.sq-read', 'Pokaż jeden film we wszystkich plikach:'),
@@ -17061,7 +17104,7 @@ const FEATURES = [
 
 function featureFigure({ num: n = 'Rysunek' } = {}) {
   const st = { id: 'jezyk_audio' };
-  const host = el('div');
+  const host = el('div.dp-host');
   const draw = () => {
     const f = FEATURES.find((x) => x.id === st.id);
     mount(host,
@@ -17101,7 +17144,7 @@ const MODES = {
 
 function joinFigure({ num: n = 'Rysunek' } = {}) {
   const st = { mode: 'exact', at: 0 };
-  const host = el('div');
+  const host = el('div.dp-host');
   const sorted = [...STAT].sort((a, b) => a[0].localeCompare(b[0]));
   const draw = () => {
     const right = st.mode === 'near' ? sorted : STAT;
@@ -17172,9 +17215,111 @@ function profileFigure({ num: n = 'Rysunek' } = {}) {
     el('div.fg-caption', SYNTH));
 }
 
-const FIGURES_DATA = { ytjson: jsonFigure, ytfiles: filesFigure, ytfeat: featureFigure, ytjoin: joinFigure, ytprofile: profileFigure };
+// ---------------------------------------------------------------- ytflow: the whole way, request to database (4.15)
 
-__modules["src/book/figures/datapath.js"] = { "CALLS": CALLS, "jsonFigure": jsonFigure, "FILE_CARDS": FILE_CARDS, "filesFigure": filesFigure, "isoSeconds": isoSeconds, "FEATURES": FEATURES, "featureFigure": featureFigure, "JOIN_NUMBERS": JOIN_NUMBERS, "MODES": MODES, "joinFigure": joinFigure, "profileFigure": profileFigure, "FIGURES_DATA": FIGURES_DATA };
+const reduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+/** film_001's row of a student file, as {column: value} */
+const firstRow = (name) => {
+  const [h, ...rows] = rowsOf(name);
+  const r = rows.find((x) => x[h.indexOf('film')] === 'film_001');
+  return Object.fromEntries(h.map((k, i) => [k, r[i]]));
+};
+
+/**
+ * The stages of the chapter as one pipeline. `who`: who does it (api, agent, ty); `sec`: where in
+ * the chapter; `shape`: what the data look like after the stage; `show()`: a small picture.
+ * Numbers are the test's own counts, already shown before any step (figures 4.2 and 4.12).
+ */
+const FLOW = [
+  { id: 'plan', name: 'Plan', who: 'ty', sec: 's4-2', step: 'Krok 1', shape: 'lista zapytań i liczba dni',
+    say: 'Zanim cokolwiek pobierzesz, liczysz zapytania, miesiące i strony. Limit wyszukiwań dziennie mówi, ile dni to potrwa.',
+    show: () => el('pre.ap-json', 'zapytania: 14\nmiesiące:  82, od 2020 r.\nlimit:     100 wyszukiwań dziennie') },
+  { id: 'ask', name: 'Zapytanie', who: 'agent', sec: 's4-3', step: 'Kroki 2 i 3', shape: 'adres URL',
+    say: 'Skrypt składa adres z zapytaniem i kluczem. Klucz czyta ze zmiennej środowiskowej, a nie z kodu.',
+    show: () => el('div.ap-url', el('span.ap-host', 'https://www.googleapis.com/youtube/v3'), el('span.ap-path', '/search'),
+      el('span.ap-param', '?q=manosfera&type=video'), el('span.ap-key', '&key=KLUCZ')) },
+  { id: 'json', name: 'JSON', who: 'api', sec: 's4-5', step: 'Krok 4', shape: 'strony JSON',
+    say: `Każda odpowiedź to jedna strona wyników. Dopóki jest nextPageToken, skrypt pyta o następną. W teście wyszło ${E.a.pages} stron.`,
+    show: () => el('div.fl-pages', Array.from({ length: E.a.pages }, (_, i) => el('span.fl-page', { style: `animation-delay:${(i * 0.3).toFixed(1)}s` },
+      el('b', `strona ${i + 1}`), el('span', i < E.a.pages - 1 ? '→ token' : 'koniec')))) },
+  { id: 'details', name: 'Szczegóły', who: 'api', sec: 's4-6', step: 'Krok 5', shape: 'JSON filmów i komentarzy',
+    say: 'Wyszukiwanie daje tylko id. Liczby filmu przychodzą z videos.list, a komentarze z commentThreads.list, razem z odpowiedziami.',
+    show: () => el('pre.ap-json', 'videos.list         → wyświetlenia, język, komentarze\ncommentThreads.list → wątki i odpowiedzi') },
+  { id: 'files', name: 'Pliki', who: 'agent', sec: 's4-9', step: '4.9', shape: 'cztery pliki CSV',
+    say: 'Skrypt zapisuje odpowiedzi jako tabele. W każdym pliku jeden wiersz znaczy co innego, ale wszystkie mają kolumnę film.',
+    show: () => el('div.fl-files', FILE_CARDS.map((c, i) => el('span.fl-file', { style: `animation-delay:${(i * 0.25).toFixed(2)}s` },
+      el('b', c.name), el('span', `${fmtNum(FILES[c.name].split('\n').filter(Boolean).length - 1)} wierszy`)))) },
+  { id: 'check', name: 'Kontrola', who: 'agent', sec: 's4-8', step: 'Kroki 6 i 7', shape: 'liczby do porównania z planem',
+    say: 'Agent wypisuje liczby, które da się porównać z planem. Trafienia, różne filmy, statusy, błędy. Słowo „gotowe” to jeszcze nie dowód.',
+    show: () => el('pre.ap-json', `stron wyników: ${E.a.pages}\ntrafienia:     ${E.a.hits}\nróżne filmy:   ${E.a.videos}`) },
+  { id: 'features', name: 'Cechy', who: 'ty', sec: 's4-10', step: 'Kroki 8–11', shape: 'nowe kolumny',
+    say: 'W Excelu z surowych kolumn robisz cechy. Rodzinę języka, komentarze na 1000 wyświetleń, sumę narastającą, udziały w czasie.',
+    show: () => el('div.sa-bar', el('span.sa-fx', 'fx'), el('code', '=JEŻELI(F2="";"";F2/D2*1000)')) },
+  { id: 'join', name: 'Połączenie', who: 'ty', sec: 's4-14', step: 'Krok 12', shape: 'kolumny przyniesione z innych plików',
+    say: 'Pliki łączysz przez id filmu. Formuła szuka pary w drugim arkuszu. Brak pary i powtórki trzeba policzyć, a nie przeoczyć.',
+    show: () => el('div.sa-bar', el('span.sa-fx', 'fx'), el('code', '=X.WYSZUKAJ(A2;status!A:A;status!E:E;"brak")')) },
+  { id: 'base', name: 'Baza', who: 'ty', sec: 's4-14', step: 'Krok 12', shape: 'jedna tabela, jeden wiersz to jeden film',
+    say: 'Na końcu masz jedną tabelę. Każda kolumna ma swoje źródło, a łączy je id filmu. Do tego profil, czyli opis braków.',
+    show: () => {
+      const v = firstRow('youtube-filmy.csv');
+      const s = firstRow('youtube-status-komentarzy.csv');
+      const t = firstRow('youtube-czas-komentarzy.csv');
+      const cols = [['film', v.film, 'filmy'], ['jezyk_audio', v.jezyk_audio, 'filmy'], ['wyswietlenia', v.wyswietlenia, 'filmy'],
+        ['status', s.status, 'status'], ['zebrane_glowne', s.zebrane_glowne, 'status'], ['dzien_1', t.dzien_1, 'czas'], ['dni_8_30', t.dni_8_30, 'czas']];
+      return el('div.dp-wrap', el('table.dp-grid',
+        el('thead', el('tr', cols.map(([h, , from]) => el('th', { class: `fl-src-${from}` }, h)))),
+        el('tbody', el('tr', cols.map(([, c, from]) => el('td', { class: `fl-src-${from}` }, c)))),
+        el('tfoot', el('tr', cols.map(([, , from]) => el('td.fl-from', `z pliku: ${from}`))))));
+    } },
+];
+const WHO = { api: 'YouTube API', agent: 'agent i skrypt', ty: 'ty' };
+
+function flowFigure({ num: n = 'Rysunek' } = {}) {
+  const st = { k: 0, playing: false };
+  let timer = null;
+  const host = el('div.dp-host');
+  const draw = () => {
+    const s = FLOW[st.k];
+    mount(host,
+      el('ol.fl-track', FLOW.map((x, i) => el('li', { class: ['fl-node', `fl-${x.who}`, i < st.k ? 'fl-past' : '', i === st.k ? 'fl-on' : ''].filter(Boolean).join(' ') },
+        el('button', { type: 'button', 'aria-pressed': i === st.k ? 'true' : 'false', 'aria-label': `etap ${i + 1}, ${x.name}`, onClick: () => { stop(false); st.k = i; draw(); } },
+          el('span.fl-num', String(i + 1)), el('span.fl-name', x.name), x.id === 'json' ? el('span.fl-loop', { 'aria-hidden': 'true' }, '↺') : null)))),
+      el('div.fl-legend', Object.entries(WHO).map(([k, v]) => el(`span.fl-leg.fl-${k}`, v))),
+      el('div.fl-panel',
+        el('div.fl-head', el('span.fl-badge', `${st.k + 1}/${FLOW.length}`), el('b', s.name), el('span.fl-who', WHO[s.who]),
+          el('a.fl-link', { href: `#${s.sec}` }, `${s.step} →`)),
+        el('div.sq-read', { 'aria-live': 'polite' }, s.say),
+        s.show(),
+        el('div.fl-shape', 'Po tym etapie: ', el('b', s.shape))),
+      el('div.ap-controls',
+        el('button.fg-toggle', { type: 'button', 'aria-label': 'poprzedni etap', onClick: () => go(st.k - 1) }, '‹'),
+        el('button.fg-toggle', { type: 'button', onClick: () => (st.playing ? stop() : play()) }, st.playing ? '⏸ Pauza' : '▶ Odtwórz drogę'),
+        el('button.fg-toggle', { type: 'button', 'aria-label': 'następny etap', onClick: () => go(st.k + 1) }, '›')));
+  };
+  const stop = (redraw = true) => { clearTimeout(timer); st.playing = false; if (redraw) draw(); };
+  const go = (k) => { stop(false); st.k = (k + FLOW.length) % FLOW.length; draw(); };
+  // each stage stays about four seconds (the page loop a little longer); the film stops on the last one
+  const tick = () => {
+    st.k += 1;
+    if (st.k >= FLOW.length - 1) { st.k = FLOW.length - 1; stop(); return; }
+    draw();
+    timer = setTimeout(tick, FLOW[st.k].id === 'json' ? 5500 : 4000);
+  };
+  const play = () => {
+    clearTimeout(timer);
+    if (reduced()) { go(st.k + 1); return; }
+    st.playing = true;
+    if (st.k >= FLOW.length - 1) st.k = -1;
+    tick();
+  };
+  draw();
+  return frame(n, 'Cała droga danych, od zapytania do jednej tabeli. Odtwórz albo kliknij etap', host,
+    el('div.fg-caption', `Liczby stron, trafień i filmów pochodzą z testu. Wiersz w ostatnim etapie to film_001 z plików rozdziału. ${SYNTH}`));
+}
+
+const FIGURES_DATA = { ytjson: jsonFigure, ytfiles: filesFigure, ytfeat: featureFigure, ytjoin: joinFigure, ytprofile: profileFigure, ytflow: flowFigure };
+
+__modules["src/book/figures/datapath.js"] = { "CALLS": CALLS, "jsonFigure": jsonFigure, "FILE_CARDS": FILE_CARDS, "filesFigure": filesFigure, "isoSeconds": isoSeconds, "FEATURES": FEATURES, "featureFigure": featureFigure, "JOIN_NUMBERS": JOIN_NUMBERS, "MODES": MODES, "joinFigure": joinFigure, "profileFigure": profileFigure, "FLOW": FLOW, "flowFigure": flowFigure, "FIGURES_DATA": FIGURES_DATA };
 })();
 
 /* ===== src/book/main4.js ===== */

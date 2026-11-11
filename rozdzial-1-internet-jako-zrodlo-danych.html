@@ -1786,7 +1786,7 @@ textarea.kc-input { resize: vertical; }
 
 /* ---- chapter 4, part B: JSON, files, features, join (figures/datapath.js) */
 .dp-json { display: flex; flex-direction: column; padding: 8px 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-sunken); font: 12px/1.55 var(--mono); max-width: 100%; overflow-x: auto; }
-.dp-line { white-space: pre; color: var(--ink-soft); }
+.dp-line { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink-soft); min-width: 0; }
 .dp-key { display: block; width: 100%; padding: 1px 6px; border: 0; border-left: 3px solid transparent; background: transparent; color: var(--ink); font: inherit; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; cursor: pointer; }
 .dp-key.dp-go { border-left-color: var(--accent); }
 .dp-key.dp-drop { color: var(--ink-faint); border-left-style: dashed; border-left-color: var(--line-strong); }
@@ -1799,6 +1799,8 @@ textarea.kc-input { resize: vertical; }
 .dp-say-drop { background: var(--bg-sunken); color: var(--ink-soft); }
 .dp-target { display: flex; flex-direction: column; gap: 4px; animation: mc-pop .35s ease-out; }
 .dp-to { font: 600 12px var(--mono); color: var(--accent); overflow-wrap: anywhere; }
+.dp-host { min-width: 0; }
+.dp-target, .fl-panel > * { min-width: 0; }
 .dp-wrap { max-width: 100%; overflow-x: auto; }
 .dp-grid { border-collapse: collapse; font: 12px var(--mono); }
 .dp-grid th { padding: 2px 6px; background: var(--bg-sunken); color: var(--ink-soft); font-weight: 400; border: 1px solid var(--line); text-align: left; }
@@ -1829,6 +1831,44 @@ textarea.kc-input { resize: vertical; }
 .dp-play { display: flex; flex-wrap: wrap; gap: 6px; }
 .dp-profile-head { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; }
 @media (prefers-reduced-motion: reduce) { .dp-say, .dp-target, .dp-count, .dp-feat { animation: none; } .dp-grid td { transition: none; } }
+
+/* ---- chapter 4, 4.15: the whole way as a pipeline (figures/datapath.js, ytflow) */
+.fl-track { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 4px; margin: 0; padding: 0; list-style: none; counter-reset: none; }
+.fl-node { position: relative; min-width: 0; }
+.fl-node:not(:last-child)::after { content: ''; position: absolute; top: 50%; right: -5px; width: 6px; height: 2px; background: var(--line-strong); }
+.fl-node button { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 100%; min-height: 3.6em; padding: 6px 2px; border: 1px solid var(--line-strong); border-top-width: 4px; border-radius: var(--radius); background: var(--bg); color: var(--ink); font: 12px var(--sans); cursor: pointer; transition: background .3s, transform .3s; }
+.fl-node button:hover { background: var(--bg-sunken); }
+.fl-num { font: 700 11px var(--mono); color: var(--ink-soft); }
+.fl-name { font-weight: 700; overflow-wrap: anywhere; text-align: center; }
+.fl-loop { font-size: 13px; color: var(--accent); }
+.fl-api button { border-top-color: var(--ok); }
+.fl-agent button { border-top-color: var(--warn); }
+.fl-ty button { border-top-color: var(--accent); }
+.fl-past button { background: var(--bg-sunken); color: var(--ink-soft); }
+.fl-on button { background: var(--warn-bg); box-shadow: 0 0 0 2px var(--accent); transform: translateY(-2px); }
+.fl-on.fl-node::before { content: ''; position: absolute; left: 50%; bottom: -9px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--accent); animation: mc-pop .4s ease-out; }
+.fl-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; font-size: 12px; color: var(--ink-soft); }
+.fl-leg::before { content: ''; display: inline-block; width: 14px; height: 4px; margin-right: 5px; vertical-align: middle; border-radius: 2px; }
+.fl-leg.fl-api::before { background: var(--ok); }
+.fl-leg.fl-agent::before { background: var(--warn); }
+.fl-leg.fl-ty::before { background: var(--accent); }
+.fl-panel { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius); animation: mc-pop .4s ease-out; min-width: 0; }
+.fl-head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+.fl-badge { font: 700 11px var(--mono); color: var(--ink-soft); }
+.fl-who { font-size: 12px; color: var(--ink-soft); }
+.fl-link { margin-left: auto; font-size: 13px; }
+.fl-shape { font-size: 13px; color: var(--ink-soft); }
+.fl-pages, .fl-files { display: flex; flex-wrap: wrap; gap: 6px; }
+.fl-page, .fl-file { display: flex; flex-direction: column; padding: 4px 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-sunken); font: 11px var(--mono); animation: mc-pop .4s ease-out both; }
+.fl-file b { overflow-wrap: anywhere; }
+.fl-page span, .fl-file span { color: var(--ink-soft); }
+.fl-page:last-child span { color: var(--err); }
+.fl-src-filmy { background: var(--warn-bg); }
+.fl-src-status { background: var(--ok-bg); }
+.fl-src-czas { background: var(--bg-sunken); }
+.fl-from { font-size: 10px; color: var(--ink-soft); border: 0 !important; }
+@media (max-width: 640px) { .fl-track { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 12px; } .fl-node::after { display: none; } .fl-link { margin-left: 0; } }
+@media (prefers-reduced-motion: reduce) { .fl-panel, .fl-page, .fl-file, .fl-on.fl-node::before { animation: none; } .fl-node button { transition: none; } }
 
 /* ---- chapter 4, part B: formulas played on a small sheet (figures/sheetanim.js) */
 .sa-chips { display: flex; flex-wrap: wrap; gap: 6px; }
