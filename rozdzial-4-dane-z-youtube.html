@@ -1784,6 +1784,52 @@ textarea.kc-input { resize: vertical; }
 .ap-dot.ap-dot-on { background: var(--accent); }
 @media (prefers-reduced-motion: reduce) { .ap-ask, .ap-answer, .ap-panel, .ap-meter-fill, .ap-new td { animation: none; } .ap-ask { left: 100%; transform: translateX(-100%); } .ap-answer { left: 0; } }
 
+/* ---- chapter 4, part B: JSON, files, features, join (figures/datapath.js) */
+.dp-json { display: flex; flex-direction: column; padding: 8px 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-sunken); font: 12px/1.55 var(--mono); max-width: 100%; overflow-x: auto; }
+.dp-line { white-space: pre; color: var(--ink-soft); }
+.dp-key { display: block; width: 100%; padding: 1px 6px; border: 0; border-left: 3px solid transparent; background: transparent; color: var(--ink); font: inherit; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; cursor: pointer; }
+.dp-key.dp-go { border-left-color: var(--accent); }
+.dp-key.dp-drop { color: var(--ink-faint); border-left-style: dashed; border-left-color: var(--line-strong); }
+.dp-key:hover { background: var(--bg); }
+.dp-key.dp-on { background: var(--warn-bg); box-shadow: inset 0 0 0 1px var(--warn); }
+.dp-legend { display: flex; flex-wrap: wrap; gap: 12px; font: 12px var(--mono); }
+.dp-legend .dp-key { width: auto; cursor: default; }
+.dp-say { padding: 6px 10px; border-radius: var(--radius); font-size: 14px; animation: mc-pop .3s ease-out; }
+.dp-say-go { background: var(--ok-bg); }
+.dp-say-drop { background: var(--bg-sunken); color: var(--ink-soft); }
+.dp-target { display: flex; flex-direction: column; gap: 4px; animation: mc-pop .35s ease-out; }
+.dp-to { font: 600 12px var(--mono); color: var(--accent); overflow-wrap: anywhere; }
+.dp-wrap { max-width: 100%; overflow-x: auto; }
+.dp-grid { border-collapse: collapse; font: 12px var(--mono); }
+.dp-grid th { padding: 2px 6px; background: var(--bg-sunken); color: var(--ink-soft); font-weight: 400; border: 1px solid var(--line); text-align: left; }
+.dp-grid td { padding: 3px 7px; border: 1px solid var(--line); transition: background .25s; }
+.dp-grid .dp-hot { background: var(--warn-bg); }
+.dp-grid th.dp-new { background: var(--ok-bg); color: var(--ink); }
+.dp-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+.dp-card { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius); }
+.dp-card-name { font: 600 13px var(--mono); overflow-wrap: anywhere; }
+.dp-card-meta { font-size: 12px; color: var(--ink-soft); }
+.dp-card-one { font-size: 13px; }
+.dp-count { font-size: 12px; padding: 2px 6px; border-radius: 10px; align-self: flex-start; animation: mc-pop .3s ease-out; }
+.dp-count-1 { background: var(--ok-bg); }
+.dp-count-2 { background: var(--err-bg); }
+.dp-follow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.dp-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.dp-chip-api { border-style: dashed; }
+.dp-feat { display: flex; flex-direction: column; gap: 6px; animation: mc-pop .3s ease-out; }
+.dp-feat-kind { font-size: 13px; color: var(--ink-soft); }
+.dp-join { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.dp-side { display: flex; flex-direction: column; gap: 4px; min-width: 0; max-width: 100%; }
+.dp-arrow { font: 600 20px var(--mono); color: var(--accent); min-width: 1.5em; text-align: center; }
+@media (max-width: 560px) { .dp-arrow { display: none; } }
+.dp-row-on td { background: var(--ok-bg); }
+.dp-row-bad td { background: var(--err-bg); }
+.dp-row-dup td:first-child { box-shadow: inset 0 0 0 2px var(--err); }
+.dp-fake { text-decoration: underline wavy var(--err); }
+.dp-play { display: flex; flex-wrap: wrap; gap: 6px; }
+.dp-profile-head { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; }
+@media (prefers-reduced-motion: reduce) { .dp-say, .dp-target, .dp-count, .dp-feat { animation: none; } .dp-grid td { transition: none; } }
+
 /* ---- chapter 4, part B: formulas played on a small sheet (figures/sheetanim.js) */
 .sa-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .sa-chip { padding: 4px 9px; border: 1px solid var(--line-strong); border-radius: 14px; background: transparent; color: var(--ink); font: 12px var(--mono); cursor: pointer; overflow-wrap: anywhere; text-align: left; }
@@ -14933,11 +14979,13 @@ __modules["src/book/book.js"] = { "FIGURES": FIGURES, "ANSWERS": ANSWERS, "RESTO
  * Chapter 4 of the textbook, "Dane z YouTube" (docs/chapter4-plan.md, D45 and D46). Two meetings:
  * part A, a brief for an AI agent that writes the scraper (seven steps, each adds a rule to the
  * student's AGENTS.md; the real story of the project's first and second script versions), and
- * part B, checking what the agent brought in Excel (four steps on synthetic rows), then the
- * corpus card.
+ * part B, what the agent brought (the JSON answer, the four files, columns and features), checking
+ * it in Excel (four steps on synthetic rows) and joining the files into one table by the film id
+ * (step 12, D51).
  *
- * Part A exercises and figures: figures/brief.js; part B: figures/youtube.js; registration: main4.js.
- * No card: the questions of 4.13 are the conclusion, answered in the downloaded report task.
+ * Part A exercises and figures: figures/brief.js; part B: figures/youtube.js and figures/datapath.js;
+ * registration: main4.js.
+ * No card: the questions of 4.15 are the conclusion, answered in the downloaded report task.
  */
 
 /**
@@ -14973,12 +15021,12 @@ const CHAPTER = {
   lead: 'Skrypt do zbierania danych napisze dziś za ciebie asystent AI. Twoja rola to dobrze go zlecić i sprawdzić, co przyniósł. Na pierwszym spotkaniu ułożysz zlecenie dla agenta na prawdziwym przykładzie. Na drugim sprawdzisz zebrane dane w Excelu.',
   outcomes: [
     ['U1', 'układasz zlecenie dla agenta AI, które zbiera dane z platformy społecznościowej'],
-    ['U3', 'sprawdzasz w arkuszu zebrany korpus, licząc udziały, medianę i sumę narastającą'],
+    ['U3', 'sprawdzasz w arkuszu zebrany korpus, licząc udziały, medianę i sumę narastającą, i łączysz pliki przez wspólne id'],
     ['K2', 'nie przyjmujesz „gotowe” od agenta bez liczb, które się zgadzają'],
   ],
   howTo: [
     ['cwiczenie', 'część A to wybór reguł i liczby kontrolne, część B to pliki i kroki w Excelu'],
-    ['projekt', 'AGENTS.md i pytania do danych z podrozdziału 4.13 to wzór do własnego projektu'],
+    ['projekt', 'AGENTS.md, profil danych i pytania z podrozdziału 4.15 to wzór do własnego projektu'],
   ],
 
   sections: [
@@ -15061,10 +15109,22 @@ const CHAPTER = {
       ],
     },
     {
-      id: 's4-9', num: '4.9', title: 'Krok 8. Po jakiemu mówi korpus?', meeting: 9,
-      parts: [['cwiczenie', 18]],
+      id: 's4-9', num: '4.9', title: 'Co przyniósł agent?', meeting: 9,
+      parts: [['teoria', 10]],
       blocks: [
-        P('Część B. Agent przyniósł pliki. Teraz sprawdzasz je sam, w Excelu. Pliki mają średniki, więc polski Excel otworzy je dwuklikiem.'),
+        P('Część B. Agent przyniósł pliki. Zanim coś policzysz, zobacz, skąd się wzięły. YouTube odpowiada w formacie **JSON**. Kliknij pole odpowiedzi, a zobaczysz, do której kolumny trafiło.'),
+        { figure: 'ytjson' },
+        P('Z odpowiedzi powstały cztery pliki. W każdym jeden wiersz znaczy co innego, ale wszystkie mają kolumnę `film`. To **klucz**, po którym łączy się pliki.'),
+        { figure: 'ytfiles' },
+        P('Kolumna to jeszcze nie miara. Z surowej wartości robisz **cechę**, którą da się policzyć i porównać.'),
+        { figure: 'ytfeat' },
+      ],
+    },
+    {
+      id: 's4-10', num: '4.10', title: 'Krok 8. Po jakiemu mówi korpus?', meeting: 9,
+      parts: [['cwiczenie', 15]],
+      blocks: [
+        P('Teraz sprawdzasz pliki sam, w Excelu. Mają średniki, więc polski Excel otworzy je dwuklikiem.'),
         remind('Udział zależy od mianownika. Zanim podasz procent, powiedz, z czego on jest.'),
         P('Skrypt prosił YouTube o wyniki po polsku. Czy dostał polskie filmy? Najpierw zobacz formuły na sześciu filmach.'),
         { figure: 'salang' },
@@ -15074,8 +15134,8 @@ const CHAPTER = {
       ],
     },
     {
-      id: 's4-10', num: '4.10', title: 'Krok 9. Komentarze na 1000 wyświetleń', meeting: 9,
-      parts: [['cwiczenie', 18]],
+      id: 's4-11', num: '4.11', title: 'Krok 9. Komentarze na 1000 wyświetleń', meeting: 9,
+      parts: [['cwiczenie', 15]],
       blocks: [
         remind('Średnią ciągną wartości skrajne, a mediana to środek listy (lekcja „Średnia czy mediana” w trenerze). Zaangażowanie porównuje się po przeliczeniu na tę samą podstawę (lekcja „Zaangażowanie”).'),
         P('Komentarze na 1000 wyświetleń to popularna miara zaangażowania. Dla całego korpusu i dla typowego filmu wychodzą dwie różne liczby.'),
@@ -15085,8 +15145,8 @@ const CHAPTER = {
       ],
     },
     {
-      id: 's4-11', num: '4.11', title: 'Krok 10. Kto zbiera wyświetlenia?', meeting: 9,
-      parts: [['cwiczenie', 18]],
+      id: 's4-12', num: '4.12', title: 'Krok 10. Kto zbiera wyświetlenia?', meeting: 9,
+      parts: [['cwiczenie', 14]],
       blocks: [
         remind('Aktywność w sieci jest nierówna. Mała część użytkowników robi większość wpisów (podrozdział 1.4). Z filmami jest tak samo.'),
         { figure: 'ytsort' },
@@ -15097,24 +15157,36 @@ const CHAPTER = {
       ],
     },
     {
-      id: 's4-12', num: '4.12', title: 'Krok 11. Kiedy przychodzą komentarze?', meeting: 9,
-      parts: [['cwiczenie', 12]],
+      id: 's4-13', num: '4.13', title: 'Krok 11. Kiedy przychodzą komentarze?', meeting: 9,
+      parts: [['cwiczenie', 10]],
       blocks: [
         remind('Dane z sieci dryfują. Dlatego zapisuje się je od razu, razem z datą pobrania (podrozdział 1.7).'),
         { figure: 'ytclock' },
         { figure: 'satiming' },
         step('yk6', 'Krok 11', 'Dzień zbierania zmienia korpus', 'Krok 11. Czas komentarzy'),
         { figure: 'yttiming' },
-        P('Stąd ostatnia reguła twojego AGENTS.md. Dzień i godzinę zbierania trzeba zapisać w każdym pliku. Ten krok dopisał ją do pliku na rysunku w podrozdziale 4.8.'),
+        P('Stąd kolejna reguła twojego AGENTS.md. Dzień i godzinę zbierania trzeba zapisać w każdym pliku. Ten krok dopisał ją do pliku na rysunku w podrozdziale 4.8.'),
       ],
     },
     {
-      id: 's4-13', num: '4.13', title: 'Wnioski. Pytania do twoich danych', meeting: 9,
-      parts: [['projekt', 14], ['dyskusja', 10]],
+      id: 's4-14', num: '4.14', title: 'Krok 12. Jedna tabela filmu', meeting: 9,
+      parts: [['cwiczenie', 18]],
+      blocks: [
+        remind('Pliki łączy się przez klucz, a nie przez kolejność wierszy. Jeden wiersz w tabeli wyniku ma znaczyć to samo co w tabeli, od której zaczynasz.'),
+        P('Na koniec złożysz pliki w jedną tabelę. Zobacz najpierw, jak formuła szuka pary. Przełącz trzy sposoby i przejdź wiersz po wierszu.'),
+        { figure: 'ytjoin' },
+        step('yk7', 'Krok 12', 'Jedna tabela filmu', 'Krok 12. Jedna tabela'),
+        { figure: 'ytprofile' },
+        P('To jest **profil danych**. Mówi, ile masz wierszy, co jest jednym wierszem, jaki klucz je łączy i gdzie brakuje wartości. Ten krok dopisał też regułę o kluczach do twojego AGENTS.md. Taki sam profil zrobisz dla swojego projektu w zadaniu do raportu.'),
+      ],
+    },
+    {
+      id: 's4-15', num: '4.15', title: 'Wnioski. Pytania do twoich danych', meeting: 9,
+      parts: [['projekt', 4], ['dyskusja', 4]],
       blocks: [
         P('Te same pytania zadasz danym w swoim projekcie. Pod każdym jest przykład z tego rozdziału.'),
         { label: 'Pytania do twoich danych', cards: QUESTIONS4.map((x, i) => ({ title: `${i + 1}. ${x.q}`, text: x.here })) },
-        P('Odpowiedzi nie wpisujesz na stronie. Pobierz zadanie do raportu i oddaj je razem z raportem z tej strony i swoim AGENTS.md.'),
+        P('Odpowiedzi nie wpisujesz na stronie. Pobierz zadanie do raportu. Jest w nim też profil danych. Oddaj je razem z raportem z tej strony i swoim AGENTS.md.'),
         { figure: 'ytassign' },
         { discuss: { who: 'w parach, po 3 minuty', prompts: [
           'Przeczytajcie sobie nawzajem odpowiedź na pytanie 5. Czy każda liczba ma mianownik?',
@@ -15132,10 +15204,11 @@ const CHAPTER = {
     { id: 'ag5', label: 'Krok 5. Komentarze i odpowiedzi', section: 's4-6' },
     { id: 'ag6', label: 'Krok 6. Ciche błędy', section: 's4-7' },
     { id: 'ag7', label: 'Krok 7. Zapis przebiegu', section: 's4-8' },
-    { id: 'yk3', label: 'Krok 8. Język', section: 's4-9' },
-    { id: 'yk4', label: 'Krok 9. Komentarze na 1000 wyświetleń', section: 's4-10' },
-    { id: 'yk5', label: 'Krok 10. Skupienie wyświetleń', section: 's4-11' },
-    { id: 'yk6', label: 'Krok 11. Czas komentarzy', section: 's4-12' },
+    { id: 'yk3', label: 'Krok 8. Język', section: 's4-10' },
+    { id: 'yk4', label: 'Krok 9. Komentarze na 1000 wyświetleń', section: 's4-11' },
+    { id: 'yk5', label: 'Krok 10. Skupienie wyświetleń', section: 's4-12' },
+    { id: 'yk6', label: 'Krok 11. Czas komentarzy', section: 's4-13' },
+    { id: 'yk7', label: 'Krok 12. Jedna tabela', section: 's4-14' },
   ],
 
   recap: [
@@ -15144,6 +15217,7 @@ const CHAPTER = {
     'Udział bez mianownika nic nie mówi. Napisz, z czego jest procent.',
     'Ta sama miara dla korpusu i dla typowego filmu to dwie liczby. Kilka dużych filmów ciągnie sumy.',
     'Słowo, okres, liczba stron i dzień zbierania zmieniają to, co jest w korpusie.',
+    'Pliki łączy się przez wspólne id. Sprawdź, ile id nie ma pary i czy żadne się nie powtarza.',
   ],
 
   next: 'Rozdział 5 to narzędzia analizy i wizualizacji. Zobaczysz, jak oś, wygładzanie i wybór średniej zmieniają to, co mówi wykres.',
@@ -15323,7 +15397,9 @@ __modules["src/book/figures/sheet.js"] = { "parseNumber": parseNumber, "parseDat
 
 const FILES = {
  "youtube-filmy.csv": "film;kanal;jezyk_audio;wyswietlenia;polubienia;komentarze\nfilm_001;kanal_001;it;864;12;2\nfilm_002;kanal_002;;1396;33;0\nfilm_003;kanal_003;es-MX;500;17;15\nfilm_004;kanal_004;pt-PT;212;5;\nfilm_005;kanal_001;it;9472;564;33\nfilm_006;kanal_005;pl;17129;895;440\nfilm_007;kanal_006;hr;6460;141;6\nfilm_008;kanal_007;;310;3;2\nfilm_009;kanal_008;es-MX;1553;85;2\nfilm_010;kanal_009;;935;13;1\nfilm_011;kanal_010;es-419;2230;124;24\nfilm_012;kanal_011;en-US;30;2;2\nfilm_013;kanal_012;en-GB;912;11;3\nfilm_014;kanal_013;en-GB;40987;652;19\nfilm_015;kanal_014;en;5966;152;15\nfilm_016;kanal_015;;599;4;2\nfilm_017;kanal_016;es-MX;174;11;10\nfilm_018;kanal_017;en-US;1553;22;5\nfilm_019;kanal_018;es-MX;129;13;0\nfilm_020;kanal_019;;210;11;\nfilm_021;kanal_020;pl;243;25;8\nfilm_022;kanal_021;;1424;3;2\nfilm_023;kanal_022;;2687;4;0\nfilm_024;kanal_023;;344;5;0\nfilm_025;kanal_005;pl;2332;17;2\nfilm_026;kanal_024;;75;3;0\nfilm_027;kanal_025;;1135;13;0\nfilm_028;kanal_026;;693;10;5\nfilm_029;kanal_027;;63823;2741;498\nfilm_030;kanal_028;en-US;525;1;1\nfilm_031;kanal_029;;1609;17;1\nfilm_032;kanal_030;;67;4;0\nfilm_033;kanal_031;en-US;343;4;3\nfilm_034;kanal_032;;536;17;36\nfilm_035;kanal_033;en;2814;53;4\nfilm_036;kanal_034;;131;1;0\nfilm_037;kanal_035;;342;2;1\nfilm_038;kanal_036;en;3200;25;2\nfilm_039;kanal_037;;1901;24;2\nfilm_040;kanal_038;en-AU;851;2;0\nfilm_041;kanal_039;;305;5;2\nfilm_042;kanal_040;en;1961;12;0\nfilm_043;kanal_041;cs;1135;4;1\nfilm_044;kanal_042;;501;8;0\nfilm_045;kanal_043;;820;17;2\nfilm_046;kanal_044;;1423;22;0\nfilm_047;kanal_045;;453;2;2\nfilm_048;kanal_046;es-MX;785;6;1\nfilm_049;kanal_047;ro;18623;1121;171\nfilm_050;kanal_048;;19;2;0\nfilm_051;kanal_049;en-IE;54;9;1\nfilm_052;kanal_050;es;657;2;0\nfilm_053;kanal_051;it;104;11;0\nfilm_054;kanal_052;en;412506;16418;5275\nfilm_055;kanal_053;en;1281;9;0\nfilm_056;kanal_054;en;2985;692;36\nfilm_057;kanal_055;en;1722;6;0\nfilm_058;kanal_056;;48;1;0\nfilm_059;kanal_057;;7790;212;13\nfilm_060;kanal_058;en;3711;431;19\nfilm_061;kanal_059;en-US;6680;71;43\nfilm_062;kanal_060;en;2140;18;6\nfilm_063;kanal_061;;11;0;0\nfilm_064;kanal_062;en-GB;86155;9506;686\nfilm_065;kanal_044;en;1942;7;0\nfilm_066;kanal_063;en-US;236;1;0\nfilm_067;kanal_064;;1978;14;8\nfilm_068;kanal_065;en-IE;76;1;0\nfilm_069;kanal_066;;822;13;0\nfilm_070;kanal_067;pt;8452;223;12\nfilm_071;kanal_068;;1607;30;0\nfilm_072;kanal_069;en-GB;12606;38;15\nfilm_073;kanal_070;en;774;3;2\nfilm_074;kanal_071;es-MX;790;8;1\nfilm_075;kanal_072;;8574;89;3\nfilm_076;kanal_073;;28576;310;7\nfilm_077;kanal_074;en-US;30683;1217;114\nfilm_078;kanal_017;;89;3;0\nfilm_079;kanal_075;en;2140;13;0\nfilm_080;kanal_076;es-MX;48;2;0\nfilm_081;kanal_077;en-CA;798;86;26\nfilm_082;kanal_078;en;3626;106;5\nfilm_083;kanal_079;;10261;718;101\nfilm_084;kanal_044;en;1106;8;0\nfilm_085;kanal_080;;895;4;0\nfilm_086;kanal_081;;1197;9;2\nfilm_087;kanal_082;;863;2;1\nfilm_088;kanal_001;it;1647;17;0\nfilm_089;kanal_083;;1165;17;1\nfilm_090;kanal_084;;1277;25;5\nfilm_091;kanal_085;;11494;1396;42\nfilm_092;kanal_086;;83;1;0\nfilm_093;kanal_048;;1861;8;0\nfilm_094;kanal_087;en;54456;2642;280\nfilm_095;kanal_088;en-US;2794;46;5\nfilm_096;kanal_061;;587;3;0\nfilm_097;kanal_089;;6361;173;5\nfilm_098;kanal_090;en-GB;656;6;0\nfilm_099;kanal_091;en;540;2;0\nfilm_100;kanal_005;pl;6094;149;5\nfilm_101;kanal_092;;111;2;0\nfilm_102;kanal_093;;296;1;0\nfilm_103;kanal_094;pt-BR;947;6;1\nfilm_104;kanal_044;en;13;0;0\nfilm_105;kanal_095;;223;6;1\nfilm_106;kanal_092;;2312;13;0\nfilm_107;kanal_096;;687;2;6\nfilm_108;kanal_092;;1600;47;4\nfilm_109;kanal_097;;695;5;0\nfilm_110;kanal_098;;1774;35;2\nfilm_111;kanal_099;en;1119;35;6\nfilm_112;kanal_100;;1553;16;3\nfilm_113;kanal_101;en-US;640;5;0\nfilm_114;kanal_086;;2043;14;1\nfilm_115;kanal_102;en;241;2;0\nfilm_116;kanal_103;en;1399;41;3\nfilm_117;kanal_104;en-US;4567;307;20\nfilm_118;kanal_105;en-GB;1026;40;4\nfilm_119;kanal_106;;1099;8;0\nfilm_120;kanal_077;en-CA;973;37;5\nfilm_121;kanal_107;en-US;1924;9;0\nfilm_122;kanal_108;en-US;4438;37;4\nfilm_123;kanal_109;es-ES;63;15;0\nfilm_124;kanal_110;;182;10;10\nfilm_125;kanal_111;;1192;41;0\nfilm_126;kanal_112;;658;2;1\nfilm_127;kanal_090;en-GB;96;2;2\nfilm_128;kanal_113;;1268;46;6\nfilm_129;kanal_059;en-US;1012;16;0\nfilm_130;kanal_114;;1295;23;8\nfilm_131;kanal_115;en;82;8;0\nfilm_132;kanal_116;;690;3;5\nfilm_133;kanal_117;;414654;10007;109\nfilm_134;kanal_118;en;944;15;13\nfilm_135;kanal_119;;10;1;0\nfilm_136;kanal_120;es-419;36;3;0\nfilm_137;kanal_121;;1337;18;0\nfilm_138;kanal_096;;209;3;0\nfilm_139;kanal_122;;432;19;2\nfilm_140;kanal_123;;765;8;11\nfilm_141;kanal_124;;510;6;0\nfilm_142;kanal_116;;1689;3;2\nfilm_143;kanal_125;en-GB;100566;1307;224\nfilm_144;kanal_108;en-US;784;4;2\nfilm_145;kanal_126;en;903;123;11\nfilm_146;kanal_108;en-US;3068;149;3\nfilm_147;kanal_127;en-GB;5159;142;21\nfilm_148;kanal_128;;248;2;2\nfilm_149;kanal_129;en;268003;7565;1239\nfilm_150;kanal_130;;2034;14;0\nfilm_151;kanal_131;;4375;318;10\nfilm_152;kanal_132;;1009;2;0\nfilm_153;kanal_133;;1243;21;1\nfilm_154;kanal_092;;1229;22;2\nfilm_155;kanal_134;;22;1;0\nfilm_156;kanal_115;en;1742;7;0\nfilm_157;kanal_045;;1096;6;3\nfilm_158;kanal_135;en;742;33;10\nfilm_159;kanal_136;en-GB;26540;670;343\nfilm_160;kanal_137;;1156;10;0\nfilm_161;kanal_135;en;149;3;1\nfilm_162;kanal_138;en-GB;880;14;5\nfilm_163;kanal_139;;1647;44;9\nfilm_164;kanal_140;;545;13;0\nfilm_165;kanal_141;;1121;7;5\nfilm_166;kanal_142;en;163472;10561;2680\nfilm_167;kanal_143;;21;5;0\nfilm_168;kanal_144;en-GB;18;0;0\nfilm_169;kanal_145;;47;6;5\nfilm_170;kanal_146;;342;9;0\nfilm_171;kanal_137;;35;3;0\nfilm_172;kanal_147;;995;12;4\nfilm_173;kanal_148;en-AU;672;3;0\nfilm_174;kanal_149;;813;16;0\nfilm_175;kanal_150;en-US;395;15;3\nfilm_176;kanal_151;;49;2;0\nfilm_177;kanal_152;en;1369;3;0\nfilm_178;kanal_153;;6476;171;9\nfilm_179;kanal_154;;762;;0\nfilm_180;kanal_155;;1273;17;2\nfilm_181;kanal_156;;452;1;0\nfilm_182;kanal_137;;2441;268;19\nfilm_183;kanal_157;pt-BR;3023;59;0\nfilm_184;kanal_158;en-US;532;13;1\nfilm_185;kanal_159;en-US;15958;818;123\nfilm_186;kanal_160;it;16;0;0\nfilm_187;kanal_161;;15043;263;28\nfilm_188;kanal_057;;604;9;2\nfilm_189;kanal_156;;458;12;0\nfilm_190;kanal_162;en-US;2036;22;0\nfilm_191;kanal_163;;748;13;2\nfilm_192;kanal_164;en-US;869;7;4\nfilm_193;kanal_165;;1144;43;9\nfilm_194;kanal_134;;159;1;0\nfilm_195;kanal_166;;4;0;0\nfilm_196;kanal_167;;1190;36;2\nfilm_197;kanal_168;pl;34255;2291;344\nfilm_198;kanal_169;en;1866;42;10\nfilm_199;kanal_166;;159;3;0\nfilm_200;kanal_170;;330;7;0\nfilm_201;kanal_171;en-US;1907;29;5\nfilm_202;kanal_149;;649;9;2\nfilm_203;kanal_155;;901;4;0\nfilm_204;kanal_172;;931;3;0\nfilm_205;kanal_173;;2312;12;1\nfilm_206;kanal_174;en-US;15;0;0\nfilm_207;kanal_072;;10891;78;6\nfilm_208;kanal_175;en-CA;3103;120;16\nfilm_209;kanal_176;;1144;13;1\nfilm_210;kanal_177;en-AU;1749;67;9\nfilm_211;kanal_178;;187;1;0\nfilm_212;kanal_179;es-419;218642;13738;873\nfilm_213;kanal_180;;1075;3;0\nfilm_214;kanal_044;en;117;1;0\nfilm_215;kanal_137;;803;17;0\nfilm_216;kanal_181;es-419;138;8;2\nfilm_217;kanal_182;;3618;216;17\nfilm_218;kanal_183;;4212;249;36\nfilm_219;kanal_166;;8;0;0\nfilm_220;kanal_143;;14340;488;50\nfilm_221;kanal_184;;699;10;0\nfilm_222;kanal_185;en;776;15;6\nfilm_223;kanal_159;en-US;1093;24;3\nfilm_224;kanal_186;en;1341;10;6\nfilm_225;kanal_187;en-US;7454;273;31\nfilm_226;kanal_188;;1788;16;0\nfilm_227;kanal_149;;666;16;2\nfilm_228;kanal_189;;1594;6;0\nfilm_229;kanal_190;;3975;120;4\nfilm_230;kanal_191;;733;10;2\nfilm_231;kanal_192;en;282;5;0\nfilm_232;kanal_100;;1263;2;0\nfilm_233;kanal_193;;10584;102;0\nfilm_234;kanal_149;;272;3;0\nfilm_235;kanal_194;en;473;4;0\nfilm_236;kanal_171;en-US;3342;249;15\nfilm_237;kanal_149;;1168;50;10\nfilm_238;kanal_181;es-419;1529;61;14\nfilm_239;kanal_195;en-US;333;6;1\nfilm_240;kanal_196;es-MX;67;4;0\nfilm_241;kanal_171;en-US;12711;849;36\nfilm_242;kanal_166;;3;0;0\nfilm_243;kanal_193;;1217;180;3\nfilm_244;kanal_182;;1012;2;2\nfilm_245;kanal_197;;54;1;0\nfilm_246;kanal_198;;541;5;0\nfilm_247;kanal_199;;493;3;0\nfilm_248;kanal_200;en-US;53;0;0\nfilm_249;kanal_197;;705;4;2\nfilm_250;kanal_181;es-419;376;19;0\nfilm_251;kanal_201;en-US;4281;56;1\nfilm_252;kanal_197;;446;9;5\nfilm_253;kanal_202;en-US;1616;21;2\nfilm_254;kanal_203;en;3210;236;10\nfilm_255;kanal_204;;868;21;8\nfilm_256;kanal_069;en-GB;1064;6;0\nfilm_257;kanal_199;;884;10;0\nfilm_258;kanal_205;;22;0;0\nfilm_259;kanal_199;;949;11;0\nfilm_260;kanal_206;en-US;1538;18;1\nfilm_261;kanal_207;;421;1;0\nfilm_262;kanal_181;es-419;112;5;1\nfilm_263;kanal_149;;1192;6;1\nfilm_264;kanal_208;;1511;41;1\nfilm_265;kanal_209;en;805;1;0\nfilm_266;kanal_210;en-US;12896;57;2\nfilm_267;kanal_149;;983;32;7\nfilm_268;kanal_211;;1416;16;6\nfilm_269;kanal_212;es;4103;40;41\nfilm_270;kanal_108;en-US;1196;12;1\nfilm_271;kanal_213;;1486;26;0\nfilm_272;kanal_214;;96;1;0\nfilm_273;kanal_108;en-US;255;19;5\nfilm_274;kanal_215;;1164;16;2\nfilm_275;kanal_216;en-GB;15094;67;7\nfilm_276;kanal_108;en-US;7804;167;18\nfilm_277;kanal_217;;1637;169;3\nfilm_278;kanal_218;;1063;46;2\nfilm_279;kanal_219;en-US;212;3;0\nfilm_280;kanal_108;en-US;1941;32;7\nfilm_281;kanal_220;;2446;12;30\nfilm_282;kanal_221;;394;9;4\nfilm_283;kanal_181;es-419;3;0;0\nfilm_284;kanal_222;;9;0;0\nfilm_285;kanal_223;;1154;62;15\nfilm_286;kanal_138;en-GB;1346;2;2\nfilm_287;kanal_108;en-US;3610;96;21\nfilm_288;kanal_224;en-US;686;2;0\nfilm_289;kanal_225;;58;2;0\nfilm_290;kanal_226;en;713;41;3\nfilm_291;kanal_227;;1254;1;6\nfilm_292;kanal_201;en-US;135706;3774;1126\nfilm_293;kanal_215;;5092;107;5\nfilm_294;kanal_228;;41;2;0\nfilm_295;kanal_201;en-US;5653;274;123\nfilm_296;kanal_229;es-419;162;5;1\nfilm_297;kanal_193;;745;20;7\nfilm_298;kanal_081;;5222;95;16\nfilm_299;kanal_230;en;642;10;2\nfilm_300;kanal_231;;72;0;0\nfilm_301;kanal_232;;2277;9;0\nfilm_302;kanal_233;es-419;6891;97;18\nfilm_303;kanal_153;;72019;641;10\nfilm_304;kanal_086;;1153;5;0\nfilm_305;kanal_234;;5384;127;39\nfilm_306;kanal_235;;491;9;5\nfilm_307;kanal_236;;254;0;0\nfilm_308;kanal_201;en-US;2646;5;2\nfilm_309;kanal_218;;274;1;2\nfilm_310;kanal_237;;1718;3;3\nfilm_311;kanal_238;;2865;263;13\nfilm_312;kanal_211;;488;4;2\nfilm_313;kanal_239;;4408;103;4\nfilm_314;kanal_240;;556;3;0\nfilm_315;kanal_166;;1521;9;0\nfilm_316;kanal_241;;8;1;0\nfilm_317;kanal_236;;365;0;0\nfilm_318;kanal_108;en-US;678;15;2\nfilm_319;kanal_242;;517;5;0\nfilm_320;kanal_243;pl;2763;99;2\nfilm_321;kanal_244;en-GB;33;2;2\nfilm_322;kanal_245;;313;10;0\nfilm_323;kanal_246;es;1460;32;10\nfilm_324;kanal_247;;19;0;0\nfilm_325;kanal_248;es-MX;107;6;1\nfilm_326;kanal_249;en;57343;45;21\nfilm_327;kanal_250;;535;3;1\nfilm_328;kanal_251;;247;3;0\nfilm_329;kanal_252;;1135;2;2\nfilm_330;kanal_253;;71;0;0\nfilm_331;kanal_164;en-US;3997;427;24\nfilm_332;kanal_254;es-419;40505;2935;165\nfilm_333;kanal_166;;182;10;0\nfilm_334;kanal_255;;31;0;0\nfilm_335;kanal_256;en;643;34;3\nfilm_336;kanal_166;en;2607;19;0\nfilm_337;kanal_109;es-ES;1095;54;3\nfilm_338;kanal_038;en-AU;1478;172;5\nfilm_339;kanal_257;en-AU;242;3;0\nfilm_340;kanal_258;;3860;264;36\nfilm_341;kanal_201;en-US;893;58;4\nfilm_342;kanal_201;en-US;41036;1974;104\nfilm_343;kanal_153;;681;7;2\nfilm_344;kanal_259;;1485;2;2\nfilm_345;kanal_253;;160977;3800;119\nfilm_346;kanal_153;;820;26;2\nfilm_347;kanal_260;;5909;154;38\nfilm_348;kanal_153;;2137;59;2\nfilm_349;kanal_261;en;691;19;16\nfilm_350;kanal_262;es;184;3;0\nfilm_351;kanal_123;;649;4;0\nfilm_352;kanal_036;en;814;9;3\nfilm_353;kanal_263;pt;2074;36;14\nfilm_354;kanal_264;;1229;85;3\nfilm_355;kanal_265;en;1542;83;\nfilm_356;kanal_266;;3199;98;8\nfilm_357;kanal_201;en-US;9496;117;22\nfilm_358;kanal_153;;386;10;1\nfilm_359;kanal_267;en;134;3;0\nfilm_360;kanal_266;;695;4;6\nfilm_361;kanal_266;;1264;38;9\nfilm_362;kanal_016;es-MX;696;4;1\nfilm_363;kanal_266;;337;3;0\nfilm_364;kanal_268;en;4700;160;88\nfilm_365;kanal_269;;1501;13;2\nfilm_366;kanal_270;en;651;5;0\nfilm_367;kanal_271;;2754;94;1\nfilm_368;kanal_201;en-US;1051;16;6\nfilm_369;kanal_272;;2320;18;2\nfilm_370;kanal_264;;176;2;0\nfilm_371;kanal_273;en;1110;41;4\nfilm_372;kanal_274;en-US;163;3;7\nfilm_373;kanal_153;;20513;246;19\nfilm_374;kanal_266;;314;3;0\nfilm_375;kanal_210;en-US;10147;227;65\nfilm_376;kanal_166;;420;17;0\nfilm_377;kanal_275;en-US;1977;16;3\nfilm_378;kanal_276;;59254;2791;379\nfilm_379;kanal_199;;1237;12;2\nfilm_380;kanal_199;;738;5;0\nfilm_381;kanal_266;;299;6;0\nfilm_382;kanal_266;;128;4;0\nfilm_383;kanal_277;;16;0;0\nfilm_384;kanal_278;en;394;5;\nfilm_385;kanal_279;;1695;18;1\nfilm_386;kanal_266;;1919;137;6\nfilm_387;kanal_280;ro;2412;40;6\nfilm_388;kanal_281;;820;6;0\nfilm_389;kanal_282;;335;19;5\nfilm_390;kanal_283;;1064;6;0\nfilm_391;kanal_284;en;5251;171;47\nfilm_392;kanal_153;;4911;189;6\nfilm_393;kanal_285;;2610;185;21\nfilm_394;kanal_286;pl;3742;25;3\nfilm_395;kanal_242;;7;0;0\nfilm_396;kanal_266;;10567;121;9\nfilm_397;kanal_266;;189;1;1\nfilm_398;kanal_266;;107;2;0\nfilm_399;kanal_253;;421;4;0\nfilm_400;kanal_287;en-US;1202;14;1\nfilm_401;kanal_153;;4527;240;192\nfilm_402;kanal_153;;17105;757;5\nfilm_403;kanal_153;;17901;201;25\nfilm_404;kanal_153;;2532;21;2\nfilm_405;kanal_153;;7906;153;7\nfilm_406;kanal_215;es-419;84;6;0\nfilm_407;kanal_288;;1464;8;2\nfilm_408;kanal_153;;564;33;4\n",
- "youtube-czas-komentarzy.csv": "film;dzien_1;dni_2_7;dni_8_30;pozniej\nfilm_001;0;0;2;0\nfilm_002;0;0;0;0\nfilm_003;6;4;1;3\nfilm_004;0;0;0;0\nfilm_005;20;5;1;6\nfilm_006;184;149;77;30\nfilm_007;4;1;0;0\nfilm_008;2;0;2;0\nfilm_009;1;1;0;0\nfilm_010;1;0;0;0\nfilm_011;15;8;0;0\nfilm_012;0;2;2;0\nfilm_013;3;0;0;0\nfilm_014;17;1;0;1\nfilm_015;1;13;0;0\nfilm_016;0;2;0;0\nfilm_017;4;6;0;0\nfilm_018;3;0;0;1\nfilm_019;0;0;0;0\nfilm_020;0;0;0;0\nfilm_021;7;1;0;0\nfilm_022;2;0;2;0\nfilm_023;0;0;0;0\nfilm_024;0;0;0;0\nfilm_025;1;1;0;0\nfilm_026;0;0;0;0\nfilm_027;0;0;0;0\nfilm_028;5;0;0;0\nfilm_029;171;187;79;61\nfilm_030;0;1;0;0\nfilm_031;0;0;1;0\nfilm_032;0;0;0;0\nfilm_033;0;0;0;2\nfilm_034;35;1;0;0\nfilm_035;4;0;0;0\nfilm_036;0;0;0;0\nfilm_037;1;0;0;0\nfilm_038;2;0;0;0\nfilm_039;2;0;0;0\nfilm_040;0;0;0;0\nfilm_041;2;0;0;0\nfilm_042;0;0;0;0\nfilm_043;1;0;0;0\nfilm_044;0;0;0;0\nfilm_045;2;0;0;0\nfilm_046;0;0;0;0\nfilm_047;2;0;0;0\nfilm_048;0;0;0;1\nfilm_049;0;0;0;0\nfilm_050;0;0;0;0\nfilm_051;1;0;0;0\nfilm_052;0;0;0;0\nfilm_053;0;0;0;0\nfilm_054;1982;2045;538;753\nfilm_055;0;0;0;0\nfilm_056;29;5;2;0\nfilm_057;0;0;0;0\nfilm_058;0;0;0;0\nfilm_059;10;1;1;1\nfilm_060;6;11;1;1\nfilm_061;19;21;2;0\nfilm_062;6;0;0;0\nfilm_063;0;0;0;0\nfilm_064;513;126;31;15\nfilm_065;0;0;0;0\nfilm_066;0;0;0;0\nfilm_067;4;2;1;0\nfilm_068;0;0;0;0\nfilm_069;0;0;0;0\nfilm_070;4;2;2;4\nfilm_071;0;0;0;0\nfilm_072;8;4;2;0\nfilm_073;2;0;0;0\nfilm_074;0;0;0;1\nfilm_075;1;0;0;2\nfilm_076;3;2;2;0\nfilm_077;64;42;8;0\nfilm_078;0;0;0;0\nfilm_079;0;0;0;0\nfilm_080;0;0;0;0\nfilm_081;23;3;0;0\nfilm_082;1;2;2;0\nfilm_083;4;94;2;0\nfilm_084;0;0;0;0\nfilm_085;0;0;0;0\nfilm_086;1;0;0;0\nfilm_087;0;0;0;1\nfilm_088;0;0;0;0\nfilm_089;1;0;0;0\nfilm_090;4;1;0;0\nfilm_091;7;32;2;0\nfilm_092;0;0;0;0\nfilm_093;0;0;0;0\nfilm_094;26;169;51;32\nfilm_095;2;3;0;0\nfilm_096;0;0;0;0\nfilm_097;2;1;2;0\nfilm_098;0;0;0;0\nfilm_099;0;0;0;0\nfilm_100;2;3;0;0\nfilm_101;0;0;0;0\nfilm_102;0;0;0;0\nfilm_103;0;0;1;0\nfilm_104;0;0;0;0\nfilm_105;1;0;0;0\nfilm_106;0;0;0;0\nfilm_107;4;2;0;0\nfilm_108;4;0;0;0\nfilm_109;0;0;0;0\nfilm_110;1;1;0;0\nfilm_111;3;1;0;2\nfilm_112;1;0;2;0\nfilm_113;0;0;0;0\nfilm_114;1;0;0;0\nfilm_115;0;0;0;0\nfilm_116;1;1;0;0\nfilm_117;14;3;1;1\nfilm_118;3;2;0;0\nfilm_119;0;0;0;0\nfilm_120;4;0;0;0\nfilm_121;0;0;0;0\nfilm_122;1;0;1;1\nfilm_123;0;0;0;0\nfilm_124;0;9;0;0\nfilm_125;0;0;0;0\nfilm_126;1;0;0;0\nfilm_127;0;2;0;0\nfilm_128;1;3;2;0\nfilm_129;0;0;0;0\nfilm_130;7;0;0;0\nfilm_131;0;0;0;0\nfilm_132;5;0;0;0\nfilm_133;5;11;60;30\nfilm_134;6;6;0;0\nfilm_135;0;0;0;0\nfilm_136;0;0;0;0\nfilm_137;0;0;0;0\nfilm_138;0;0;0;0\nfilm_139;2;0;0;0\nfilm_140;9;1;0;0\nfilm_141;0;0;0;0\nfilm_142;0;2;0;0\nfilm_143;84;53;23;63\nfilm_144;2;0;0;0\nfilm_145;5;4;1;0\nfilm_146;1;1;1;0\nfilm_147;2;3;2;13\nfilm_148;2;0;0;0\nfilm_149;781;169;155;137\nfilm_150;0;0;0;0\nfilm_151;5;4;0;0\nfilm_152;0;0;0;0\nfilm_153;1;0;0;0\nfilm_154;0;1;0;0\nfilm_155;0;0;0;0\nfilm_156;0;0;0;0\nfilm_157;1;2;0;0\nfilm_158;6;2;2;0\nfilm_159;210;97;20;16\nfilm_160;0;0;0;0\nfilm_161;1;0;0;0\nfilm_162;5;0;0;0\nfilm_163;3;4;0;2\nfilm_164;0;0;0;0\nfilm_165;5;0;0;0\nfilm_166;822;692;192;995\nfilm_167;0;0;0;0\nfilm_168;0;0;0;0\nfilm_169;0;4;0;0\nfilm_170;0;0;0;0\nfilm_171;0;0;0;0\nfilm_172;4;2;0;0\nfilm_173;0;0;0;0\nfilm_174;0;0;0;0\nfilm_175;2;0;0;0\nfilm_176;0;0;0;0\nfilm_177;0;0;0;0\nfilm_178;4;4;0;0\nfilm_179;0;0;0;0\nfilm_180;1;0;0;1\nfilm_181;0;0;0;0\nfilm_182;12;6;0;0\nfilm_183;0;0;0;0\nfilm_184;0;1;0;0\nfilm_185;52;70;0;1\nfilm_186;0;0;0;0\nfilm_187;14;10;1;2\nfilm_188;2;0;0;0\nfilm_189;0;0;0;0\nfilm_190;0;0;0;0\nfilm_191;1;1;0;0\nfilm_192;4;0;0;0\nfilm_193;10;0;0;0\nfilm_194;0;0;0;0\nfilm_195;0;0;0;0\nfilm_196;0;1;0;1\nfilm_197;176;130;19;19\nfilm_198;3;6;0;0\nfilm_199;0;0;0;0\nfilm_200;0;0;0;0\nfilm_201;2;2;0;1\nfilm_202;0;0;2;0\nfilm_203;0;0;0;0\nfilm_204;0;0;0;0\nfilm_205;1;0;0;0\nfilm_206;0;0;0;0\nfilm_207;3;1;1;1\nfilm_208;9;5;0;2\nfilm_209;1;0;0;0\nfilm_210;8;0;0;1\nfilm_211;0;0;0;0\nfilm_212;434;228;93;113\nfilm_213;0;0;0;0\nfilm_214;0;0;0;0\nfilm_215;0;0;0;0\nfilm_216;2;0;0;0\nfilm_217;7;8;2;0\nfilm_218;13;15;8;0\nfilm_219;0;0;0;0\nfilm_220;26;18;3;2\nfilm_221;0;0;0;0\nfilm_222;5;0;0;0\nfilm_223;3;0;0;0\nfilm_224;6;0;0;0\nfilm_225;13;15;3;0\nfilm_226;0;0;0;0\nfilm_227;1;0;0;0\nfilm_228;0;0;0;0\nfilm_229;1;1;2;0\nfilm_230;2;0;0;0\nfilm_231;0;0;0;0\nfilm_232;0;0;0;0\nfilm_233;0;0;0;0\nfilm_234;0;0;0;0\nfilm_235;0;0;0;0\nfilm_236;10;2;2;0\nfilm_237;8;1;0;1\nfilm_238;1;11;0;2\nfilm_239;0;1;0;0\nfilm_240;0;0;0;0\nfilm_241;20;8;8;0\nfilm_242;0;0;0;0\nfilm_243;2;1;0;0\nfilm_244;0;2;0;0\nfilm_245;0;0;0;0\nfilm_246;0;0;0;0\nfilm_247;0;0;0;0\nfilm_248;0;0;0;0\nfilm_249;0;2;0;0\nfilm_250;0;0;0;0\nfilm_251;0;1;0;0\nfilm_252;5;0;0;0\nfilm_253;2;0;0;0\nfilm_254;7;3;0;0\nfilm_255;5;2;0;0\nfilm_256;0;0;0;0\nfilm_257;0;0;0;0\nfilm_258;0;0;0;0\nfilm_259;0;0;0;0\nfilm_260;1;0;0;0\nfilm_261;0;0;0;0\nfilm_262;0;1;0;0\nfilm_263;1;0;0;0\nfilm_264;0;0;0;1\nfilm_265;0;0;0;0\nfilm_266;0;0;2;0\nfilm_267;3;4;0;0\nfilm_268;3;3;0;0\nfilm_269;5;31;3;1\nfilm_270;0;1;0;0\nfilm_271;0;0;0;0\nfilm_272;0;0;0;0\nfilm_273;0;2;3;0\nfilm_274;2;0;0;0\nfilm_275;1;2;2;1\nfilm_276;8;6;3;0\nfilm_277;2;1;0;0\nfilm_278;2;0;0;0\nfilm_279;0;0;0;0\nfilm_280;5;0;0;2\nfilm_281;28;0;1;0\nfilm_282;4;0;0;0\nfilm_283;0;0;0;0\nfilm_284;0;0;0;0\nfilm_285;8;1;0;5\nfilm_286;2;0;0;0\nfilm_287;14;6;1;0\nfilm_288;0;0;0;0\nfilm_289;0;0;0;0\nfilm_290;1;2;0;0\nfilm_291;2;4;0;0\nfilm_292;49;131;244;691\nfilm_293;2;2;1;0\nfilm_294;0;0;0;0\nfilm_295;69;13;16;24\nfilm_296;1;0;0;0\nfilm_297;7;0;0;0\nfilm_298;10;6;0;0\nfilm_299;2;0;0;0\nfilm_300;0;0;0;0\nfilm_301;0;0;0;0\nfilm_302;10;2;1;5\nfilm_303;6;0;2;2\nfilm_304;0;0;0;0\nfilm_305;12;10;10;7\nfilm_306;4;0;0;0\nfilm_307;0;0;0;0\nfilm_308;2;0;0;0\nfilm_309;2;0;0;0\nfilm_310;3;0;0;0\nfilm_311;7;6;0;0\nfilm_312;2;0;0;0\nfilm_313;2;1;0;0\nfilm_314;0;0;0;0\nfilm_315;0;0;0;0\nfilm_316;0;0;0;0\nfilm_317;0;0;0;0\nfilm_318;1;1;0;0\nfilm_319;0;0;0;0\nfilm_320;0;0;0;2\nfilm_321;0;2;0;0\nfilm_322;0;0;0;0\nfilm_323;4;2;0;4\nfilm_324;0;0;0;0\nfilm_325;1;0;0;0\nfilm_326;0;18;2;0\nfilm_327;0;0;1;0\nfilm_328;0;0;0;0\nfilm_329;2;0;0;0\nfilm_330;0;0;0;0\nfilm_331;15;4;2;3\nfilm_332;78;51;11;24\nfilm_333;0;0;0;0\nfilm_334;0;0;0;0\nfilm_335;3;0;0;0\nfilm_336;0;0;0;0\nfilm_337;1;1;0;1\nfilm_338;4;1;0;0\nfilm_339;0;0;0;0\nfilm_340;29;7;0;0\nfilm_341;1;1;2;0\nfilm_342;35;58;10;0\nfilm_343;2;0;0;0\nfilm_344;2;0;0;0\nfilm_345;44;51;16;8\nfilm_346;0;1;0;0\nfilm_347;16;21;0;1\nfilm_348;2;0;1;0\nfilm_349;15;1;0;0\nfilm_350;0;0;0;0\nfilm_351;0;0;0;0\nfilm_352;2;2;0;0\nfilm_353;4;0;2;6\nfilm_354;1;2;0;0\nfilm_355;0;0;0;0\nfilm_356;6;1;0;0\nfilm_357;10;10;2;0\nfilm_358;1;0;0;0\nfilm_359;0;0;0;0\nfilm_360;3;3;0;0\nfilm_361;3;1;5;0\nfilm_362;1;0;0;0\nfilm_363;0;0;0;0\nfilm_364;37;35;10;6\nfilm_365;2;0;0;0\nfilm_366;0;0;0;0\nfilm_367;0;1;0;0\nfilm_368;6;0;0;0\nfilm_369;1;0;0;0\nfilm_370;0;0;0;0\nfilm_371;1;3;0;0\nfilm_372;1;5;0;0\nfilm_373;10;6;2;0\nfilm_374;0;0;0;0\nfilm_375;47;17;1;0\nfilm_376;0;0;0;0\nfilm_377;1;2;0;0\nfilm_378;171;152;44;11\nfilm_379;0;2;0;0\nfilm_380;0;0;0;0\nfilm_381;0;0;0;0\nfilm_382;0;0;0;0\nfilm_383;0;0;0;0\nfilm_384;0;0;0;0\nfilm_385;1;0;0;0\nfilm_386;4;2;0;0\nfilm_387;2;1;0;2\nfilm_388;0;0;0;0\nfilm_389;4;2;0;0\nfilm_390;0;0;0;0\nfilm_391;36;6;3;2\nfilm_392;3;2;1;0\nfilm_393;13;4;0;3\nfilm_394;3;0;0;0\nfilm_395;0;0;0;0\nfilm_396;2;7;0;0\nfilm_397;1;0;0;0\nfilm_398;0;0;0;0\nfilm_399;0;0;0;0\nfilm_400;1;0;0;0\nfilm_401;54;100;22;16\nfilm_402;0;0;4;0\nfilm_403;11;6;3;5\nfilm_404;2;0;0;0\nfilm_405;4;2;0;0\nfilm_406;0;0;0;0\nfilm_407;1;0;0;0\nfilm_408;2;1;0;0\n"
+ "youtube-czas-komentarzy.csv": "film;dzien_1;dni_2_7;dni_8_30;pozniej\nfilm_001;0;0;2;0\nfilm_002;0;0;0;0\nfilm_003;6;4;1;3\nfilm_004;0;0;0;0\nfilm_005;20;5;1;6\nfilm_006;184;149;77;30\nfilm_007;4;1;0;0\nfilm_008;2;0;2;0\nfilm_009;1;1;0;0\nfilm_010;1;0;0;0\nfilm_011;15;8;0;0\nfilm_012;0;2;2;0\nfilm_013;3;0;0;0\nfilm_014;17;1;0;1\nfilm_015;1;13;0;0\nfilm_016;0;2;0;0\nfilm_017;4;6;0;0\nfilm_018;3;0;0;1\nfilm_019;0;0;0;0\nfilm_020;0;0;0;0\nfilm_021;7;1;0;0\nfilm_022;2;0;2;0\nfilm_023;0;0;0;0\nfilm_024;0;0;0;0\nfilm_025;1;1;0;0\nfilm_026;0;0;0;0\nfilm_027;0;0;0;0\nfilm_028;5;0;0;0\nfilm_029;171;187;79;61\nfilm_030;0;1;0;0\nfilm_031;0;0;1;0\nfilm_032;0;0;0;0\nfilm_033;0;0;0;2\nfilm_034;35;1;0;0\nfilm_035;4;0;0;0\nfilm_036;0;0;0;0\nfilm_037;1;0;0;0\nfilm_038;2;0;0;0\nfilm_039;2;0;0;0\nfilm_040;0;0;0;0\nfilm_041;2;0;0;0\nfilm_042;0;0;0;0\nfilm_043;1;0;0;0\nfilm_044;0;0;0;0\nfilm_045;2;0;0;0\nfilm_046;0;0;0;0\nfilm_047;2;0;0;0\nfilm_048;0;0;0;1\nfilm_049;0;0;0;0\nfilm_050;0;0;0;0\nfilm_051;1;0;0;0\nfilm_052;0;0;0;0\nfilm_053;0;0;0;0\nfilm_054;1982;2045;538;753\nfilm_055;0;0;0;0\nfilm_056;29;5;2;0\nfilm_057;0;0;0;0\nfilm_058;0;0;0;0\nfilm_059;10;1;1;1\nfilm_060;6;11;1;1\nfilm_061;19;21;2;0\nfilm_062;6;0;0;0\nfilm_063;0;0;0;0\nfilm_064;513;126;31;15\nfilm_065;0;0;0;0\nfilm_066;0;0;0;0\nfilm_067;4;2;1;0\nfilm_068;0;0;0;0\nfilm_069;0;0;0;0\nfilm_070;4;2;2;4\nfilm_071;0;0;0;0\nfilm_072;8;4;2;0\nfilm_073;2;0;0;0\nfilm_074;0;0;0;1\nfilm_075;1;0;0;2\nfilm_076;3;2;2;0\nfilm_077;64;42;8;0\nfilm_078;0;0;0;0\nfilm_079;0;0;0;0\nfilm_080;0;0;0;0\nfilm_081;23;3;0;0\nfilm_082;1;2;2;0\nfilm_083;4;94;2;0\nfilm_084;0;0;0;0\nfilm_085;0;0;0;0\nfilm_086;1;0;0;0\nfilm_087;0;0;0;1\nfilm_088;0;0;0;0\nfilm_089;1;0;0;0\nfilm_090;4;1;0;0\nfilm_091;7;32;2;0\nfilm_092;0;0;0;0\nfilm_093;0;0;0;0\nfilm_094;26;169;51;32\nfilm_095;2;3;0;0\nfilm_096;0;0;0;0\nfilm_097;2;1;2;0\nfilm_098;0;0;0;0\nfilm_099;0;0;0;0\nfilm_100;2;3;0;0\nfilm_101;0;0;0;0\nfilm_102;0;0;0;0\nfilm_103;0;0;1;0\nfilm_104;0;0;0;0\nfilm_105;1;0;0;0\nfilm_106;0;0;0;0\nfilm_107;4;2;0;0\nfilm_108;4;0;0;0\nfilm_109;0;0;0;0\nfilm_110;1;1;0;0\nfilm_111;3;1;0;2\nfilm_112;1;0;2;0\nfilm_113;0;0;0;0\nfilm_114;1;0;0;0\nfilm_115;0;0;0;0\nfilm_116;1;1;0;0\nfilm_117;14;3;1;1\nfilm_118;3;2;0;0\nfilm_119;0;0;0;0\nfilm_120;4;0;0;0\nfilm_121;0;0;0;0\nfilm_122;1;0;1;1\nfilm_123;0;0;0;0\nfilm_124;0;9;0;0\nfilm_125;0;0;0;0\nfilm_126;1;0;0;0\nfilm_127;0;2;0;0\nfilm_128;1;3;2;0\nfilm_129;0;0;0;0\nfilm_130;7;0;0;0\nfilm_131;0;0;0;0\nfilm_132;5;0;0;0\nfilm_133;5;11;60;30\nfilm_134;6;6;0;0\nfilm_135;0;0;0;0\nfilm_136;0;0;0;0\nfilm_137;0;0;0;0\nfilm_138;0;0;0;0\nfilm_139;2;0;0;0\nfilm_140;9;1;0;0\nfilm_141;0;0;0;0\nfilm_142;0;2;0;0\nfilm_143;84;53;23;63\nfilm_144;2;0;0;0\nfilm_145;5;4;1;0\nfilm_146;1;1;1;0\nfilm_147;2;3;2;13\nfilm_148;2;0;0;0\nfilm_149;781;169;155;137\nfilm_150;0;0;0;0\nfilm_151;5;4;0;0\nfilm_152;0;0;0;0\nfilm_153;1;0;0;0\nfilm_154;0;1;0;0\nfilm_155;0;0;0;0\nfilm_156;0;0;0;0\nfilm_157;1;2;0;0\nfilm_158;6;2;2;0\nfilm_159;210;97;20;16\nfilm_160;0;0;0;0\nfilm_161;1;0;0;0\nfilm_162;5;0;0;0\nfilm_163;3;4;0;2\nfilm_164;0;0;0;0\nfilm_165;5;0;0;0\nfilm_166;822;692;192;995\nfilm_167;0;0;0;0\nfilm_168;0;0;0;0\nfilm_169;0;4;0;0\nfilm_170;0;0;0;0\nfilm_171;0;0;0;0\nfilm_172;4;2;0;0\nfilm_173;0;0;0;0\nfilm_174;0;0;0;0\nfilm_175;2;0;0;0\nfilm_176;0;0;0;0\nfilm_177;0;0;0;0\nfilm_178;4;4;0;0\nfilm_179;0;0;0;0\nfilm_180;1;0;0;1\nfilm_181;0;0;0;0\nfilm_182;12;6;0;0\nfilm_183;0;0;0;0\nfilm_184;0;1;0;0\nfilm_185;52;70;0;1\nfilm_186;0;0;0;0\nfilm_187;14;10;1;2\nfilm_188;2;0;0;0\nfilm_189;0;0;0;0\nfilm_190;0;0;0;0\nfilm_191;1;1;0;0\nfilm_192;4;0;0;0\nfilm_193;10;0;0;0\nfilm_194;0;0;0;0\nfilm_195;0;0;0;0\nfilm_196;0;1;0;1\nfilm_197;176;130;19;19\nfilm_198;3;6;0;0\nfilm_199;0;0;0;0\nfilm_200;0;0;0;0\nfilm_201;2;2;0;1\nfilm_202;0;0;2;0\nfilm_203;0;0;0;0\nfilm_204;0;0;0;0\nfilm_205;1;0;0;0\nfilm_206;0;0;0;0\nfilm_207;3;1;1;1\nfilm_208;9;5;0;2\nfilm_209;1;0;0;0\nfilm_210;8;0;0;1\nfilm_211;0;0;0;0\nfilm_212;434;228;93;113\nfilm_213;0;0;0;0\nfilm_214;0;0;0;0\nfilm_215;0;0;0;0\nfilm_216;2;0;0;0\nfilm_217;7;8;2;0\nfilm_218;13;15;8;0\nfilm_219;0;0;0;0\nfilm_220;26;18;3;2\nfilm_221;0;0;0;0\nfilm_222;5;0;0;0\nfilm_223;3;0;0;0\nfilm_224;6;0;0;0\nfilm_225;13;15;3;0\nfilm_226;0;0;0;0\nfilm_227;1;0;0;0\nfilm_228;0;0;0;0\nfilm_229;1;1;2;0\nfilm_230;2;0;0;0\nfilm_231;0;0;0;0\nfilm_232;0;0;0;0\nfilm_233;0;0;0;0\nfilm_234;0;0;0;0\nfilm_235;0;0;0;0\nfilm_236;10;2;2;0\nfilm_237;8;1;0;1\nfilm_238;1;11;0;2\nfilm_239;0;1;0;0\nfilm_240;0;0;0;0\nfilm_241;20;8;8;0\nfilm_242;0;0;0;0\nfilm_243;2;1;0;0\nfilm_244;0;2;0;0\nfilm_245;0;0;0;0\nfilm_246;0;0;0;0\nfilm_247;0;0;0;0\nfilm_248;0;0;0;0\nfilm_249;0;2;0;0\nfilm_250;0;0;0;0\nfilm_251;0;1;0;0\nfilm_252;5;0;0;0\nfilm_253;2;0;0;0\nfilm_254;7;3;0;0\nfilm_255;5;2;0;0\nfilm_256;0;0;0;0\nfilm_257;0;0;0;0\nfilm_258;0;0;0;0\nfilm_259;0;0;0;0\nfilm_260;1;0;0;0\nfilm_261;0;0;0;0\nfilm_262;0;1;0;0\nfilm_263;1;0;0;0\nfilm_264;0;0;0;1\nfilm_265;0;0;0;0\nfilm_266;0;0;2;0\nfilm_267;3;4;0;0\nfilm_268;3;3;0;0\nfilm_269;5;31;3;1\nfilm_270;0;1;0;0\nfilm_271;0;0;0;0\nfilm_272;0;0;0;0\nfilm_273;0;2;3;0\nfilm_274;2;0;0;0\nfilm_275;1;2;2;1\nfilm_276;8;6;3;0\nfilm_277;2;1;0;0\nfilm_278;2;0;0;0\nfilm_279;0;0;0;0\nfilm_280;5;0;0;2\nfilm_281;28;0;1;0\nfilm_282;4;0;0;0\nfilm_283;0;0;0;0\nfilm_284;0;0;0;0\nfilm_285;8;1;0;5\nfilm_286;2;0;0;0\nfilm_287;14;6;1;0\nfilm_288;0;0;0;0\nfilm_289;0;0;0;0\nfilm_290;1;2;0;0\nfilm_291;2;4;0;0\nfilm_292;49;131;244;691\nfilm_293;2;2;1;0\nfilm_294;0;0;0;0\nfilm_295;69;13;16;24\nfilm_296;1;0;0;0\nfilm_297;7;0;0;0\nfilm_298;10;6;0;0\nfilm_299;2;0;0;0\nfilm_300;0;0;0;0\nfilm_301;0;0;0;0\nfilm_302;10;2;1;5\nfilm_303;6;0;2;2\nfilm_304;0;0;0;0\nfilm_305;12;10;10;7\nfilm_306;4;0;0;0\nfilm_307;0;0;0;0\nfilm_308;2;0;0;0\nfilm_309;2;0;0;0\nfilm_310;3;0;0;0\nfilm_311;7;6;0;0\nfilm_312;2;0;0;0\nfilm_313;2;1;0;0\nfilm_314;0;0;0;0\nfilm_315;0;0;0;0\nfilm_316;0;0;0;0\nfilm_317;0;0;0;0\nfilm_318;1;1;0;0\nfilm_319;0;0;0;0\nfilm_320;0;0;0;2\nfilm_321;0;2;0;0\nfilm_322;0;0;0;0\nfilm_323;4;2;0;4\nfilm_324;0;0;0;0\nfilm_325;1;0;0;0\nfilm_326;0;18;2;0\nfilm_327;0;0;1;0\nfilm_328;0;0;0;0\nfilm_329;2;0;0;0\nfilm_330;0;0;0;0\nfilm_331;15;4;2;3\nfilm_332;78;51;11;24\nfilm_333;0;0;0;0\nfilm_334;0;0;0;0\nfilm_335;3;0;0;0\nfilm_336;0;0;0;0\nfilm_337;1;1;0;1\nfilm_338;4;1;0;0\nfilm_339;0;0;0;0\nfilm_340;29;7;0;0\nfilm_341;1;1;2;0\nfilm_342;35;58;10;0\nfilm_343;2;0;0;0\nfilm_344;2;0;0;0\nfilm_345;44;51;16;8\nfilm_346;0;1;0;0\nfilm_347;16;21;0;1\nfilm_348;2;0;1;0\nfilm_349;15;1;0;0\nfilm_350;0;0;0;0\nfilm_351;0;0;0;0\nfilm_352;2;2;0;0\nfilm_353;4;0;2;6\nfilm_354;1;2;0;0\nfilm_355;0;0;0;0\nfilm_356;6;1;0;0\nfilm_357;10;10;2;0\nfilm_358;1;0;0;0\nfilm_359;0;0;0;0\nfilm_360;3;3;0;0\nfilm_361;3;1;5;0\nfilm_362;1;0;0;0\nfilm_363;0;0;0;0\nfilm_364;37;35;10;6\nfilm_365;2;0;0;0\nfilm_366;0;0;0;0\nfilm_367;0;1;0;0\nfilm_368;6;0;0;0\nfilm_369;1;0;0;0\nfilm_370;0;0;0;0\nfilm_371;1;3;0;0\nfilm_372;1;5;0;0\nfilm_373;10;6;2;0\nfilm_374;0;0;0;0\nfilm_375;47;17;1;0\nfilm_376;0;0;0;0\nfilm_377;1;2;0;0\nfilm_378;171;152;44;11\nfilm_379;0;2;0;0\nfilm_380;0;0;0;0\nfilm_381;0;0;0;0\nfilm_382;0;0;0;0\nfilm_383;0;0;0;0\nfilm_384;0;0;0;0\nfilm_385;1;0;0;0\nfilm_386;4;2;0;0\nfilm_387;2;1;0;2\nfilm_388;0;0;0;0\nfilm_389;4;2;0;0\nfilm_390;0;0;0;0\nfilm_391;36;6;3;2\nfilm_392;3;2;1;0\nfilm_393;13;4;0;3\nfilm_394;3;0;0;0\nfilm_395;0;0;0;0\nfilm_396;2;7;0;0\nfilm_397;1;0;0;0\nfilm_398;0;0;0;0\nfilm_399;0;0;0;0\nfilm_400;1;0;0;0\nfilm_401;54;100;22;16\nfilm_402;0;0;4;0\nfilm_403;11;6;3;5\nfilm_404;2;0;0;0\nfilm_405;4;2;0;0\nfilm_406;0;0;0;0\nfilm_407;1;0;0;0\nfilm_408;2;1;0;0\n",
+ "youtube-status-komentarzy.csv": "film;komentarze_api;zebrane_glowne;zebrane_odpowiedzi;status\nfilm_001;2;2;0;ok\nfilm_002;0;0;0;zero_comments\nfilm_003;15;9;6;ok\nfilm_004;;0;0;commentsDisabled\nfilm_005;33;23;10;ok\nfilm_006;440;100;340;ok\nfilm_007;6;5;2;ok\nfilm_008;2;2;2;ok\nfilm_009;2;2;0;ok\nfilm_010;1;1;1;ok\nfilm_011;24;16;7;ok\nfilm_012;2;2;2;ok\nfilm_013;3;3;0;ok\nfilm_014;19;14;5;ok\nfilm_015;15;9;5;ok\nfilm_016;2;2;2;ok\nfilm_017;10;4;6;ok\nfilm_018;5;4;2;ok\nfilm_019;0;0;0;zero_comments\nfilm_020;;0;0;commentsDisabled\nfilm_021;8;3;5;ok\nfilm_022;2;2;2;ok\nfilm_023;0;0;0;zero_comments\nfilm_024;0;0;0;zero_comments\nfilm_025;2;2;0;ok\nfilm_026;0;0;0;zero_comments\nfilm_027;0;0;0;zero_comments\nfilm_028;5;4;1;ok\nfilm_029;498;253;245;ok\nfilm_030;1;1;0;ok\nfilm_031;1;1;0;ok\nfilm_032;0;0;0;zero_comments\nfilm_033;3;1;1;ok\nfilm_034;36;1;35;ok\nfilm_035;4;4;0;ok\nfilm_036;0;0;0;zero_comments\nfilm_037;1;1;0;ok\nfilm_038;2;2;0;ok\nfilm_039;2;2;0;ok\nfilm_040;0;0;0;zero_comments\nfilm_041;2;2;0;ok\nfilm_042;0;0;0;zero_comments\nfilm_043;1;1;0;ok\nfilm_044;0;0;0;zero_comments\nfilm_045;2;2;0;ok\nfilm_046;0;0;0;zero_comments\nfilm_047;2;2;0;ok\nfilm_048;1;1;0;ok\nfilm_050;0;0;0;zero_comments\nfilm_051;1;1;0;ok\nfilm_052;0;0;0;zero_comments\nfilm_053;0;0;0;zero_comments\nfilm_054;5275;2313;3015;ok\nfilm_055;0;0;0;zero_comments\nfilm_056;36;17;19;ok\nfilm_057;0;0;0;zero_comments\nfilm_058;0;0;0;zero_comments\nfilm_059;13;6;7;ok\nfilm_060;19;16;3;ok\nfilm_061;43;30;13;ok\nfilm_062;6;5;2;ok\nfilm_063;0;0;0;zero_comments\nfilm_064;686;495;190;ok\nfilm_065;0;0;0;zero_comments\nfilm_066;0;0;0;zero_comments\nfilm_067;8;4;4;ok\nfilm_068;0;0;0;zero_comments\nfilm_069;0;0;0;zero_comments\nfilm_070;12;12;0;ok\nfilm_071;0;0;0;zero_comments\nfilm_072;15;7;8;ok\nfilm_073;2;2;0;ok\nfilm_074;1;1;0;ok\nfilm_075;3;3;0;ok\nfilm_076;7;7;0;ok\nfilm_077;114;92;22;ok\nfilm_078;0;0;0;zero_comments\nfilm_079;0;0;0;zero_comments\nfilm_080;0;0;0;zero_comments\nfilm_081;26;11;15;ok\nfilm_082;5;5;0;ok\nfilm_083;101;44;57;ok\nfilm_084;0;0;0;zero_comments\nfilm_085;0;0;0;zero_comments\nfilm_086;2;1;0;ok\nfilm_087;1;1;0;ok\nfilm_088;0;0;0;zero_comments\nfilm_089;1;1;0;ok\nfilm_090;5;3;3;ok\nfilm_091;42;17;24;ok\nfilm_092;0;0;0;zero_comments\nfilm_093;0;0;0;zero_comments\nfilm_094;280;76;204;ok\nfilm_095;5;2;3;ok\nfilm_096;0;0;0;zero_comments\nfilm_097;5;4;1;ok\nfilm_098;0;0;0;zero_comments\nfilm_099;0;0;0;zero_comments\nfilm_100;5;5;0;ok\nfilm_101;0;0;0;zero_comments\nfilm_102;0;0;0;zero_comments\nfilm_103;1;1;0;ok\nfilm_104;0;0;0;zero_comments\nfilm_105;1;1;0;ok\nfilm_106;0;0;0;zero_comments\nfilm_107;6;2;4;ok\nfilm_108;4;4;0;ok\nfilm_109;0;0;0;zero_comments\nfilm_110;2;2;0;ok\nfilm_111;6;5;1;ok\nfilm_112;3;2;1;ok\nfilm_113;0;0;0;zero_comments\nfilm_114;1;1;0;ok\nfilm_115;0;0;0;zero_comments\nfilm_116;3;3;0;ok\nfilm_117;20;15;5;ok\nfilm_118;4;3;2;ok\nfilm_119;0;0;0;zero_comments\nfilm_120;5;1;3;ok\nfilm_121;0;0;0;zero_comments\nfilm_122;4;4;0;ok\nfilm_123;0;0;0;zero_comments\nfilm_124;10;1;8;ok\nfilm_125;0;0;0;zero_comments\nfilm_126;1;1;0;ok\nfilm_127;2;2;0;ok\nfilm_128;6;4;2;ok\nfilm_129;0;0;0;zero_comments\nfilm_130;8;6;1;ok\nfilm_131;0;0;0;zero_comments\nfilm_132;5;2;4;ok\nfilm_133;109;103;6;ok\nfilm_134;13;3;9;ok\nfilm_135;0;0;0;zero_comments\nfilm_136;0;0;0;zero_comments\nfilm_137;0;0;0;zero_comments\nfilm_138;0;0;0;zero_comments\nfilm_139;2;2;0;ok\nfilm_140;11;4;6;ok\nfilm_141;0;0;0;zero_comments\nfilm_142;2;2;0;ok\nfilm_143;224;121;103;ok\nfilm_144;2;2;2;ok\nfilm_145;11;7;3;ok\nfilm_146;3;3;0;ok\nfilm_147;21;5;16;ok\nfilm_148;2;2;0;ok\nfilm_149;1239;751;502;ok\nfilm_150;0;0;0;zero_comments\nfilm_151;10;6;4;ok\nfilm_152;0;0;0;zero_comments\nfilm_153;1;1;0;ok\nfilm_154;2;1;0;ok\nfilm_155;0;0;0;zero_comments\nfilm_156;0;0;0;zero_comments\nfilm_157;3;3;0;ok\nfilm_158;10;9;2;ok\nfilm_159;343;192;151;ok\nfilm_160;0;0;0;zero_comments\nfilm_161;1;1;0;ok\nfilm_162;5;2;3;ok\nfilm_163;9;7;2;ok\nfilm_164;0;0;0;zero_comments\nfilm_165;5;5;0;ok\nfilm_166;2680;1236;1476;ok\nfilm_167;0;0;0;zero_comments\nfilm_168;0;0;0;zero_comments\nfilm_169;5;3;1;ok\nfilm_170;0;0;0;zero_comments\nfilm_171;0;0;0;zero_comments\nfilm_172;4;4;2;ok\nfilm_173;0;0;0;zero_comments\nfilm_174;0;0;0;zero_comments\nfilm_175;3;1;1;ok\nfilm_176;0;0;0;zero_comments\nfilm_177;0;0;0;zero_comments\nfilm_178;9;7;1;ok\nfilm_179;0;0;0;zero_comments\nfilm_180;2;1;1;ok\nfilm_181;0;0;0;zero_comments\nfilm_182;19;14;4;ok\nfilm_183;0;0;0;zero_comments\nfilm_184;1;1;0;ok\nfilm_185;123;59;64;ok\nfilm_186;0;0;0;zero_comments\nfilm_187;28;25;2;ok\nfilm_188;2;2;0;ok\nfilm_189;0;0;0;zero_comments\nfilm_190;0;0;0;zero_comments\nfilm_191;2;2;0;ok\nfilm_192;4;4;0;ok\nfilm_193;9;9;2;ok\nfilm_194;0;0;0;zero_comments\nfilm_195;0;0;0;zero_comments\nfilm_196;2;2;0;ok\nfilm_197;344;175;169;ok\nfilm_198;10;5;4;ok\nfilm_199;0;0;0;zero_comments\nfilm_200;0;0;0;zero_comments\nfilm_201;5;4;2;ok\nfilm_202;2;2;1;ok\nfilm_203;0;0;0;zero_comments\nfilm_204;0;0;0;zero_comments\nfilm_205;1;1;0;ok\nfilm_206;0;0;0;zero_comments\nfilm_207;6;5;1;ok\nfilm_208;16;11;5;ok\nfilm_209;1;1;0;ok\nfilm_210;9;7;2;ok\nfilm_211;0;0;0;zero_comments\nfilm_212;873;578;290;ok\nfilm_213;0;0;0;zero_comments\nfilm_214;0;0;0;zero_comments\nfilm_215;0;0;0;zero_comments\nfilm_216;2;2;0;ok\nfilm_217;17;10;7;ok\nfilm_218;36;25;11;ok\nfilm_219;0;0;0;zero_comments\nfilm_220;50;33;16;ok\nfilm_221;0;0;0;zero_comments\nfilm_222;6;3;2;ok\nfilm_223;3;2;1;ok\nfilm_224;6;3;3;ok\nfilm_225;31;18;13;ok\nfilm_226;0;0;0;zero_comments\nfilm_227;2;1;0;ok\nfilm_228;0;0;0;zero_comments\nfilm_229;4;4;0;ok\nfilm_230;2;2;0;ok\nfilm_231;0;0;0;zero_comments\nfilm_232;0;0;0;zero_comments\nfilm_233;0;0;0;zero_comments\nfilm_234;0;0;0;zero_comments\nfilm_235;0;0;0;zero_comments\nfilm_236;15;13;1;ok\nfilm_237;10;3;7;ok\nfilm_238;14;12;2;ok\nfilm_239;1;1;0;ok\nfilm_240;0;0;0;zero_comments\nfilm_241;36;33;3;ok\nfilm_242;0;0;0;zero_comments\nfilm_243;3;3;0;ok\nfilm_244;2;2;0;ok\nfilm_245;0;0;0;zero_comments\nfilm_246;0;0;0;zero_comments\nfilm_247;0;0;0;zero_comments\nfilm_248;0;0;0;zero_comments\nfilm_249;2;1;1;ok\nfilm_250;0;0;0;zero_comments\nfilm_251;1;1;0;ok\nfilm_252;5;5;0;ok\nfilm_253;2;2;0;ok\nfilm_254;10;10;0;ok\nfilm_255;8;5;2;ok\nfilm_256;0;0;0;zero_comments\nfilm_257;0;0;0;zero_comments\nfilm_258;0;0;0;zero_comments\nfilm_259;0;0;0;zero_comments\nfilm_260;1;1;0;ok\nfilm_261;0;0;0;zero_comments\nfilm_262;1;1;0;ok\nfilm_263;1;2;0;ok\nfilm_264;1;1;0;ok\nfilm_265;0;0;0;zero_comments\nfilm_266;2;2;0;ok\nfilm_267;7;5;2;ok\nfilm_268;6;4;2;ok\nfilm_269;41;28;13;ok\nfilm_270;1;1;0;ok\nfilm_271;0;0;0;zero_comments\nfilm_272;0;0;0;zero_comments\nfilm_273;5;3;2;ok\nfilm_274;2;2;0;ok\nfilm_275;7;4;2;ok\nfilm_276;18;17;1;ok\nfilm_277;3;3;1;ok\nfilm_278;2;2;0;ok\nfilm_279;0;0;0;zero_comments\nfilm_280;7;6;1;ok\nfilm_281;30;4;25;ok\nfilm_282;4;2;2;ok\nfilm_283;0;0;0;zero_comments\nfilm_284;0;0;0;zero_comments\nfilm_285;15;8;6;ok\nfilm_286;2;2;0;ok\nfilm_287;21;12;9;ok\nfilm_288;0;0;0;zero_comments\nfilm_289;0;0;0;zero_comments\nfilm_290;3;3;0;ok\nfilm_291;6;1;5;ok\nfilm_292;1126;645;481;ok\nfilm_293;5;2;3;ok\nfilm_294;0;0;0;zero_comments\nfilm_295;123;64;58;ok\nfilm_296;1;1;0;ok\nfilm_297;7;3;4;ok\nfilm_298;16;12;4;ok\nfilm_299;2;2;0;ok\nfilm_300;0;0;0;zero_comments\nfilm_301;0;0;0;zero_comments\nfilm_302;18;12;6;ok\nfilm_303;10;10;0;ok\nfilm_304;0;0;0;zero_comments\nfilm_305;39;17;22;ok\nfilm_306;5;2;2;ok\nfilm_307;0;0;0;zero_comments\nfilm_308;2;2;1;ok\nfilm_309;2;2;0;ok\nfilm_310;3;3;0;ok\nfilm_311;13;12;1;ok\nfilm_312;2;2;0;ok\nfilm_313;4;3;0;ok\nfilm_314;0;0;0;zero_comments\nfilm_315;0;0;0;zero_comments\nfilm_316;0;0;0;zero_comments\nfilm_317;0;0;0;zero_comments\nfilm_318;2;2;0;ok\nfilm_319;0;0;0;zero_comments\nfilm_320;2;2;0;ok\nfilm_321;2;2;2;ok\nfilm_322;0;0;0;zero_comments\nfilm_323;10;9;2;ok\nfilm_324;0;0;0;zero_comments\nfilm_325;1;1;0;ok\nfilm_326;21;13;7;ok\nfilm_327;1;1;0;ok\nfilm_328;0;0;0;zero_comments\nfilm_329;2;2;0;ok\nfilm_330;0;0;0;zero_comments\nfilm_331;24;21;3;ok\nfilm_332;165;110;55;ok\nfilm_333;0;0;0;zero_comments\nfilm_334;0;0;0;zero_comments\nfilm_335;3;2;1;ok\nfilm_336;0;0;0;zero_comments\nfilm_337;3;3;0;ok\nfilm_338;5;3;2;ok\nfilm_339;0;0;0;zero_comments\nfilm_340;36;25;11;ok\nfilm_341;4;4;0;ok\nfilm_342;104;62;42;ok\nfilm_343;2;2;0;ok\nfilm_344;2;2;0;ok\nfilm_345;119;66;54;ok\nfilm_346;2;1;0;ok\nfilm_347;38;15;23;ok\nfilm_348;2;2;1;ok\nfilm_349;16;8;8;ok\nfilm_350;0;0;0;zero_comments\nfilm_351;0;0;0;zero_comments\nfilm_352;3;2;2;ok\nfilm_353;14;9;4;ok\nfilm_354;3;2;1;ok\nfilm_355;;0;0;commentsDisabled\nfilm_356;8;5;3;ok\nfilm_357;22;8;14;ok\nfilm_358;1;1;2;ok\nfilm_359;0;0;0;zero_comments\nfilm_360;6;1;5;ok\nfilm_361;9;4;5;ok\nfilm_362;1;1;0;ok\nfilm_363;0;0;0;zero_comments\nfilm_364;88;48;40;ok\nfilm_365;2;2;0;ok\nfilm_366;0;0;0;zero_comments\nfilm_367;1;1;0;ok\nfilm_368;6;6;0;ok\nfilm_369;2;1;0;ok\nfilm_370;0;0;0;zero_comments\nfilm_371;4;4;0;ok\nfilm_372;7;7;0;ok\nfilm_373;19;12;7;ok\nfilm_374;0;0;0;zero_comments\nfilm_375;65;15;50;ok\nfilm_376;0;0;0;zero_comments\nfilm_377;3;3;0;ok\nfilm_378;379;343;35;ok\nfilm_379;2;2;0;ok\nfilm_380;0;0;0;zero_comments\nfilm_381;0;0;0;zero_comments\nfilm_382;0;0;0;zero_comments\nfilm_383;0;0;0;zero_comments\nfilm_384;;0;0;commentsDisabled\nfilm_385;1;1;0;ok\nfilm_386;6;4;2;ok\nfilm_387;6;5;0;ok\nfilm_388;0;0;0;zero_comments\nfilm_389;5;4;2;ok\nfilm_390;0;0;0;zero_comments\nfilm_391;47;14;33;ok\nfilm_392;6;5;1;ok\nfilm_393;21;19;3;ok\nfilm_394;3;2;1;ok\nfilm_395;0;0;0;zero_comments\nfilm_396;9;9;0;ok\nfilm_397;1;1;0;ok\nfilm_398;0;0;0;zero_comments\nfilm_399;0;0;0;zero_comments\nfilm_400;1;1;0;ok\nfilm_401;192;72;120;ok\nfilm_402;5;3;1;ok\nfilm_403;25;7;18;ok\nfilm_404;2;2;0;ok\nfilm_405;7;5;1;ok\nfilm_406;0;0;0;zero_comments\nfilm_407;2;2;0;ok\nfilm_408;4;4;0;ok\n",
+ "youtube-trafienia.csv": "strona;pozycja;film\n1;1;film_001\n1;2;film_002\n1;3;film_003\n1;4;film_004\n1;5;film_005\n1;6;film_006\n1;7;film_007\n1;8;film_008\n1;9;film_009\n1;10;film_010\n1;11;film_011\n1;12;film_012\n1;13;film_013\n1;14;film_014\n1;15;film_015\n1;16;film_016\n1;17;film_017\n1;18;film_018\n1;19;film_019\n1;20;film_020\n1;21;film_021\n1;22;film_022\n1;23;film_023\n1;24;film_024\n1;25;film_025\n1;26;film_026\n1;27;film_027\n1;28;film_028\n1;29;film_029\n1;30;film_030\n1;31;film_031\n1;32;film_032\n1;33;film_033\n1;34;film_034\n1;35;film_035\n1;36;film_036\n1;37;film_037\n1;38;film_038\n1;39;film_039\n1;40;film_040\n1;41;film_041\n1;42;film_042\n1;43;film_043\n1;44;film_044\n1;45;film_045\n1;46;film_046\n1;47;film_047\n1;48;film_048\n1;49;film_049\n1;50;film_050\n1;51;film_051\n1;52;film_052\n1;53;film_053\n2;1;film_054\n2;2;film_046\n2;3;film_055\n2;4;film_056\n2;5;film_057\n2;6;film_058\n2;7;film_059\n2;8;film_060\n2;9;film_061\n2;10;film_062\n2;11;film_063\n2;12;film_064\n2;13;film_065\n2;14;film_066\n2;15;film_067\n2;16;film_068\n2;17;film_069\n2;18;film_048\n2;19;film_070\n2;20;film_071\n2;21;film_072\n2;22;film_073\n2;23;film_074\n2;24;film_075\n2;25;film_076\n2;26;film_077\n2;27;film_078\n2;28;film_079\n2;29;film_080\n2;30;film_081\n2;31;film_082\n2;32;film_083\n2;33;film_084\n2;34;film_085\n2;35;film_086\n2;36;film_087\n2;37;film_088\n2;38;film_089\n2;39;film_090\n2;40;film_091\n2;41;film_092\n2;42;film_093\n2;43;film_094\n2;44;film_095\n2;45;film_096\n2;46;film_097\n2;47;film_098\n2;48;film_099\n2;49;film_100\n2;50;film_101\n3;1;film_101\n3;2;film_102\n3;3;film_103\n3;4;film_104\n3;5;film_105\n3;6;film_106\n3;7;film_107\n3;8;film_108\n3;9;film_109\n3;10;film_110\n3;11;film_111\n3;12;film_112\n3;13;film_113\n3;14;film_114\n3;15;film_115\n3;16;film_116\n3;17;film_117\n3;18;film_118\n3;19;film_119\n3;20;film_120\n3;21;film_121\n3;22;film_122\n3;23;film_123\n3;24;film_124\n3;25;film_125\n3;26;film_126\n3;27;film_127\n3;28;film_128\n3;29;film_129\n3;30;film_130\n3;31;film_131\n3;32;film_132\n3;33;film_133\n3;34;film_134\n3;35;film_135\n3;36;film_136\n3;37;film_137\n3;38;film_138\n3;39;film_139\n3;40;film_140\n3;41;film_141\n3;42;film_142\n3;43;film_143\n3;44;film_144\n3;45;film_145\n3;46;film_146\n3;47;film_147\n3;48;film_148\n3;49;film_149\n3;50;film_150\n4;1;film_151\n4;2;film_152\n4;3;film_153\n4;4;film_154\n4;5;film_155\n4;6;film_156\n4;7;film_157\n4;8;film_158\n4;9;film_159\n4;10;film_160\n4;11;film_161\n4;12;film_162\n4;13;film_163\n4;14;film_164\n4;15;film_085\n4;16;film_165\n4;17;film_096\n4;18;film_166\n4;19;film_167\n4;20;film_168\n4;21;film_169\n4;22;film_170\n4;23;film_171\n4;24;film_172\n4;25;film_145\n4;26;film_173\n4;27;film_114\n4;28;film_174\n4;29;film_175\n4;30;film_176\n4;31;film_177\n4;32;film_178\n4;33;film_034\n4;34;film_179\n4;35;film_067\n4;36;film_180\n4;37;film_181\n4;38;film_182\n4;39;film_112\n4;40;film_104\n4;41;film_183\n4;42;film_184\n4;43;film_185\n4;44;film_186\n4;45;film_187\n4;46;film_188\n4;47;film_093\n4;48;film_189\n4;49;film_190\n4;50;film_191\n5;1;film_192\n5;2;film_165\n5;3;film_190\n5;4;film_169\n5;5;film_170\n5;6;film_193\n5;7;film_167\n5;8;film_191\n5;9;film_194\n5;10;film_163\n5;11;film_151\n5;12;film_195\n5;13;film_181\n5;14;film_196\n5;15;film_197\n5;16;film_177\n5;17;film_198\n5;18;film_187\n5;19;film_166\n5;20;film_199\n5;21;film_152\n5;22;film_200\n5;23;film_155\n5;24;film_201\n5;25;film_174\n5;26;film_171\n5;27;film_202\n5;28;film_184\n5;29;film_203\n5;30;film_176\n5;31;film_204\n5;32;film_205\n5;33;film_206\n5;34;film_182\n5;35;film_207\n5;36;film_208\n5;37;film_164\n5;38;film_209\n5;39;film_188\n5;40;film_210\n5;41;film_211\n5;42;film_212\n5;43;film_213\n5;44;film_214\n5;45;film_215\n5;46;film_216\n5;47;film_217\n5;48;film_185\n5;49;film_218\n5;50;film_179\n6;1;film_219\n6;2;film_220\n6;3;film_221\n6;4;film_222\n6;5;film_223\n6;6;film_224\n6;7;film_225\n6;8;film_226\n6;9;film_227\n6;10;film_228\n6;11;film_229\n6;12;film_230\n6;13;film_231\n6;14;film_232\n6;15;film_233\n6;16;film_234\n6;17;film_235\n6;18;film_236\n6;19;film_237\n6;20;film_238\n6;21;film_239\n6;22;film_240\n6;23;film_183\n6;24;film_241\n6;25;film_242\n6;26;film_243\n6;27;film_244\n6;28;film_245\n6;29;film_172\n6;30;film_246\n6;31;film_247\n6;32;film_248\n6;33;film_249\n6;34;film_250\n6;35;film_251\n6;36;film_252\n6;37;film_253\n6;38;film_254\n6;39;film_255\n6;40;film_256\n6;41;film_257\n6;42;film_258\n6;43;film_259\n6;44;film_260\n6;45;film_261\n6;46;film_262\n6;47;film_263\n6;48;film_264\n6;49;film_265\n6;50;film_266\n7;1;film_267\n7;2;film_268\n7;3;film_269\n7;4;film_270\n7;5;film_271\n7;6;film_272\n7;7;film_273\n7;8;film_274\n7;9;film_275\n7;10;film_276\n7;11;film_277\n7;12;film_278\n7;13;film_279\n7;14;film_280\n7;15;film_281\n7;16;film_282\n7;17;film_283\n7;18;film_284\n7;19;film_285\n7;20;film_286\n7;21;film_287\n7;22;film_288\n7;23;film_289\n7;24;film_290\n7;25;film_291\n7;26;film_292\n7;27;film_293\n7;28;film_294\n7;29;film_295\n7;30;film_296\n7;31;film_297\n7;32;film_298\n7;33;film_299\n7;34;film_300\n7;35;film_301\n7;36;film_302\n7;37;film_303\n7;38;film_304\n7;39;film_305\n7;40;film_306\n7;41;film_307\n7;42;film_308\n7;43;film_309\n7;44;film_310\n7;45;film_311\n7;46;film_312\n7;47;film_313\n7;48;film_314\n7;49;film_315\n7;50;film_316\n8;1;film_317\n8;2;film_318\n8;3;film_319\n8;4;film_320\n8;5;film_321\n8;6;film_322\n8;7;film_323\n8;8;film_324\n8;9;film_325\n8;10;film_326\n8;11;film_327\n8;12;film_328\n8;13;film_329\n8;14;film_330\n8;15;film_331\n8;16;film_332\n8;17;film_333\n8;18;film_334\n8;19;film_335\n8;20;film_336\n8;21;film_337\n8;22;film_338\n8;23;film_339\n8;24;film_340\n8;25;film_341\n8;26;film_342\n8;27;film_343\n8;28;film_344\n8;29;film_345\n8;30;film_346\n8;31;film_347\n8;32;film_348\n8;33;film_349\n8;34;film_350\n8;35;film_351\n8;36;film_352\n8;37;film_353\n8;38;film_354\n8;39;film_355\n8;40;film_356\n8;41;film_357\n8;42;film_358\n8;43;film_359\n8;44;film_360\n8;45;film_361\n8;46;film_362\n8;47;film_363\n8;48;film_364\n8;49;film_365\n8;50;film_366\n9;1;film_367\n9;2;film_368\n9;3;film_369\n9;4;film_337\n9;5;film_370\n9;6;film_319\n9;7;film_350\n9;8;film_371\n9;9;film_372\n9;10;film_351\n9;11;film_373\n9;12;film_374\n9;13;film_323\n9;14;film_375\n9;15;film_376\n9;16;film_377\n9;17;film_378\n9;18;film_379\n9;19;film_380\n9;20;film_381\n9;21;film_382\n9;22;film_383\n9;23;film_344\n9;24;film_384\n9;25;film_385\n9;26;film_386\n9;27;film_387\n9;28;film_388\n9;29;film_389\n9;30;film_390\n9;31;film_391\n9;32;film_392\n9;33;film_393\n9;34;film_394\n9;35;film_395\n9;36;film_396\n9;37;film_397\n9;38;film_398\n9;39;film_399\n9;40;film_400\n9;41;film_401\n9;42;film_402\n9;43;film_403\n9;44;film_404\n9;45;film_405\n9;46;film_406\n9;47;film_407\n9;48;film_408\n"
 };
 
 const EXPECT = {
@@ -15438,10 +15514,25 @@ const EXPECT = {
   "noLater": 87.1,
   "month": 82.0,
   "all": 17535
+ },
+ "s7": {
+  "lonelyApi": 171,
+  "known": 15347,
+  "lonelyCount": 1,
+  "allFilms": 17632,
+  "knownTop": 7782,
+  "knownReplies": 7565,
+  "knownApi": 15425,
+  "knownApprox": 15348,
+  "films": 408,
+  "statusRows": 407,
+  "hits": 451,
+  "viewsByHits": 3528666,
+  "viewsByFilms": 3293127
  }
 };
 
-const SERIES = {"v2Queries": "[\n    \"red pill polska\",\n    \"manosfera\",\n    \"mgtow polska\",\n    \"incel polska\",\n    \"przegryw\",\n    \"samiec alfa\"\n    \"black pill polska\"\n    \"pua polska\"\n    \"samiec alfa\"\n    \"męskość\"\n    \"wzorce męskości\"\n    \"relacje damsko-męskie\"\n    \"prawa mężczyzn\"\n    \"samiec sigma\"\n    \"samiec beta\",\n]", "statusDots": "ozodoooooooooooooozdoozzozzoooozooozooozozozozoo-zozzozozzoooozozzozzozoooooozzzooozzoozooozzoozozzozzozozoozooozozooozozozozooozozooozzzzoozoooooooozozoozzooozooozoozzozzozzozzozozozoozoozzooozzooozzoozzozoooozozzzooozozoooozozoozzzzzoooozozoozzzzozooooozzzzozooozooooozzoooooozooozzooozzoooozooooozzoozoozoooooozzzzozoozozooozozoozzozoozoooooooooozzooodooozooozoozooozooozozooozzzzdooozozoooozoozzoooooozoo", "replies": [9212, 8420], "languages": [["en", 130], ["es", 28], ["pl", 7], ["it", 5], ["pt", 5], ["inne", 4]], "languagesMissing": 229, "ratioBins": [["0", 162], ["0.5", 31], ["1", 44], ["2", 76], ["5", 56], ["10", 20], ["20", 9], ["50", 6]], "cumViews": [12.59, 25.12, 33.26, 39.9, 44.86, 49.75, 53.87, 56.92, 59.54, 61.73, 63.66, 65.46, 67.2, 68.86, 70.1, 71.35, 72.58, 73.62, 74.55, 75.42, 76.22, 76.85, 77.41, 77.96, 78.48, 79.0, 79.48, 79.94, 80.4, 80.83, 81.22, 81.61, 81.99, 82.34, 82.67, 82.99, 83.31, 83.62, 83.93, 84.22, 84.51, 84.77, 85.03, 85.27, 85.5, 85.74, 85.97, 86.18, 86.38, 86.57, 86.77, 86.96, 87.15, 87.33, 87.51, 87.68, 87.84, 88.0, 88.16, 88.32, 88.47, 88.62, 88.77, 88.9, 89.04, 89.18, 89.31, 89.44, 89.57, 89.7, 89.83, 89.95, 90.07, 90.19, 90.3, 90.41, 90.52, 90.63, 90.74, 90.84, 90.94, 91.04, 91.13, 91.23, 91.32, 91.41, 91.5, 91.59, 91.68, 91.76, 91.85, 91.93, 92.01, 92.09, 92.17, 92.25, 92.33, 92.4, 92.47, 92.55, 92.62, 92.69, 92.76, 92.83, 92.9, 92.97, 93.03, 93.1, 93.16, 93.22, 93.29, 93.35, 93.41, 93.47, 93.53, 93.59, 93.65, 93.71, 93.77, 93.82, 93.88, 93.94, 94.0, 94.05, 94.11, 94.16, 94.21, 94.27, 94.32, 94.37, 94.42, 94.47, 94.52, 94.57, 94.62, 94.67, 94.72, 94.77, 94.82, 94.87, 94.92, 94.96, 95.01, 95.06, 95.1, 95.15, 95.2, 95.24, 95.29, 95.33, 95.38, 95.42, 95.47, 95.51, 95.55, 95.6, 95.64, 95.68, 95.73, 95.77, 95.81, 95.85, 95.89, 95.93, 95.97, 96.01, 96.04, 96.08, 96.12, 96.16, 96.2, 96.24, 96.27, 96.31, 96.35, 96.39, 96.42, 96.46, 96.49, 96.53, 96.57, 96.6, 96.64, 96.67, 96.71, 96.74, 96.78, 96.81, 96.85, 96.88, 96.92, 96.95, 96.99, 97.02, 97.05, 97.09, 97.12, 97.16, 97.19, 97.22, 97.26, 97.29, 97.32, 97.35, 97.38, 97.42, 97.45, 97.48, 97.51, 97.54, 97.57, 97.6, 97.63, 97.66, 97.69, 97.72, 97.74, 97.77, 97.8, 97.83, 97.86, 97.88, 97.91, 97.94, 97.96, 97.99, 98.02, 98.04, 98.07, 98.09, 98.12, 98.14, 98.17, 98.19, 98.22, 98.24, 98.27, 98.29, 98.32, 98.34, 98.36, 98.39, 98.41, 98.43, 98.46, 98.48, 98.5, 98.53, 98.55, 98.57, 98.59, 98.62, 98.64, 98.66, 98.68, 98.7, 98.72, 98.74, 98.76, 98.78, 98.81, 98.83, 98.85, 98.87, 98.89, 98.91, 98.93, 98.95, 98.97, 98.99, 99.01, 99.03, 99.05, 99.07, 99.09, 99.1, 99.12, 99.14, 99.16, 99.17, 99.19, 99.21, 99.22, 99.24, 99.26, 99.27, 99.29, 99.3, 99.32, 99.33, 99.35, 99.36, 99.38, 99.39, 99.41, 99.42, 99.44, 99.45, 99.46, 99.48, 99.49, 99.5, 99.51, 99.53, 99.54, 99.55, 99.56, 99.57, 99.58, 99.6, 99.61, 99.62, 99.63, 99.64, 99.65, 99.66, 99.67, 99.68, 99.69, 99.7, 99.7, 99.71, 99.72, 99.73, 99.74, 99.75, 99.76, 99.76, 99.77, 99.78, 99.79, 99.79, 99.8, 99.81, 99.81, 99.82, 99.83, 99.83, 99.84, 99.85, 99.85, 99.86, 99.86, 99.87, 99.87, 99.88, 99.88, 99.89, 99.89, 99.9, 99.9, 99.91, 99.91, 99.92, 99.92, 99.92, 99.93, 99.93, 99.93, 99.94, 99.94, 99.94, 99.95, 99.95, 99.95, 99.95, 99.96, 99.96, 99.96, 99.96, 99.97, 99.97, 99.97, 99.97, 99.97, 99.98, 99.98, 99.98, 99.98, 99.98, 99.98, 99.98, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0], "timing": [7104, 5420, 1856, 3155]};
+const SERIES = {"v2Queries": "[\n    \"red pill polska\",\n    \"manosfera\",\n    \"mgtow polska\",\n    \"incel polska\",\n    \"przegryw\",\n    \"samiec alfa\"\n    \"black pill polska\"\n    \"pua polska\"\n    \"samiec alfa\"\n    \"męskość\"\n    \"wzorce męskości\"\n    \"relacje damsko-męskie\"\n    \"prawa mężczyzn\"\n    \"samiec sigma\"\n    \"samiec beta\",\n]", "statusDots": "ozodoooooooooooooozdoozzozzoooozooozooozozozozoo-zozzozozzoooozozzozzozoooooozzzooozzoozooozzoozozzozzozozoozooozozooozozozozooozozooozzzzoozoooooooozozoozzooozooozoozzozzozzozzozozozoozoozzooozzooozzoozzozoooozozzzooozozoooozozoozzzzzoooozozoozzzzozooooozzzzozooozooooozzoooooozooozzooozzoooozooooozzoozoozoooooozzzzozoozozooozozoozzozoozoooooooooozzooodooozooozoozooozooozozooozzzzdooozozoooozoozzoooooozoo", "replies": [9212, 8420], "languages": [["en", 130], ["es", 28], ["pl", 7], ["it", 5], ["pt", 5], ["inne", 4]], "languagesMissing": 229, "ratioBins": [["0", 162], ["0.5", 31], ["1", 44], ["2", 76], ["5", 56], ["10", 20], ["20", 9], ["50", 6]], "cumViews": [12.59, 25.12, 33.26, 39.9, 44.86, 49.75, 53.87, 56.92, 59.54, 61.73, 63.66, 65.46, 67.2, 68.86, 70.1, 71.35, 72.58, 73.62, 74.55, 75.42, 76.22, 76.85, 77.41, 77.96, 78.48, 79.0, 79.48, 79.94, 80.4, 80.83, 81.22, 81.61, 81.99, 82.34, 82.67, 82.99, 83.31, 83.62, 83.93, 84.22, 84.51, 84.77, 85.03, 85.27, 85.5, 85.74, 85.97, 86.18, 86.38, 86.57, 86.77, 86.96, 87.15, 87.33, 87.51, 87.68, 87.84, 88.0, 88.16, 88.32, 88.47, 88.62, 88.77, 88.9, 89.04, 89.18, 89.31, 89.44, 89.57, 89.7, 89.83, 89.95, 90.07, 90.19, 90.3, 90.41, 90.52, 90.63, 90.74, 90.84, 90.94, 91.04, 91.13, 91.23, 91.32, 91.41, 91.5, 91.59, 91.68, 91.76, 91.85, 91.93, 92.01, 92.09, 92.17, 92.25, 92.33, 92.4, 92.47, 92.55, 92.62, 92.69, 92.76, 92.83, 92.9, 92.97, 93.03, 93.1, 93.16, 93.22, 93.29, 93.35, 93.41, 93.47, 93.53, 93.59, 93.65, 93.71, 93.77, 93.82, 93.88, 93.94, 94.0, 94.05, 94.11, 94.16, 94.21, 94.27, 94.32, 94.37, 94.42, 94.47, 94.52, 94.57, 94.62, 94.67, 94.72, 94.77, 94.82, 94.87, 94.92, 94.96, 95.01, 95.06, 95.1, 95.15, 95.2, 95.24, 95.29, 95.33, 95.38, 95.42, 95.47, 95.51, 95.55, 95.6, 95.64, 95.68, 95.73, 95.77, 95.81, 95.85, 95.89, 95.93, 95.97, 96.01, 96.04, 96.08, 96.12, 96.16, 96.2, 96.24, 96.27, 96.31, 96.35, 96.39, 96.42, 96.46, 96.49, 96.53, 96.57, 96.6, 96.64, 96.67, 96.71, 96.74, 96.78, 96.81, 96.85, 96.88, 96.92, 96.95, 96.99, 97.02, 97.05, 97.09, 97.12, 97.16, 97.19, 97.22, 97.26, 97.29, 97.32, 97.35, 97.38, 97.42, 97.45, 97.48, 97.51, 97.54, 97.57, 97.6, 97.63, 97.66, 97.69, 97.72, 97.74, 97.77, 97.8, 97.83, 97.86, 97.88, 97.91, 97.94, 97.96, 97.99, 98.02, 98.04, 98.07, 98.09, 98.12, 98.14, 98.17, 98.19, 98.22, 98.24, 98.27, 98.29, 98.32, 98.34, 98.36, 98.39, 98.41, 98.43, 98.46, 98.48, 98.5, 98.53, 98.55, 98.57, 98.59, 98.62, 98.64, 98.66, 98.68, 98.7, 98.72, 98.74, 98.76, 98.78, 98.81, 98.83, 98.85, 98.87, 98.89, 98.91, 98.93, 98.95, 98.97, 98.99, 99.01, 99.03, 99.05, 99.07, 99.09, 99.1, 99.12, 99.14, 99.16, 99.17, 99.19, 99.21, 99.22, 99.24, 99.26, 99.27, 99.29, 99.3, 99.32, 99.33, 99.35, 99.36, 99.38, 99.39, 99.41, 99.42, 99.44, 99.45, 99.46, 99.48, 99.49, 99.5, 99.51, 99.53, 99.54, 99.55, 99.56, 99.57, 99.58, 99.6, 99.61, 99.62, 99.63, 99.64, 99.65, 99.66, 99.67, 99.68, 99.69, 99.7, 99.7, 99.71, 99.72, 99.73, 99.74, 99.75, 99.76, 99.76, 99.77, 99.78, 99.79, 99.79, 99.8, 99.81, 99.81, 99.82, 99.83, 99.83, 99.84, 99.85, 99.85, 99.86, 99.86, 99.87, 99.87, 99.88, 99.88, 99.89, 99.89, 99.9, 99.9, 99.91, 99.91, 99.92, 99.92, 99.92, 99.93, 99.93, 99.93, 99.94, 99.94, 99.94, 99.95, 99.95, 99.95, 99.95, 99.96, 99.96, 99.96, 99.96, 99.97, 99.97, 99.97, 99.97, 99.97, 99.98, 99.98, 99.98, 99.98, 99.98, 99.98, 99.98, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 99.99, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0], "timing": [7104, 5420, 1856, 3155], "apiOnly": [["film_001", "2026-04-05T01:32:42Z", "PT1M6S"], ["film_002", "2026-04-26T03:27:57Z", "PT58S"], ["film_003", "2026-04-17T01:32:24Z", "PT13M43S"]], "profile": [["film", 408], ["kanal", 408], ["jezyk_audio", 179], ["wyswietlenia", 408], ["polubienia", 407], ["komentarze", 404], ["status", 407], ["zebrane", 407], ["dzien_1 … pozniej", 408]]};
 
 __modules["src/book/data/ch4.js"] = { "FILES": FILES, "EXPECT": EXPECT, "SERIES": SERIES };
 })();
@@ -15464,6 +15555,7 @@ const API = { name: 'wiersze wymyślone na wzór YouTube Data API v3', url: 'htt
 const file = (name) => ({ name, text: FILES[name], sources: [API] });
 const VIDEOS = file('youtube-filmy.csv');
 const TIMING = file('youtube-czas-komentarzy.csv');
+const STATUS = file('youtube-status-komentarzy.csv');
 const pl1 = (x) => fmtNum(Math.round(x * 10) / 10);
 const pl2 = (x) => x.toFixed(2).replace('.', ',');
 const near = (v, x, tol = 0.15) => Number.isFinite(v) && Math.abs(v - x) < tol;
@@ -15576,6 +15668,37 @@ const SHEETS = {
           : 'Dodaj kolumny `dzien_1` i `dni_2_7` i podziel przez sumę wszystkich czterech.'),
     },
     success: `Tak. Dzień po publikacji skrypt miałby ${pl1(E.s6.day)}% komentarzy, a tydzień po niej ${pl1(E.s6.week)}%. Dzień zbierania danych zmienia korpus, więc trzeba go zapisać.`,
+  },
+
+  yk7: {
+    id: 'yk7',
+    say: 'Każdy plik mówi o filmach co innego. Język i wyświetlenia są w pliku z filmami, a liczba zebranych komentarzy w pliku ze statusem. Łączy je wspólna kolumna `film`, czyli id filmu. Złóż z nich jedną tabelę, w której jeden wiersz to jeden film.',
+    files: [VIDEOS, STATUS],
+    steps: [
+      'Otwórz `youtube-filmy.csv` od nowa, bez kolumn dopisanych w krokach 8–10.',
+      'Otwórz `youtube-status-komentarzy.csv`, zaznacz wszystko (Ctrl+A) i skopiuj. W pliku z filmami dodaj arkusz (plus przy kartach na dole), wklej w A1 i nazwij go `status` (dwuklik na karcie).',
+      'Wróć do arkusza z filmami. W G1 wpisz `status`, a w G2 `=X.WYSZUKAJ(A2;status!A:A;status!E:E;"brak")` (`XLOOKUP`). Skopiuj w dół. Formuła szuka id filmu w arkuszu `status` i przynosi wartość z tego samego wiersza. Gdy id nie ma pary, wpisuje „brak”.',
+      'W starszym Excelu użyj `=WYSZUKAJ.PIONOWO(A2;status!A:E;5;FAŁSZ)` (`VLOOKUP`). Film bez pary dostanie `#N/D`. Bez `FAŁSZ` Excel weźmie najbliższe id i błędu nie pokaże.',
+      'Znajdź film z „brak” (Dane, Filtr) i odczytaj jego komentarze według YouTube, kolumna `komentarze`.',
+      'W H2 przynieś komentarze główne, `=X.WYSZUKAJ(A2;status!A:A;status!C:C;0)`, a w I2 odpowiedzi, z kolumny D. Skopiuj w dół.',
+      'Zsumuj zebrane komentarze tylko dla filmów z podanym językiem, `=SUMA.WARUNKÓW(H:H;C:C;"<>")+SUMA.WARUNKÓW(I:I;C:C;"<>")` (`SUMIFS`). Warunek `"<>"` znaczy „niepusta komórka”.',
+    ],
+    fields: [
+      { id: 'lonely', label: 'Ile komentarzy według YouTube ma film, który nie ma pary w arkuszu `status`?', short: 'film bez pary', expect: E.s7.lonelyApi },
+      { id: 'known', label: 'Ile komentarzy (głównych i odpowiedzi razem) zebrał skrypt pod filmami z podanym językiem?', short: 'zebrane, z językiem', expect: E.s7.known },
+    ],
+    wrong: {
+      lonely: (v) => (v === 0 ? 'W kolumnie G nie ma „brak”? Formuła bez `FAŁSZ` (albo bez trybu dokładnego) bierze najbliższe id i ukrywa brak pary.'
+        : v === E.s7.lonelyCount ? 'To liczba filmów bez pary. Pytamy o komentarze tego filmu, kolumna `komentarze` w jego wierszu.'
+          : 'Odfiltruj „brak” w kolumnie G i odczytaj kolumnę `komentarze` w tym wierszu.'),
+      known: (v) => (v === E.s7.allFilms ? 'To komentarze pod wszystkimi filmami. Policz tylko filmy z niepustą kolumną `jezyk_audio`.'
+        : v === E.s7.knownTop ? 'To same komentarze główne. Dodaj odpowiedzi z kolumny I.'
+          : v === E.s7.knownReplies ? 'To same odpowiedzi. Dodaj komentarze główne z kolumny H.'
+            : v === E.s7.knownApi ? 'To liczba komentarzy według YouTube, kolumna `komentarze`. Pytamy o to, co zebrał skrypt, czyli kolumny z arkusza `status`.'
+              : v === E.s7.knownApprox ? 'Prawie. Film bez pary dostał wartości sąsiada, bo formuła nie szuka dokładnie. Użyj `X.WYSZUKAJ` albo dopisz `FAŁSZ`.'
+                : 'Przynieś komentarze główne i odpowiedzi przez id filmu, a potem zsumuj je dla filmów z niepustą kolumną `jezyk_audio`.'),
+    },
+    success: `Tak. Film bez pary ma według YouTube ${E.s7.lonelyApi} komentarzy, a skrypt nie skończył ich zbierać. Pod filmami z podanym językiem skrypt zebrał ${fmtNum(E.s7.known)} komentarzy. Tej liczby nie było w żadnym pliku. Powstała dopiero z połączenia.`,
   },
 };
 
@@ -15735,7 +15858,7 @@ const { fmtNum } = __modules["src/core/format.js"];
 const { download } = __modules["src/ui/download.js"];
 const { checkSheet } = __modules["src/book/figures/sheet.js"];
 const { getItem, setItem, isDone, markDone, onSaved } = __modules["src/book/store.js"];
-const { EXPECT: E, SERIES: S } = __modules["src/book/data/ch4.js"];
+const { FILES, EXPECT: E, SERIES: S } = __modules["src/book/data/ch4.js"];
 const { QUESTIONS4 } = __modules["src/book/chapter4.js"];
 const LETTERS = ['A', 'B', 'C', 'D'];
 const near = (v, x, tol = 0.15) => Number.isFinite(v) && Math.abs(v - x) < tol;
@@ -15968,7 +16091,10 @@ function restoreBrief(def, text) {
 
 /** The student's AGENTS.md: a goal line and the rules of the solved steps, in order. */
 /** Part B adds one rule too: the day of collection (step 11, exercise yk6). */
-const EXTRA_RULES = [{ id: 'yk6', rule: '**Data.** Zapisuj dzień i godzinę zbierania w każdym pliku i w raporcie.' }];
+const EXTRA_RULES = [
+  { id: 'yk6', rule: '**Data.** Zapisuj dzień i godzinę zbierania w każdym pliku i w raporcie.' },
+  { id: 'yk7', rule: '**Klucze.** W każdym pliku zapisz id filmu. Wypisz, ile id z każdego pliku nie ma pary w pliku z filmami i ile się powtarza.' },
+];
 const ALL_RULES = () => [...Object.values(BRIEFS), ...EXTRA_RULES];
 
 function agentsText(done = isDone) {
@@ -16097,7 +16223,7 @@ function pipeFigure({ num: n = 'Rysunek' } = {}) {
     el('div.fg-caption', 'Test „manosfera”, kwiecień 2026 r. Wersja 2 to wynik testu. Wersja 1 to ten sam test policzony według jej zasad. Długość paska to część wyniku wersji 2.'));
 }
 
-// ---------------------------------------------------------------- the report task (4.13)
+// ---------------------------------------------------------------- the report task (4.15)
 
 /** The task a student downloads, does with their own data and hands in with the page's report. */
 function assignText() {
@@ -16112,8 +16238,22 @@ function assignText() {
     '1. Raport z rozdziału 4. Pobierzesz go na końcu strony rozdziału, przycisk „Pobierz plik (.txt)”.',
     '2. Swój AGENTS.md. Pobierzesz go z rysunku w podrozdziale 4.8. Dopasuj go do swojego źródła danych',
     '   i dopisz co najmniej dwie własne reguły. Przy każdej regule napisz, jaką liczbę ma wypisać agent.',
-    '3. Ten plik z odpowiedziami na sześć pytań poniżej. Na każde pytanie odpowiedz w dwóch lub trzech',
-    '   zdaniach. Gdy podajesz liczbę, napisz też, z czego ona jest.',
+    '3. Ten plik z profilem danych i odpowiedziami na sześć pytań poniżej. Na każde pytanie odpowiedz',
+    '   w dwóch lub trzech zdaniach. Gdy podajesz liczbę, napisz też, z czego ona jest.',
+    '',
+    'PROFIL DANYCH',
+    '',
+    'A. Dane z rozdziału. Połącz w jedną tabelę filmy, status komentarzy i czas komentarzy, jak w kroku 12.',
+    '   Opisz ją: ile ma wierszy, co jest jednym wierszem, który to klucz, ile pustych komórek ma',
+    '   każda kolumna i skąd się wzięły.',
+    '',
+    '',
+    'B. Pobierz youtube-trafienia.csv. Przynieś do każdego trafienia wyświetlenia filmu i zsumuj je.',
+    '   Porównaj z sumą w pliku z filmami. Która suma jest dobra i skąd różnica?',
+    '',
+    '',
+    'C. Twoje dane. Jakie pliki dostaniesz, co jest w nich jednym wierszem i jaki klucz je łączy?',
+    '',
     '',
     'PYTANIA DO TWOICH DANYCH',
     '',
@@ -16128,7 +16268,8 @@ function assignText() {
 function assignFigure({ num: n = 'Rysunek' } = {}) {
   return frame(n, 'Zadanie do raportu dla prowadzącego',
     el('pre.sh-pre.br-md', assignText()),
-    el('div.sh-bar', el('button.sh-file-btn', { type: 'button', onClick: () => download('zadanie-rozdzial-4.txt', `\ufeff${assignText()}`) }, '⬇ zadanie-rozdzial-4.txt')),
+    el('div.sh-bar', el('button.sh-file-btn', { type: 'button', onClick: () => download('zadanie-rozdzial-4.txt', `\ufeff${assignText()}`) }, '⬇ zadanie-rozdzial-4.txt'),
+      el('button.sh-file-btn', { type: 'button', onClick: () => download('youtube-trafienia.csv', `﻿${FILES['youtube-trafienia.csv']}`) }, '⬇ youtube-trafienia.csv')),
     el('div.sq-read', 'Plik otworzysz w Notatniku albo w Wordzie. Odpowiedzi wpisz pod pytaniami.'));
 }
 
@@ -16737,12 +16878,365 @@ function sheetAnimResults() {
 __modules["src/book/figures/sheetanim.js"] = { "sheetAnim": sheetAnim, "LANG": LANG, "RATIO": RATIO, "ANCHOR": ANCHOR, "TIMING": TIMING, "SETUPS": SETUPS, "FIGURES_SA": FIGURES_SA, "sheetAnimResults": sheetAnimResults };
 })();
 
+/* ===== src/book/figures/datapath.js ===== */
+(function () {
+/**
+ * Chapter 4, part B: what the agent brought, before the student counts anything (D51).
+ *   ytjson     the API's JSON answer; a click on a field shows the file column it became, or why it was left out
+ *   ytfiles    the four files: what one row is, the key column, the first rows; one id followed through all four
+ *   ytfeat     a raw column against the feature made of it, with the Excel formula
+ *   ytjoin     how a lookup by id joins two tables: exact, without FALSE, and starting from search hits
+ *              (an invented example, before step 12)
+ *   ytprofile  the profile of the joined table: one row per film, how full each column is (after step 12)
+ *
+ * The JSON and the file rows are the chapter's synthetic rows (film_001 ...), never real ids or texts.
+ * The join picture uses invented numbers; test/book4.mjs checks none of them equals an answer.
+ */
+const { el, mount } = __modules["src/ui/dom.js"];
+const { frame, toggles } = __modules["src/book/figures/common.js"];
+const { fmtNum } = __modules["src/core/format.js"];
+const { FILES, EXPECT: E, SERIES: S } = __modules["src/book/data/ch4.js"];
+const SYNTH = 'Wiersze wymyślone na wzór testu prawdziwego projektu, kwiecień 2026 r. Tytułów, tekstów i autorów nie pokazujemy.';
+/** 1 film, 2 filmy, 5 filmów */
+const films = (k) => (k === 1 ? 'film' : k % 10 >= 2 && k % 10 <= 4 && (k % 100 < 12 || k % 100 > 14) ? 'filmy' : 'filmów');
+const MADE_UP = (what) => el('div.fg-caption', `Przykład wymyślony. ${what}`);
+
+/** Rows of a student file: [header, ...rows], each an array of cells. */
+function rowsOf(name) {
+  return FILES[name].split('\n').filter(Boolean).map((l) => l.split(';'));
+}
+
+/** A small table; `mark(colIndex, row)` gives a class for a cell, `hot` the highlighted column. */
+function grid(header, rows, { hot = -1, mark = () => '' } = {}) {
+  return el('div.dp-wrap', el('table.dp-grid',
+    el('thead', el('tr', header.map((h, i) => el('th', { class: i === hot ? 'dp-hot' : null }, h)))),
+    el('tbody', rows.map((r) => el('tr', r.map((c, i) => el('td', { class: [i === hot ? 'dp-hot' : '', mark(i, r)].filter(Boolean).join(' ') || null }, c === '' ? '·' : c)))))));
+}
+
+// ---------------------------------------------------------------- ytjson: the API answer and the files
+
+/*
+ * One line of JSON: [indent, text, map]. map is null for structure, or
+ *   { file, col, say }  the field went to that column of that file
+ *   { drop }            the field is not in the files, and why
+ */
+const J = (indent, text, map = null) => ({ indent, text, map });
+const drop = (why) => ({ drop: why });
+const go = (file, col, say) => ({ file, col, say });
+
+const CALLS = {
+  search: {
+    label: 'search.list',
+    what: 'Wyszukiwanie. Jedna strona wyników.',
+    lines: [
+      J(0, '{'),
+      J(1, '"kind": "youtube#searchListResponse",', drop('Rodzaj odpowiedzi. Taki sam w każdej, nic nie mówi o filmach.')),
+      J(1, '"nextPageToken": "CDIQAA",', go('youtube-trafienia.csv', 'strona', 'Żeton następnej strony. Skrypt go nie zapisuje, tylko wysyła w kolejnym pytaniu i numeruje strony.')),
+      J(1, '"regionCode": "PL",', drop('Region pytania. To dla YouTube tylko wskazówka.')),
+      J(1, '"pageInfo": { "totalResults": 1000000 },', drop('Szacunek YouTube, a nie liczba filmów, które naprawdę dostaniesz.')),
+      J(1, '"items": [', go('youtube-trafienia.csv', 'pozycja', 'Lista wyników na stronie. Miejsce elementu na liście to pozycja.')),
+      J(2, '{'),
+      J(3, '"id": { "kind": "youtube#video", "videoId": "film_001" },', go('youtube-trafienia.csv', 'film', 'Id filmu. Prawdziwe ma 11 znaków, na przykład „a1B2c3D4e5F”. To klucz, który łączy wszystkie pliki.')),
+      J(3, '"snippet": {'),
+      J(4, '"publishedAt": "2026-04-05T01:32:42Z",', drop('Data publikacji. Skrypt bierze ją z drugiego pytania, videos.list.')),
+      J(4, '"channelId": "kanal_001",', drop('Id kanału. Trafia do pliku z filmami, z drugiego pytania.')),
+      J(4, '"title": "(tytuł filmu)",', drop('Tytuł to tekst autora. W tym rozdziale go nie pokazujemy.')),
+      J(4, '"description": "(opis filmu)",', drop('Opis to też tekst autora.')),
+      J(4, '"thumbnails": { … },', drop('Adresy miniatur. Do analizy liczb niepotrzebne.')),
+      J(4, '"channelTitle": "Kanał 001"', drop('Nazwa kanału. Zostawiamy tylko jego id.')),
+      J(3, '}'),
+      J(2, '},'),
+      J(2, '… kolejne filmy tej strony'),
+      J(1, ']'),
+      J(0, '}'),
+    ],
+  },
+  videos: {
+    label: 'videos.list',
+    what: 'Szczegóły filmów. Do 50 id w jednym pytaniu.',
+    lines: [
+      J(0, '{'),
+      J(1, '"kind": "youtube#videoListResponse",', drop('Rodzaj odpowiedzi.')),
+      J(1, '"items": ['),
+      J(2, '{'),
+      J(3, '"id": "film_001",', go('youtube-filmy.csv', 'film', 'Id filmu, ten sam co w wynikach wyszukiwania. Klucz.')),
+      J(3, '"snippet": {'),
+      J(4, '"publishedAt": "2026-04-05T01:32:42Z",', drop('Data publikacji. W plikach rozdziału jej nie ma. Na rysunku niżej zobaczysz, jaką cechę można z niej zrobić.')),
+      J(4, '"channelId": "kanal_001",', go('youtube-filmy.csv', 'kanal', 'Id kanału. Po nim policzysz, ile filmów ma jeden kanał.')),
+      J(4, '"title": "(tytuł filmu)",', drop('Tytuł. Nie pokazujemy go.')),
+      J(4, '"defaultAudioLanguage": "it"', go('youtube-filmy.csv', 'jezyk_audio', 'Język podany przez autora. Gdy autor go nie podał, pola nie ma, a w pliku zostaje pusta komórka.')),
+      J(3, '},'),
+      J(3, '"contentDetails": { "duration": "PT1M6S" },', drop('Długość filmu w zapisie ISO 8601. W plikach jej nie ma. Rysunek niżej pokazuje, jak zrobić z niej sekundy.')),
+      J(3, '"statistics": {'),
+      J(4, '"viewCount": "864",', go('youtube-filmy.csv', 'wyswietlenia', 'Wyświetlenia. W JSON to tekst w cudzysłowie, w pliku już liczba.')),
+      J(4, '"likeCount": "12",', go('youtube-filmy.csv', 'polubienia', 'Polubienia. Autor może je ukryć i wtedy pola nie ma.')),
+      J(4, '"commentCount": "2"', go('youtube-filmy.csv', 'komentarze', 'Liczba komentarzy według YouTube. Gdy komentarze są wyłączone, pola nie ma. W pliku zostaje pusta komórka, a nie zero.')),
+      J(3, '}'),
+      J(2, '}'),
+      J(1, ']'),
+      J(0, '}'),
+    ],
+  },
+  comments: {
+    label: 'commentThreads.list',
+    what: 'Wątki komentarzy pod jednym filmem.',
+    lines: [
+      J(0, '{'),
+      J(1, '"items": [', go('youtube-status-komentarzy.csv', 'zebrane_glowne', 'Każdy wątek to jeden komentarz główny. Skrypt je liczy. Pobiera kolejne strony, aż skończy się żeton.')),
+      J(2, '{'),
+      J(3, '"snippet": {'),
+      J(4, '"videoId": "film_001",', go('youtube-status-komentarzy.csv', 'film', 'Id filmu, pod którym jest wątek. Klucz.')),
+      J(4, '"topLevelComment": { "snippet": {'),
+      J(5, '"textDisplay": "(tekst komentarza)",', drop('Tekst komentarza. W tym rozdziale go nie pokazujemy.')),
+      J(5, '"authorDisplayName": "(autor)",', drop('Autor to dane osobowe. Nie trafia do plików.')),
+      J(5, '"publishedAt": "2026-04-12T18:03:10Z"', go('youtube-czas-komentarzy.csv', 'dni_8_30', 'Czas komentarza minus czas publikacji filmu. Tu wychodzi ponad 7 dni, więc komentarz liczy się w kolumnie dni_8_30.')),
+      J(4, '} },'),
+      J(4, '"totalReplyCount": 0', go('youtube-status-komentarzy.csv', 'zebrane_odpowiedzi', 'Tyle odpowiedzi podaje YouTube. Skrypt pobiera je osobnym pytaniem i liczy te, które naprawdę dostał.')),
+      J(3, '}'),
+      J(2, '},'),
+      J(2, '… kolejne wątki'),
+      J(1, ']'),
+      J(0, '}'),
+    ],
+  },
+};
+
+function jsonFigure({ num: n = 'Rysunek' } = {}) {
+  const st = { call: 'videos', line: -1 };
+  const host = el('div');
+  const draw = () => {
+    const call = CALLS[st.call];
+    if (st.line < 0) st.line = call.lines.findIndex((l) => l.map?.file);
+    const pick = call.lines[st.line]?.map || {};
+    const code = el('div.dp-json', call.lines.map((l, i) => (l.map
+      ? el('button', {
+        type: 'button',
+        class: ['dp-key', l.map.drop ? 'dp-drop' : 'dp-go', i === st.line ? 'dp-on' : ''].filter(Boolean).join(' '),
+        style: `padding-left:${l.indent * 1.2 + 0.4}em`,
+        'aria-pressed': i === st.line ? 'true' : 'false',
+        onClick: () => { st.line = i; draw(); },
+      }, l.text)
+      : el('div.dp-line', { style: `padding-left:${l.indent * 1.2 + 0.4}em` }, l.text))));
+    let target = null;
+    if (pick.file) {
+      const [head, ...rows] = rowsOf(pick.file);
+      const col = head.indexOf(pick.col);
+      target = el('div.dp-target',
+        el('div.dp-to', `→ ${pick.file}, kolumna „${pick.col}”`),
+        grid(head, rows.filter((r) => r[head.indexOf('film')] === 'film_001').slice(0, 1), { hot: col }));
+    }
+    mount(host,
+      toggles(Object.entries(CALLS).map(([k, c]) => [k, c.label]), st.call, (v) => { st.call = v; st.line = -1; draw(); }),
+      el('div.sq-read', call.what),
+      code,
+      el('div', { class: `dp-say ${pick.drop ? 'dp-say-drop' : 'dp-say-go'}`, 'aria-live': 'polite' }, pick.drop ? `Nie ma w plikach. ${pick.drop}` : pick.say),
+      target);
+  };
+  draw();
+  return frame(n, 'Odpowiedź API w formacie JSON. Kliknij pole, żeby zobaczyć, gdzie trafiło', host,
+    el('div.dp-legend', el('span.dp-key.dp-go', 'trafia do pliku'), el('span.dp-key.dp-drop', 'zostaje w API')),
+    el('div.fg-caption', `Kształt odpowiedzi jak w dokumentacji YouTube Data API v3. ${SYNTH}`));
+}
+
+// ---------------------------------------------------------------- ytfiles: four files, one key
+
+const FILE_CARDS = [
+  { name: 'youtube-trafienia.csv', one: 'jedno trafienie w wynikach wyszukiwania', from: 'search.list' },
+  { name: 'youtube-filmy.csv', one: 'jeden film', from: 'videos.list' },
+  { name: 'youtube-status-komentarzy.csv', one: 'jeden film, dla którego skrypt zebrał komentarze', from: 'commentThreads.list' },
+  { name: 'youtube-czas-komentarzy.csv', one: 'jeden film, jego komentarze według dni od publikacji', from: 'commentThreads.list' },
+];
+const FOLLOW = ['film_001', 'film_034'];
+
+function filesFigure({ num: n = 'Rysunek' } = {}) {
+  const st = { id: null };
+  const host = el('div');
+  const draw = () => {
+    mount(host,
+      el('div.dp-follow', el('span.sq-read', 'Pokaż jeden film we wszystkich plikach:'),
+        toggles([['', 'początek plików'], ...FOLLOW.map((f) => [f, f])], st.id ?? '', (v) => { st.id = v || null; draw(); })),
+      el('div.dp-cards', FILE_CARDS.map((c) => {
+        const [head, ...rows] = rowsOf(c.name);
+        const key = head.indexOf('film');
+        const hit = st.id ? rows.filter((r) => r[key] === st.id) : rows.slice(0, 3);
+        return el('div.dp-card',
+          el('div.dp-card-name', c.name),
+          el('div.dp-card-meta', `${fmtNum(rows.length)} wierszy · z ${c.from}`),
+          el('div.dp-card-one', `Jeden wiersz = ${c.one}.`),
+          grid(head, hit, { hot: key }),
+          st.id ? el('div', { class: `dp-count dp-count-${Math.min(hit.length, 2)}` },
+            hit.length === 1 ? `${st.id}: jeden wiersz` : `${st.id}: ${hit.length} wiersze. Ten film trafił na dwie strony wyników.`) : null);
+      })),
+      el('div.sq-read', st.id === 'film_034'
+        ? 'W trzech plikach ten film ma jeden wiersz, a w trafieniach dwa. Gdy połączysz pliki od strony trafień, film policzy się dwa razy.'
+        : 'Każdy plik ma kolumnę film. Po niej, a nie po kolejności wierszy, łączy się pliki. W pliku z filmami każde id jest raz, dlatego od niego zaczyna się łączenie.'));
+  };
+  draw();
+  return frame(n, 'Cztery pliki z jednego zbierania. Kolumna film jest w każdym', host, el('div.fg-caption', SYNTH));
+}
+
+// ---------------------------------------------------------------- ytfeat: from a column to a feature
+
+const WEEKDAYS = ['niedziela', 'poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota'];
+/** "PT1H2M3S" -> 3723 seconds */
+function isoSeconds(text) {
+  const m = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(text || '');
+  return m ? (Number(m[1] || 0) * 3600 + Number(m[2] || 0) * 60 + Number(m[3] || 0)) : null;
+}
+const VIDEOS = rowsOf('youtube-filmy.csv');
+const col = (name) => VIDEOS.slice(1, 4).map((r) => r[VIDEOS[0].indexOf(name)]);
+
+const FEATURES = [
+  { id: 'film', kind: 'klucz', raw: col('film'), out: () => '—', formula: null,
+    say: 'Id nie jest miarą. Nie liczysz go, tylko łączysz po nim pliki (krok 12).' },
+  { id: 'kanal', kind: 'klucz kanału', raw: col('kanal'),
+    out: (v) => { const k = VIDEOS.slice(1).filter((r) => r[1] === v).length; return `${k} ${films(k)} w korpusie`; }, formula: '=LICZ.JEŻELI(B:B;B2)',
+    say: 'Ile filmów ma kanał. Kanał z wieloma filmami waży w korpusie więcej niż jeden film.' },
+  { id: 'jezyk_audio', kind: 'kod, kategoria', raw: col('jezyk_audio'),
+    out: (v) => (v ? v.slice(0, 2) : 'brak'), formula: '=LEWY(C2;2)',
+    say: 'Rodzina języka z dwóch pierwszych liter. Pusta komórka to brak informacji, a nie osobny język (krok 8).' },
+  { id: 'wyswietlenia', kind: 'liczba', raw: col('wyswietlenia'), out: (v) => fmtNum(Number(v)), formula: null,
+    say: 'Liczba z długim ogonem. Kilka filmów ma większość wyświetleń (krok 10). To podstawa do przeliczeń.' },
+  { id: 'polubienia', kind: 'liczba', raw: col('polubienia'),
+    out: (v, i) => fmtNum(Math.round(10 * 1000 * Number(v) / Number(col('wyswietlenia')[i])) / 10), formula: '=E2/D2*1000',
+    say: 'Polubienia na 1000 wyświetleń. Dopiero po przeliczeniu da się porównać mały film z dużym.' },
+  { id: 'komentarze', kind: 'liczba albo pusta', raw: col('komentarze'),
+    out: (v, i) => (v === '' ? 'puste' : fmtNum(Math.round(100 * 1000 * Number(v) / Number(col('wyswietlenia')[i])) / 100)), formula: '=JEŻELI(F2="";"";F2/D2*1000)',
+    say: 'Komentarze na 1000 wyświetleń. Film z wyłączonymi komentarzami zostaje pusty, a nie zero (krok 9).' },
+  { id: 'publishedAt', api: true, kind: 'data i godzina (tylko w API)', raw: S.apiOnly.map((x) => x[1]),
+    out: (v) => { const d = new Date(v); return `${WEEKDAYS[d.getUTCDay()]}, ${v.slice(11, 16)} UTC`; },
+    formula: '=DZIEŃ.TYG(DATA.WARTOŚĆ(LEWY(G2;10));2)',
+    say: 'Dzień tygodnia i godzina publikacji. Formuła działa, gdy data stoi w kolumnie G. Litera Z na końcu to czas UTC. W Polsce latem jest o 2 godziny później.' },
+  { id: 'duration', api: true, kind: 'czas w zapisie ISO 8601 (tylko w API)', raw: S.apiOnly.map((x) => x[2]),
+    out: (v) => `${fmtNum(isoSeconds(v))} s`, formula: null,
+    say: 'Długość w sekundach. Excel nie zna zapisu PT1M6S. Takie przeliczenie najlepiej zlecić agentowi i dopisać do AGENTS.md.' },
+];
+
+function featureFigure({ num: n = 'Rysunek' } = {}) {
+  const st = { id: 'jezyk_audio' };
+  const host = el('div');
+  const draw = () => {
+    const f = FEATURES.find((x) => x.id === st.id);
+    mount(host,
+      el('div.dp-chips', FEATURES.map((x) => el('button', {
+        type: 'button', class: ['sa-chip', x.api ? 'dp-chip-api' : '', x.id === st.id ? 'sa-chip-on' : ''].filter(Boolean).join(' '),
+        'aria-pressed': x.id === st.id ? 'true' : 'false', onClick: () => { st.id = x.id; draw(); },
+      }, x.id))),
+      el('div.dp-feat',
+        el('div.dp-feat-kind', `Typ: ${f.kind}`),
+        grid(['film', `surowe: ${f.id}`, 'cecha'], f.raw.map((v, i) => [col('film')[i], v, f.out(v, i)]), { hot: 2 }),
+        f.formula ? el('div.sa-bar', el('span.sa-fx', 'fx'), el('code', f.formula)) : null,
+        el('div.sq-read', f.say)));
+  };
+  draw();
+  return frame(n, 'Z kolumny cecha. Kliknij kolumnę, żeby zobaczyć, co z niej zrobić', host,
+    el('div.fg-caption', `Trzy pierwsze filmy z pliku youtube-filmy.csv. Kolumny przerywane są tylko w API. ${SYNTH}`));
+}
+
+// ---------------------------------------------------------------- ytjoin: how a lookup by id joins tables
+
+const FILMS = [['film_a', 'pl', 350], ['film_b', 'en', 1200], ['film_c', '', 90], ['film_d', 'en', 2600], ['film_e', 'pl', 45]];
+// the status sheet in its own order; film_d has no row
+const STAT = [['film_e', 0, 'zero'], ['film_a', 4, 'ok'], ['film_c', 1, 'ok'], ['film_b', 15, 'ok']];
+const HITS = ['film_a', 'film_b', 'film_c', 'film_a', 'film_d', 'film_e'];
+/** The invented numbers of the picture (test/book4.mjs: none is an answer of the chapter). */
+const JOIN_NUMBERS = {
+  views: FILMS.reduce((a, r) => a + r[2], 0),
+  viewsByHits: HITS.reduce((a, h) => a + FILMS.find((r) => r[0] === h)[2], 0),
+  collected: STAT.reduce((a, r) => a + r[1], 0),
+};
+
+const MODES = {
+  exact: { label: '=X.WYSZUKAJ(…;"brak")', say: 'Formuła szuka id w drugiej tabeli, w dowolnej kolejności, i przynosi wartość z tego samego wiersza. Film bez pary dostaje „brak” i widać go od razu.' },
+  near: { label: 'WYSZUKAJ.PIONOWO bez FAŁSZ', say: 'Bez FAŁSZ Excel szuka w posortowanej tabeli najbliższego id, które nie jest większe. Film bez pary dostaje cudzą wartość i błędu nie widać.' },
+  hits: { label: 'od trafień', say: 'Tu zaczynamy od trafień, a film_a jest w nich dwa razy. Formuła działa dobrze, ale film_a ma teraz dwa wiersze i jego wyświetlenia liczą się podwójnie.' },
+};
+
+function joinFigure({ num: n = 'Rysunek' } = {}) {
+  const st = { mode: 'exact', at: 0 };
+  const host = el('div');
+  const sorted = [...STAT].sort((a, b) => a[0].localeCompare(b[0]));
+  const draw = () => {
+    const right = st.mode === 'near' ? sorted : STAT;
+    const left = st.mode === 'hits' ? HITS.map((h) => FILMS.find((r) => r[0] === h)) : FILMS;
+    const look = (id) => {
+      const exact = right.find((r) => r[0] === id);
+      if (exact || st.mode !== 'near') return { row: exact || null, wrong: false };
+      const prev = right.filter((r) => r[0] < id).at(-1);
+      return { row: prev || null, wrong: true };
+    };
+    const cur = left[st.at - 1];
+    const curHit = cur ? look(cur[0]) : null;
+    const done = st.at >= left.length;
+    const row = Math.max(2, st.at + 1); // the sheet row of the film being looked up (row 1 is the header)
+    const leftRows = left.map((r, i) => {
+      const filled = i < st.at;
+      const res = filled ? look(r[0]) : null;
+      const cell = !filled ? '' : res.row ? String(res.row[1]) : 'brak';
+      const cls = !filled ? '' : !res.row ? 'sa-bad' : res.wrong ? 'sa-bad dp-fake' : (i === st.at - 1 ? 'sa-new' : '');
+      const dup = st.mode === 'hits' && left.findIndex((x) => x[0] === r[0]) !== i;
+      return el('tr', { class: [i === st.at - 1 ? 'dp-row-on' : '', dup && filled ? 'dp-row-dup' : ''].filter(Boolean).join(' ') || null },
+        el('td', { class: 'dp-hot' }, r[0]), el('td', r[1] || '·'), el('td', fmtNum(r[2])),
+        el('td', { class: cls || null }, cell));
+    });
+    const rightRows = right.map((r) => el('tr', { class: curHit?.row === r ? (curHit.wrong ? 'dp-row-bad' : 'dp-row-on') : null },
+      el('td', { class: 'dp-hot' }, r[0]), el('td', String(r[1])), el('td', r[2])));
+    const sum = left.reduce((a, r) => a + r[2], 0);
+    const lonely = left.filter((r) => !right.some((x) => x[0] === r[0])).length;
+    let read = MODES[st.mode].say;
+    if (done && st.mode === 'exact') read += ` Bez pary: ${lonely} film. Wierszy tyle, ile filmów.`;
+    if (done && st.mode === 'near') read += ' film_d dostał wartość film_c, choć skrypt nic pod nim nie zebrał.';
+    if (done && st.mode === 'hits') read += ` Suma wyświetleń po trafieniach to ${fmtNum(sum)}, a w tabeli filmów ${fmtNum(JOIN_NUMBERS.views)}.`;
+    mount(host,
+      toggles(Object.entries(MODES).map(([k, m]) => [k, m.label]), st.mode, (v) => { st.mode = v; st.at = 0; draw(); }),
+      el('div.dp-join',
+        el('div.dp-side', el('div.sh-files-label', st.mode === 'hits' ? 'trafienia + filmy' : 'filmy'),
+          el('div.dp-wrap', el('table.dp-grid', el('thead', el('tr', ['film', 'jezyk', 'wyswietlenia', 'zebrane'].map((h, i) => el('th', { class: i === 3 ? 'dp-new' : null }, h)))), el('tbody', leftRows)))),
+        el('div.dp-arrow', { 'aria-hidden': 'true' }, cur ? (curHit.row ? (curHit.wrong ? '≈' : '=') : '?') : '⇄'),
+        el('div.dp-side', el('div.sh-files-label', st.mode === 'near' ? 'status (posortowany)' : 'status'),
+          el('div.dp-wrap', el('table.dp-grid', el('thead', el('tr', ['film', 'zebrane', 'status'].map((h) => el('th', h)))), el('tbody', rightRows))))),
+      el('div.sa-bar', el('span.sa-fx', 'fx'), el('code', st.mode === 'near' ? `=WYSZUKAJ.PIONOWO(A${row};status!A:C;2)` : `=X.WYSZUKAJ(A${row};status!A:A;status!B:B;"brak")`)),
+      el('div.dp-play',
+        el('button.ghost-btn', { type: 'button', disabled: done ? true : null, onClick: () => { st.at = Math.min(left.length, st.at + 1); draw(); } }, cur ? 'Następny wiersz ▸' : 'Szukaj pary ▸'),
+        el('button.ghost-btn', { type: 'button', disabled: done ? true : null, onClick: () => { st.at = left.length; draw(); } }, 'Wszystkie'),
+        el('button.ghost-btn', { type: 'button', disabled: st.at ? null : true, onClick: () => { st.at = 0; draw(); } }, 'Od nowa')),
+      el('div.sq-read', { 'aria-live': 'polite' }, cur && !done
+        ? (curHit.row ? (curHit.wrong ? `${cur[0]} nie ma pary. Excel wziął najbliższy wiersz, ${curHit.row[0]}.` : `${cur[0]} ma parę w wierszu ${right.indexOf(curHit.row) + 1} tabeli status.`) : `${cur[0]} nie ma pary w tabeli status.`)
+        : read));
+  };
+  draw();
+  return frame(n, 'Jak formuła łączy dwie tabele przez id. Przełącz sposób i szukaj pary wiersz po wierszu', host,
+    MADE_UP('Pięć filmów i ich status.'));
+}
+
+// ---------------------------------------------------------------- ytprofile: the joined table (after step 12)
+
+function profileFigure({ num: n = 'Rysunek' } = {}) {
+  const all = E.s7.films;
+  const rows = S.profile.map(([name, filled]) => el('div.sq-row',
+    el('span.sq-name', name),
+    el('span.sq-track', el('span.sq-fill', { style: `width:${((100 * filled) / all).toFixed(1)}%` })),
+    el('span.sq-num', filled === all ? 'pełna' : `brak ${fmtNum(all - filled)}`)));
+  return frame(n, 'Profil połączonej tabeli. Ile komórek każdej kolumny jest wypełnionych',
+    el('div.dp-profile-head',
+      el('span', el('b', fmtNum(all)), ' wierszy'), el('span', 'jeden wiersz = jeden film'), el('span', 'klucz: film, każde id raz')),
+    el('div.sq-bars', rows),
+    el('div.sq-read', `Najwięcej braków ma jezyk_audio. Kolumny ze statusem i zebranymi komentarzami nie mają jednego filmu, tego bez pary. W kolumnie komentarze puste są filmy z wyłączonymi komentarzami, a w polubieniach film, którego autor ukrył polubienia. Każdy brak ma swój powód i trzeba go opisać, zanim policzysz udział.`),
+    el('div.fg-caption', SYNTH));
+}
+
+const FIGURES_DATA = { ytjson: jsonFigure, ytfiles: filesFigure, ytfeat: featureFigure, ytjoin: joinFigure, ytprofile: profileFigure };
+
+__modules["src/book/figures/datapath.js"] = { "CALLS": CALLS, "jsonFigure": jsonFigure, "FILE_CARDS": FILE_CARDS, "filesFigure": filesFigure, "isoSeconds": isoSeconds, "FEATURES": FEATURES, "featureFigure": featureFigure, "JOIN_NUMBERS": JOIN_NUMBERS, "MODES": MODES, "joinFigure": joinFigure, "profileFigure": profileFigure, "FIGURES_DATA": FIGURES_DATA };
+})();
+
 /* ===== src/book/main4.js ===== */
 (function () {
 /**
  * Entry point of the chapter-4 file: "Kim jesteś?" first (D26), then the textbook shell with
  * chapter 4 (docs/chapter4-plan.md): part A, rules for an AI agent (figures/brief.js), and part
- * B, checking the collected data in Excel (figures/youtube.js).
+ * B, checking the collected data in Excel (figures/youtube.js), with what the files are made of
+ * (figures/datapath.js).
  *
  * Chapter 4 registers its figures, exercises and report answers here, not in book.js, so its
  * files for students stay out of the other chapters' files.
@@ -16754,10 +17248,11 @@ const { FIGURES4, SHEETS, sheetExercises } = __modules["src/book/figures/youtube
 const { FIGURES_BRIEF, BRIEFS, briefExercises, briefAnswer, restoreBrief } = __modules["src/book/figures/brief.js"];
 const { FIGURES_MECH } = __modules["src/book/figures/mechanics.js"];
 const { FIGURES_SA } = __modules["src/book/figures/sheetanim.js"];
+const { FIGURES_DATA } = __modules["src/book/figures/datapath.js"];
 const { sheetAnswer, restoreSheet } = __modules["src/book/figures/sheet.js"];
 /** Make the engine chapter 4: figures, exercises, what goes into the report and back. */
 function setUp4() {
-  Object.assign(FIGURES, FIGURES4, FIGURES_BRIEF, FIGURES_MECH, FIGURES_SA);
+  Object.assign(FIGURES, FIGURES4, FIGURES_BRIEF, FIGURES_MECH, FIGURES_SA, FIGURES_DATA);
   Object.assign(EXERCISES, briefExercises, sheetExercises);
   for (const [id, def] of Object.entries(BRIEFS)) {
     ANSWERS[id] = () => briefAnswer(def);
