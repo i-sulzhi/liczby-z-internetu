@@ -4690,7 +4690,6 @@ const pl = {
   'bk.revealWait': "Rysunek z wynikiem pokaże się tutaj, gdy sprawdzisz liczby.",
   'bk.card.ch3SourcesTitle': "Karta trzech źródeł (rozdział 3). Warsztat analityki internetowej",
   'bk.card.ch3ReportTitle': "Raport. ChatGPT w Polsce (rozdział 3). Warsztat analityki internetowej",
-  'bk.card.ch4ReportTitle': "Karta korpusu (rozdział 4). Warsztat analityki internetowej",
   'bring.open': "Masz raport z innego komputera? Wczytaj go i pracuj dalej",
   'bring.title': "Wczytaj swój raport",
   'bring.say': "Wybierz plik raportu pobrany na innym komputerze albo wklej jego tekst. Wrócą wykonane ćwiczenia, Twój kod i karta. Raport musi mieć ostatnią linię z kodem kontrolnym.",
@@ -13104,7 +13103,8 @@ function summaryBlock(items, { onRefresh, course = '', fileName = 'raport.txt', 
     course,
     fileName,
     items: () => items.map((it) => ({ label: it.label, ...(it.facts?.() || { status: it.done() ? 'done' : null }), answer: it.answer?.() || null })),
-    extra: () => [[CARDS[card].title(), fieldsText(CARDS[card].fields, getItem(card) || {})]],
+    // a chapter without a card (`card: false`) sends no card section
+    extra: () => (card && CARDS[card] ? [[CARDS[card].title(), fieldsText(CARDS[card].fields, getItem(card) || {})]] : []),
   });
   const draw = () => {
     const done = items.filter((it) => it.done()).length;
@@ -14591,8 +14591,8 @@ function reportPlan(chapter, report) {
     const it = byLabel.get(norm(line.label));
     if (it) pairs.push([it, line]); else unknown += 1;
   }
-  const cardKey = chapter.card || 'karta';
-  const cardText = CARDS[cardKey] && (report.sections || []).find((x) => norm(x.title) === norm(CARDS[cardKey].title()))?.text;
+  const cardKey = chapter.card === false ? null : chapter.card || 'karta';
+  const cardText = cardKey && CARDS[cardKey] && (report.sections || []).find((x) => norm(x.title) === norm(CARDS[cardKey].title()))?.text;
   const apply = () => {
     for (const [it, line] of pairs) {
       if (it.lesson) {
@@ -14626,6 +14626,7 @@ function reportPlan(chapter, report) {
 
 /** The titles of further report sections in a chapter, where answers end (the card). */
 const reportSections = (chapter) => {
+  if (chapter.card === false) return [];
   const key = chapter.card || 'karta';
   return CARDS[key] ? [CARDS[key].title()] : [];
 };
@@ -14833,7 +14834,7 @@ class BookApp {
       onRefresh: (fn) => this.refreshers.push(fn),
       course: ch.kicker,
       fileName: `raport-${ch.id}.txt`,
-      card: ch.card || 'karta',
+      card: ch.card === false ? null : ch.card || 'karta',
     });
     return el('section.bk-section.bk-end', { id: 'bk-end' },
       el('div.bk-sec-head', el('h2.bk-sec-title', t('bk.summary'))),
@@ -14868,18 +14869,22 @@ __modules["src/book/book.js"] = { "FIGURES": FIGURES, "ANSWERS": ANSWERS, "RESTO
  * part B, checking what the agent brought in Excel (four steps on synthetic rows), then the
  * corpus card.
  *
- * Part A exercises and figures: figures/brief.js; part B: figures/youtube.js; registration and
- * the card karta4: main4.js.
+ * Part A exercises and figures: figures/brief.js; part B: figures/youtube.js; registration: main4.js.
+ * No card: the questions of 4.13 are the conclusion, answered in the downloaded report task.
  */
 
-/** The corpus card: the template of the project's own source description. */
-const REPORT_FIELDS4 = [
-  { id: 'zapytanie', kind: 'area', label: 'Zapytanie i okres. Czego szukano i kiedy?' },
-  { id: 'zbieranie', kind: 'area', label: 'Jak zebrano dane? Narzędzie, limit, dzień zbierania' },
-  { id: 'straty', kind: 'area', label: 'Czego brakuje? Co skrypt pominął i ile tego jest?' },
-  { id: 'jezyk', kind: 'area', label: 'Język i szum. Co w korpusie nie pasuje do pytania?' },
-  { id: 'liczby', kind: 'area', label: 'Dwie liczby o korpusie, każda z mianownikiem' },
-  { id: 'granice', kind: 'area', label: 'Czego ten korpus nie powie?' },
+/**
+ * The questions about the student's own data: the conclusion of the chapter, shown without fields
+ * (author, 2026-11-11). The answers go into the report task the student downloads (figure
+ * `ytassign`), not into the page. Each has one line from this chapter as an example.
+ */
+const QUESTIONS4 = [
+  { q: 'Zapytanie i okres. Czego szukasz i w jakim czasie?', here: 'Tu jedno słowo, „manosfera”, i jeden miesiąc, kwiecień 2026 r.' },
+  { q: 'Jak zbierzesz dane? Jakim narzędziem, przy jakim limicie i którego dnia?', here: 'Tu YouTube Data API, domyślnie 100 wyszukiwań dziennie, komentarze kilka miesięcy po publikacji.' },
+  { q: 'Czego zabraknie? Co narzędzie pominie i jaką liczbą to sprawdzisz?', here: 'Tu bez odpowiedzi znikała prawie połowa rozmowy. Pokazało to porównanie z licznikiem YouTube.' },
+  { q: 'Język i szum. Co w danych nie będzie pasować do pytania?', here: 'Tu większość filmów ze znanym językiem była po angielsku, choć skrypt prosił o polskie.' },
+  { q: 'Dwie liczby o twoim korpusie. Z czego jest każda z nich?', here: 'Tu kilka filmów zbierało połowę wyświetleń, a korpus i typowy film miały inne zaangażowanie.' },
+  { q: 'Czego twój korpus nie powie?', here: 'Tu nic o ludziach, którzy oglądają i nie komentują.' },
 ];
 
 const P = (text) => ({ p: text });
@@ -14892,7 +14897,7 @@ const CHAPTER = {
   minutes: false,
   plan: false,
   intro: false,
-  card: 'karta4',
+  card: false,
   siteNav: ['home', 'chapter1', 'chapter2', 'chapter3', 'trainer'],
   number: 4,
   kicker: 'Warsztat analityki internetowej · Rozdział 4 z 5',
@@ -14906,7 +14911,7 @@ const CHAPTER = {
   ],
   howTo: [
     ['cwiczenie', 'część A to wybór reguł i liczby kontrolne, część B to pliki i kroki w Excelu'],
-    ['projekt', 'AGENTS.md i karta korpusu to wzór do własnego projektu'],
+    ['projekt', 'AGENTS.md i pytania do danych z podrozdziału 4.13 to wzór do własnego projektu'],
   ],
 
   sections: [
@@ -15025,13 +15030,15 @@ const CHAPTER = {
       ],
     },
     {
-      id: 's4-13', num: '4.13', title: 'Karta korpusu', meeting: 9,
+      id: 's4-13', num: '4.13', title: 'Wnioski. Pytania do twoich danych', meeting: 9,
       parts: [['projekt', 14], ['dyskusja', 10]],
       blocks: [
-        P('Masz reguły dla agenta i liczby o jednym korpusie. W projekcie opiszesz swoje dane tak samo. Wypełnij kartę dla źródła swojego projektu, a jeśli go jeszcze nie masz, dla korpusu z tego rozdziału.'),
-        { exercise: 'karta4', num: 'Karta', title: 'Karta korpusu', toc: 'Karta korpusu' },
+        P('Te same pytania zadasz danym w swoim projekcie. Pod każdym jest przykład z tego rozdziału.'),
+        { label: 'Pytania do twoich danych', cards: QUESTIONS4.map((x, i) => ({ title: `${i + 1}. ${x.q}`, text: x.here })) },
+        P('Odpowiedzi nie wpisujesz na stronie. Pobierz zadanie do raportu i oddaj je razem z raportem z tej strony i swoim AGENTS.md.'),
+        { figure: 'ytassign' },
         { discuss: { who: 'w parach, po 3 minuty', prompts: [
-          'Przeczytajcie sobie nawzajem dwie liczby z karty. Czy każda ma mianownik?',
+          'Przeczytajcie sobie nawzajem odpowiedź na pytanie 5. Czy każda liczba ma mianownik?',
           'Którą regułę z AGENTS.md dopiszecie dla własnego źródła danych? Jaką liczbę ma wypisać agent?',
         ] } },
       ],
@@ -15050,7 +15057,6 @@ const CHAPTER = {
     { id: 'yk4', label: 'Krok 9. Komentarze na 1000 wyświetleń', section: 's4-10' },
     { id: 'yk5', label: 'Krok 10. Skupienie wyświetleń', section: 's4-11' },
     { id: 'yk6', label: 'Krok 11. Czas komentarzy', section: 's4-12' },
-    { id: 'karta4', label: 'Karta korpusu', section: 's4-13' },
   ],
 
   recap: [
@@ -15075,7 +15081,7 @@ const CHAPTER = {
   refs: {},
 };
 
-__modules["src/book/chapter4.js"] = { "REPORT_FIELDS4": REPORT_FIELDS4, "CHAPTER": CHAPTER };
+__modules["src/book/chapter4.js"] = { "QUESTIONS4": QUESTIONS4, "CHAPTER": CHAPTER };
 })();
 
 /* ===== src/book/figures/sheet.js ===== */
@@ -15651,6 +15657,7 @@ const { download } = __modules["src/ui/download.js"];
 const { checkSheet } = __modules["src/book/figures/sheet.js"];
 const { getItem, setItem, isDone, markDone, onSaved } = __modules["src/book/store.js"];
 const { EXPECT: E, SERIES: S } = __modules["src/book/data/ch4.js"];
+const { QUESTIONS4 } = __modules["src/book/chapter4.js"];
 const LETTERS = ['A', 'B', 'C', 'D'];
 const near = (v, x, tol = 0.15) => Number.isFinite(v) && Math.abs(v - x) < tol;
 const pl1 = (x) => fmtNum(Math.round(x * 10) / 10);
@@ -16011,9 +16018,44 @@ function pipeFigure({ num: n = 'Rysunek' } = {}) {
     el('div.fg-caption', 'Test „manosfera”, kwiecień 2026 r. Wersja 2 to wynik testu. Wersja 1 to ten sam test policzony według jej zasad. Długość paska to część wyniku wersji 2.'));
 }
 
-const FIGURES_BRIEF = { agentsmd: agentsFigure, ytrun: runFigure, ytpipe: pipeFigure };
+// ---------------------------------------------------------------- the report task (4.13)
 
-__modules["src/book/figures/brief.js"] = { "BRIEFS": BRIEFS, "checkBrief": checkBrief, "briefExercise": briefExercise, "briefExercises": briefExercises, "briefAnswer": briefAnswer, "restoreBrief": restoreBrief, "EXTRA_RULES": EXTRA_RULES, "agentsText": agentsText, "agentsFigure": agentsFigure, "runFigure": runFigure, "pipeFigure": pipeFigure, "FIGURES_BRIEF": FIGURES_BRIEF };
+/** The task a student downloads, does with their own data and hands in with the page's report. */
+function assignText() {
+  return [
+    'Warsztat analityki internetowej. Rozdział 4. Zadanie do raportu dla prowadzącego',
+    '',
+    'Imię i nazwisko ......................................................',
+    'Źródło danych w twoim projekcie ......................................',
+    '',
+    'CO ODDAJESZ',
+    '',
+    '1. Raport z rozdziału 4. Pobierzesz go na końcu strony rozdziału, przycisk „Pobierz plik (.txt)”.',
+    '2. Swój AGENTS.md. Pobierzesz go z rysunku w podrozdziale 4.8. Dopasuj go do swojego źródła danych',
+    '   i dopisz co najmniej dwie własne reguły. Przy każdej regule napisz, jaką liczbę ma wypisać agent.',
+    '3. Ten plik z odpowiedziami na sześć pytań poniżej. Na każde pytanie odpowiedz w dwóch lub trzech',
+    '   zdaniach. Gdy podajesz liczbę, napisz też, z czego ona jest.',
+    '',
+    'PYTANIA DO TWOICH DANYCH',
+    '',
+    ...QUESTIONS4.flatMap((x, i) => [`${i + 1}. ${x.q}`, '', '', '']),
+    'JAK ODDAĆ',
+    '',
+    'Wyślij trzy pliki tam, gdzie prosi prowadzący, na przykład w UPeL albo w Teams.',
+    '',
+  ].join('\n');
+}
+
+function assignFigure({ num: n = 'Rysunek' } = {}) {
+  return frame(n, 'Zadanie do raportu dla prowadzącego',
+    el('pre.sh-pre.br-md', assignText()),
+    el('div.sh-bar', el('button.sh-file-btn', { type: 'button', onClick: () => download('zadanie-rozdzial-4.txt', `\ufeff${assignText()}`) }, '⬇ zadanie-rozdzial-4.txt')),
+    el('div.sq-read', 'Plik otworzysz w Notatniku albo w Wordzie. Odpowiedzi wpisz pod pytaniami.'));
+}
+
+const FIGURES_BRIEF = { agentsmd: agentsFigure, ytrun: runFigure, ytpipe: pipeFigure, ytassign: assignFigure };
+
+__modules["src/book/figures/brief.js"] = { "BRIEFS": BRIEFS, "checkBrief": checkBrief, "briefExercise": briefExercise, "briefExercises": briefExercises, "briefAnswer": briefAnswer, "restoreBrief": restoreBrief, "EXTRA_RULES": EXTRA_RULES, "agentsText": agentsText, "agentsFigure": agentsFigure, "runFigure": runFigure, "pipeFigure": pipeFigure, "assignText": assignText, "assignFigure": assignFigure, "FIGURES_BRIEF": FIGURES_BRIEF };
 })();
 
 /* ===== src/book/figures/mechanics.js ===== */
@@ -16265,23 +16307,16 @@ __modules["src/book/figures/mechanics.js"] = { "listElements": listElements, "co
  * files for students stay out of the other chapters' files.
  */
 const { BookApp, FIGURES, EXERCISES, ANSWERS, RESTORE } = __modules["src/book/book.js"];
-const { CHAPTER, REPORT_FIELDS4 } = __modules["src/book/chapter4.js"];
+const { CHAPTER } = __modules["src/book/chapter4.js"];
 const { gate } = __modules["src/ui/people.js"];
 const { FIGURES4, SHEETS, sheetExercises } = __modules["src/book/figures/youtube.js"];
 const { FIGURES_BRIEF, BRIEFS, briefExercises, briefAnswer, restoreBrief } = __modules["src/book/figures/brief.js"];
 const { FIGURES_MECH } = __modules["src/book/figures/mechanics.js"];
 const { sheetAnswer, restoreSheet } = __modules["src/book/figures/sheet.js"];
-const { CARDS, cardExercise } = __modules["src/book/figures/project.js"];
-const { t } = __modules["src/i18n/index.js"];
-Object.assign(CARDS, {
-  karta4: { fields: REPORT_FIELDS4, file: 'karta-korpusu.txt', title: () => t('bk.card.ch4ReportTitle') },
-});
-const corpusCard = cardExercise('karta4');
-
 /** Make the engine chapter 4: figures, exercises, what goes into the report and back. */
 function setUp4() {
   Object.assign(FIGURES, FIGURES4, FIGURES_BRIEF, FIGURES_MECH);
-  Object.assign(EXERCISES, briefExercises, sheetExercises, { karta4: corpusCard });
+  Object.assign(EXERCISES, briefExercises, sheetExercises);
   for (const [id, def] of Object.entries(BRIEFS)) {
     ANSWERS[id] = () => briefAnswer(def);
     RESTORE[id] = (text) => restoreBrief(def, text);

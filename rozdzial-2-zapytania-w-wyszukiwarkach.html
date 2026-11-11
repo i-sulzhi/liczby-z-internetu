@@ -4690,7 +4690,6 @@ const pl = {
   'bk.revealWait': "Rysunek z wynikiem pokaże się tutaj, gdy sprawdzisz liczby.",
   'bk.card.ch3SourcesTitle': "Karta trzech źródeł (rozdział 3). Warsztat analityki internetowej",
   'bk.card.ch3ReportTitle': "Raport. ChatGPT w Polsce (rozdział 3). Warsztat analityki internetowej",
-  'bk.card.ch4ReportTitle': "Karta korpusu (rozdział 4). Warsztat analityki internetowej",
   'bring.open': "Masz raport z innego komputera? Wczytaj go i pracuj dalej",
   'bring.title': "Wczytaj swój raport",
   'bring.say': "Wybierz plik raportu pobrany na innym komputerze albo wklej jego tekst. Wrócą wykonane ćwiczenia, Twój kod i karta. Raport musi mieć ostatnią linię z kodem kontrolnym.",
@@ -13104,7 +13103,8 @@ function summaryBlock(items, { onRefresh, course = '', fileName = 'raport.txt', 
     course,
     fileName,
     items: () => items.map((it) => ({ label: it.label, ...(it.facts?.() || { status: it.done() ? 'done' : null }), answer: it.answer?.() || null })),
-    extra: () => [[CARDS[card].title(), fieldsText(CARDS[card].fields, getItem(card) || {})]],
+    // a chapter without a card (`card: false`) sends no card section
+    extra: () => (card && CARDS[card] ? [[CARDS[card].title(), fieldsText(CARDS[card].fields, getItem(card) || {})]] : []),
   });
   const draw = () => {
     const done = items.filter((it) => it.done()).length;
@@ -14591,8 +14591,8 @@ function reportPlan(chapter, report) {
     const it = byLabel.get(norm(line.label));
     if (it) pairs.push([it, line]); else unknown += 1;
   }
-  const cardKey = chapter.card || 'karta';
-  const cardText = CARDS[cardKey] && (report.sections || []).find((x) => norm(x.title) === norm(CARDS[cardKey].title()))?.text;
+  const cardKey = chapter.card === false ? null : chapter.card || 'karta';
+  const cardText = cardKey && CARDS[cardKey] && (report.sections || []).find((x) => norm(x.title) === norm(CARDS[cardKey].title()))?.text;
   const apply = () => {
     for (const [it, line] of pairs) {
       if (it.lesson) {
@@ -14626,6 +14626,7 @@ function reportPlan(chapter, report) {
 
 /** The titles of further report sections in a chapter, where answers end (the card). */
 const reportSections = (chapter) => {
+  if (chapter.card === false) return [];
   const key = chapter.card || 'karta';
   return CARDS[key] ? [CARDS[key].title()] : [];
 };
@@ -14833,7 +14834,7 @@ class BookApp {
       onRefresh: (fn) => this.refreshers.push(fn),
       course: ch.kicker,
       fileName: `raport-${ch.id}.txt`,
-      card: ch.card || 'karta',
+      card: ch.card === false ? null : ch.card || 'karta',
     });
     return el('section.bk-section.bk-end', { id: 'bk-end' },
       el('div.bk-sec-head', el('h2.bk-sec-title', t('bk.summary'))),
