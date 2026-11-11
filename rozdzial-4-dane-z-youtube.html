@@ -1744,6 +1744,46 @@ textarea.kc-input { resize: vertical; }
 .mc-range { width: 100%; margin: 6px 0; }
 @media (prefers-reduced-motion: reduce) { .mc-pop, .mc-item, .mc-dot.mc-st-miss { animation: none; } .mc-replies, .mc-bar-row { transition: none; } }
 
+/* ---- chapter 4, 4.0: what an API is (figures/mechanics.js, apiFigure) */
+.ap-stage { display: grid; grid-template-columns: 6.5em minmax(0, 1fr) 6.5em; gap: 6px; align-items: center; }
+.ap-box { padding: 10px 6px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--bg-sunken); font-size: 12px; font-weight: 700; text-align: center; }
+.ap-wire { position: relative; height: 26px; border-top: 2px dashed var(--line-strong); margin-top: 13px; }
+.ap-msg { position: absolute; top: -13px; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; }
+.ap-ask { background: var(--accent); animation: ap-right 1.6s ease-in-out both; }
+.ap-answer { background: var(--ok); animation: ap-left 1.6s ease-in-out both; }
+/* the whole length of the wire: from one end to the other, minus the message's own width */
+@keyframes ap-right { from { left: 0; transform: none; } to { left: 100%; transform: translateX(-100%); } }
+@keyframes ap-left { from { left: 100%; transform: translateX(-100%); } to { left: 0; transform: none; } }
+.ap-scene-title { font-weight: 700; font-size: 14px; }
+.ap-panel { min-width: 0; animation: mc-pop .4s ease-out; }
+.ap-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12em), 1fr)); gap: 8px; }
+.ap-card { padding: 8px; border: 1px solid var(--line); border-radius: var(--radius); min-width: 0; }
+.ap-card-head { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--ink-soft); }
+.ap-page-bar { font-size: 11px; color: var(--ink-soft); }
+.ap-page-big { margin: 6px 0; font-size: 18px; font-weight: 700; }
+.ap-json { margin: 0; padding: 8px 10px; border-radius: var(--radius); background: var(--code-bg); font: 12px/1.5 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.ap-url { padding: 8px 10px; border-radius: var(--radius); background: var(--code-bg); font: 12px/1.6 var(--mono); overflow-wrap: anywhere; }
+.ap-host { color: var(--ink-soft); }
+.ap-path { color: var(--accent); font-weight: 700; }
+.ap-param { color: var(--ok); font-weight: 700; }
+.ap-key { color: var(--err); }
+.sq-leg.ap-host-leg::before { background: var(--ink-soft); }
+.sq-leg.ap-path-leg::before { background: var(--accent); }
+.sq-leg.ap-param-leg::before { background: var(--ok); }
+.sq-leg.ap-key-leg::before { background: var(--err); }
+.ap-meter { display: grid; grid-template-columns: minmax(0, 1fr) 5em auto; gap: 8px; align-items: center; margin-top: 8px; font-size: 12px; }
+.ap-meter-track { display: block; height: 10px; border-radius: 3px; background: var(--bg-sunken); overflow: hidden; }
+.ap-meter-fill { display: block; width: 1%; height: 100%; background: var(--err); animation: ap-fill 1.2s ease-out both; }
+@keyframes ap-fill { from { width: 0; } to { width: 3%; } }
+.ap-table { border-collapse: collapse; font-size: 13px; }
+.ap-table th, .ap-table td { padding: 3px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+.ap-new td { animation: mc-pop .5s ease-out; background: var(--ok-bg); }
+.ap-controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.ap-dots { display: inline-flex; gap: 4px; margin-left: 4px; }
+.ap-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line-strong); }
+.ap-dot.ap-dot-on { background: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .ap-ask, .ap-answer, .ap-panel, .ap-meter-fill, .ap-new td { animation: none; } .ap-ask { left: 100%; transform: translateX(-100%); } .ap-answer { left: 0; } }
+
 /* ---- chapter 3 figures (figures/chatgpt.js) */
 .cg-stacks { display: grid; gap: 6px; min-width: 0; }
 .cg-stack-row { display: grid; grid-template-columns: minmax(0, 8em) minmax(0, 1fr) 4.5em; gap: 8px; align-items: center; font-size: 13px; }
@@ -14916,10 +14956,18 @@ const CHAPTER = {
 
   sections: [
     {
-      id: 's4-1', num: '4.1', title: 'Skrypt pisze AI. Kto pilnuje danych?', meeting: 8,
-      parts: [['teoria', 10]],
+      id: 's4-0', num: '4.0', title: 'Czym jest API?', meeting: 8,
+      parts: [['teoria', 5]],
       blocks: [
-        P('Skrypt pyta YouTube przez **API**, czyli wejście dla programów, i zbiera **korpus**, czyli zbiór filmów i komentarzy. W prawdziwym projekcie doktorskim pierwszą wersję skryptu napisał asystent AI z krótkiego opisu celu. Drugą napisał agent, który dostał listę reguł. Zobacz, co każda zebrała z tego samego wyszukiwania.'),
+        P('Zanim zobaczysz YouTube, zobacz, jak w ogóle program pobiera dane z serwisu. Włącz krótki film poniżej albo przeklikaj kadry strzałkami.'),
+        { figure: 'ytapi' },
+      ],
+    },
+    {
+      id: 's4-1', num: '4.1', title: 'Skrypt pisze AI. Kto pilnuje danych?', meeting: 8,
+      parts: [['teoria', 5]],
+      blocks: [
+        P('Teraz prawdziwy przykład. Skrypt pyta YouTube przez **API** i zbiera **korpus**, czyli zbiór filmów i komentarzy. W prawdziwym projekcie doktorskim pierwszą wersję skryptu napisał asystent AI z krótkiego opisu celu. Drugą napisał agent, który dostał listę reguł. Zobacz, co każda zebrała z tego samego wyszukiwania.'),
         { figure: 'ytpipe' },
         P('Wersja 1 doszła do końca i ani razu się nie zatrzymała. Braki pokazał dopiero przegląd. W części A ułożysz reguły dla agenta, które je wyłapują. Zapiszesz je w pliku **AGENTS.md**, który wiele agentów czyta przed pracą.'),
         { note: 'Pliki tego rozdziału mają wymyślone wiersze o tych samych sumach i udziałach co test. Filmy i kanały mają numery zamiast nazw. Komentarzy, tytułów i autorów nie pokazujemy.', tone: 'info' },
@@ -16278,7 +16326,93 @@ function clockFigure({ num: n = 'Rysunek' } = {}) {
   MADE_UP('Jeden film i jego komentarze dzień po dniu.'));
 }
 
+// ---------------------------------------------------------------- 4.0: what an API is (a short animation)
+
+const URL_PARTS = {
+  weather: [['ap-host', 'https://api.pogoda.example'], ['ap-path', '/teraz'], ['ap-param', '?miasto=Kraków'], ['ap-key', '&key=TWÓJ_KLUCZ']],
+  youtube: [['ap-host', 'https://www.googleapis.com/youtube/v3'], ['ap-path', '/search'], ['ap-param', '?q=manosfera&type=video&maxResults=50'], ['ap-key', '&key=TWÓJ_KLUCZ']],
+};
+const LEGEND = [['ap-host', 'serwis'], ['ap-path', 'o co pytasz'], ['ap-param', 'parametry'], ['ap-key', 'klucz']];
+
+/**
+ * The scenes of the animation: from a made-up weather service to the real YouTube search.
+ * `move`: which way the message travels ('ask' program to service, 'answer' back, null none).
+ */
+const API_SCENES = [
+  { title: 'Strona dla ludzi, API dla programów', move: null,
+    say: 'Przeglądarka dostaje stronę do oglądania. Program dostaje przez API same dane, bez obrazków i menu.' },
+  { title: 'Zapytanie to adres', move: 'ask',
+    say: 'Program wysyła adres. Mówi w nim, do jakiego serwisu pyta, o co pyta i z jakimi parametrami.' },
+  { title: 'Klucz i limit', move: null,
+    say: 'Klucz mówi serwisowi, kto pyta. Serwis liczy zapytania każdego klucza i ma dzienny limit.' },
+  { title: 'Odpowiedź to dane', move: 'answer',
+    say: 'Serwis odsyła dane w formacie JSON. To pary nazwa i wartość, które program umie czytać.' },
+  { title: 'Z danych tabela', move: null,
+    say: 'Program zamienia odpowiedzi na wiersze tabeli. Z wielu zapytań powstaje zbiór danych.' },
+  { title: 'To samo z YouTube', move: 'answer',
+    say: 'YouTube działa tak samo. Odpowiedź ma listę filmów i nextPageToken, czyli klucz do następnej strony.' },
+];
+
+function apiFigure({ num: n = 'Rysunek' } = {}) {
+  const st = { k: 0, playing: false };
+  let timer = null;
+  const host = el('div');
+  const url = (which) => el('div.ap-url', URL_PARTS[which].map(([cls, txt]) => el(`span.${cls}`, txt)));
+  const panel = (k) => {
+    if (k === 0) {
+      return el('div.ap-two',
+        el('div.ap-card', el('div.ap-card-head', 'przeglądarka'), el('div.ap-page', el('div.ap-page-bar', 'menu · reklama · logowanie'), el('div.ap-page-big', 'Kraków, teraz 7°C'), el('div.ap-page-bar', 'mapa · zdjęcia · prognoza'))),
+        el('div.ap-card', el('div.ap-card-head', 'program przez API'), el('pre.ap-json', '{"miasto": "Kraków",\n "temperatura": 7}')));
+    }
+    if (k === 1) return el('div', url('weather'), el('div.sq-legend', LEGEND.map(([cls, name]) => el(`span.sq-leg.${cls}-leg`, name))));
+    if (k === 2) return el('div', url('weather'), el('div.ap-meter', el('span', 'zapytania tego klucza dziś'), el('span.ap-meter-track', el('span.ap-meter-fill')), el('span', '1 z 100')));
+    if (k === 3) return el('pre.ap-json', '{\n  "miasto": "Kraków",\n  "temperatura": 7,\n  "czas": "2026-11-11 09:00"\n}');
+    if (k === 4) {
+      return el('table.ap-table', el('tr', ['miasto', 'temperatura', 'czas'].map((h) => el('th', h))),
+        [['Kraków', '7', '09:00'], ['Kraków', '8', '10:00'], ['Gdańsk', '5', '10:00']].map((r, i) => el(`tr${i === 0 ? '.ap-new' : ''}`, r.map((c) => el('td', c)))));
+    }
+    return el('div', url('youtube'), el('pre.ap-json', '{\n  "items": [\n    {"id": {"videoId": "film_001"}},\n    {"id": {"videoId": "film_002"}},\n    ...\n  ],\n  "nextPageToken": "CDIQAA"\n}'));
+  };
+  const draw = () => {
+    const s = API_SCENES[st.k];
+    const who = st.k === API_SCENES.length - 1 ? 'YouTube' : 'serwis pogody';
+    mount(host,
+      el('div.ap-stage',
+        el('div.ap-box', 'twój program'),
+        el('div.ap-wire', s.move ? el(`span.ap-msg.ap-${s.move}`, s.move === 'ask' ? 'zapytanie' : 'dane') : null),
+        el('div.ap-box', who)),
+      el('div.ap-scene-title', `${st.k + 1}/${API_SCENES.length}. ${s.title}`),
+      el('div.ap-panel', panel(st.k)),
+      el('div.sq-read', { 'aria-live': 'polite' }, s.say),
+      el('div.ap-controls',
+        el('button.fg-toggle', { type: 'button', 'aria-label': 'poprzedni kadr', onClick: () => go(st.k - 1) }, '‹'),
+        el('button.fg-toggle', { type: 'button', onClick: () => (st.playing ? stop() : play()) }, st.playing ? '⏸ Pauza' : '▶ Odtwórz'),
+        el('button.fg-toggle', { type: 'button', 'aria-label': 'następny kadr', onClick: () => go(st.k + 1) }, '›'),
+        el('span.ap-dots', API_SCENES.map((_, i) => el(`span.ap-dot${i === st.k ? '.ap-dot-on' : ''}`)))));
+  };
+  const go = (k) => { st.k = (k + API_SCENES.length) % API_SCENES.length; draw(); };
+  const stop = () => { clearTimeout(timer); st.playing = false; draw(); };
+  // each scene stays about four seconds; the film stops on the last one
+  const tick = () => {
+    st.k += 1;
+    if (st.k >= API_SCENES.length - 1) { st.k = API_SCENES.length - 1; stop(); return; }
+    draw();
+    timer = setTimeout(tick, 4200);
+  };
+  const play = () => {
+    clearTimeout(timer);
+    if (reduced()) { go(st.k + 1); return; }
+    st.playing = true;
+    if (st.k >= API_SCENES.length - 1) st.k = -1;
+    tick();
+  };
+  draw();
+  return frame(n, 'Jak działa API. Sześć kadrów, od serwisu pogody do YouTube', host,
+    el('div.fg-caption', 'Kadry 1–5 to wymyślony serwis pogody. Kadr 6 to prawdziwe zapytanie do YouTube Data API, z kluczem zastąpionym napisem.'));
+}
+
 const FIGURES_MECH = {
+  ytapi: apiFigure,
   ytcomma: commaFigure, ytpages: pagesFigure, ytthread: threadFigure,
   ytstatus: statusFigure, ytsort: sortFigure, ytclock: clockFigure,
 };
@@ -16293,7 +16427,7 @@ const MADE_UP_NUMBERS = {
   clockAll: DAYS.reduce((a, b) => a + b, 0) + LATER,
 };
 
-__modules["src/book/figures/mechanics.js"] = { "listElements": listElements, "commaFigure": commaFigure, "pagesFigure": pagesFigure, "threadFigure": threadFigure, "statusFigure": statusFigure, "sortFigure": sortFigure, "clockFigure": clockFigure, "FIGURES_MECH": FIGURES_MECH, "MADE_UP_NUMBERS": MADE_UP_NUMBERS };
+__modules["src/book/figures/mechanics.js"] = { "listElements": listElements, "commaFigure": commaFigure, "pagesFigure": pagesFigure, "threadFigure": threadFigure, "statusFigure": statusFigure, "sortFigure": sortFigure, "clockFigure": clockFigure, "API_SCENES": API_SCENES, "apiFigure": apiFigure, "FIGURES_MECH": FIGURES_MECH, "MADE_UP_NUMBERS": MADE_UP_NUMBERS };
 })();
 
 /* ===== src/book/main4.js ===== */

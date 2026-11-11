@@ -1744,6 +1744,46 @@ textarea.kc-input { resize: vertical; }
 .mc-range { width: 100%; margin: 6px 0; }
 @media (prefers-reduced-motion: reduce) { .mc-pop, .mc-item, .mc-dot.mc-st-miss { animation: none; } .mc-replies, .mc-bar-row { transition: none; } }
 
+/* ---- chapter 4, 4.0: what an API is (figures/mechanics.js, apiFigure) */
+.ap-stage { display: grid; grid-template-columns: 6.5em minmax(0, 1fr) 6.5em; gap: 6px; align-items: center; }
+.ap-box { padding: 10px 6px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--bg-sunken); font-size: 12px; font-weight: 700; text-align: center; }
+.ap-wire { position: relative; height: 26px; border-top: 2px dashed var(--line-strong); margin-top: 13px; }
+.ap-msg { position: absolute; top: -13px; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; }
+.ap-ask { background: var(--accent); animation: ap-right 1.6s ease-in-out both; }
+.ap-answer { background: var(--ok); animation: ap-left 1.6s ease-in-out both; }
+/* the whole length of the wire: from one end to the other, minus the message's own width */
+@keyframes ap-right { from { left: 0; transform: none; } to { left: 100%; transform: translateX(-100%); } }
+@keyframes ap-left { from { left: 100%; transform: translateX(-100%); } to { left: 0; transform: none; } }
+.ap-scene-title { font-weight: 700; font-size: 14px; }
+.ap-panel { min-width: 0; animation: mc-pop .4s ease-out; }
+.ap-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12em), 1fr)); gap: 8px; }
+.ap-card { padding: 8px; border: 1px solid var(--line); border-radius: var(--radius); min-width: 0; }
+.ap-card-head { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--ink-soft); }
+.ap-page-bar { font-size: 11px; color: var(--ink-soft); }
+.ap-page-big { margin: 6px 0; font-size: 18px; font-weight: 700; }
+.ap-json { margin: 0; padding: 8px 10px; border-radius: var(--radius); background: var(--code-bg); font: 12px/1.5 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.ap-url { padding: 8px 10px; border-radius: var(--radius); background: var(--code-bg); font: 12px/1.6 var(--mono); overflow-wrap: anywhere; }
+.ap-host { color: var(--ink-soft); }
+.ap-path { color: var(--accent); font-weight: 700; }
+.ap-param { color: var(--ok); font-weight: 700; }
+.ap-key { color: var(--err); }
+.sq-leg.ap-host-leg::before { background: var(--ink-soft); }
+.sq-leg.ap-path-leg::before { background: var(--accent); }
+.sq-leg.ap-param-leg::before { background: var(--ok); }
+.sq-leg.ap-key-leg::before { background: var(--err); }
+.ap-meter { display: grid; grid-template-columns: minmax(0, 1fr) 5em auto; gap: 8px; align-items: center; margin-top: 8px; font-size: 12px; }
+.ap-meter-track { display: block; height: 10px; border-radius: 3px; background: var(--bg-sunken); overflow: hidden; }
+.ap-meter-fill { display: block; width: 1%; height: 100%; background: var(--err); animation: ap-fill 1.2s ease-out both; }
+@keyframes ap-fill { from { width: 0; } to { width: 3%; } }
+.ap-table { border-collapse: collapse; font-size: 13px; }
+.ap-table th, .ap-table td { padding: 3px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+.ap-new td { animation: mc-pop .5s ease-out; background: var(--ok-bg); }
+.ap-controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.ap-dots { display: inline-flex; gap: 4px; margin-left: 4px; }
+.ap-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line-strong); }
+.ap-dot.ap-dot-on { background: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .ap-ask, .ap-answer, .ap-panel, .ap-meter-fill, .ap-new td { animation: none; } .ap-ask { left: 100%; transform: translateX(-100%); } .ap-answer { left: 0; } }
+
 /* ---- chapter 3 figures (figures/chatgpt.js) */
 .cg-stacks { display: grid; gap: 6px; min-width: 0; }
 .cg-stack-row { display: grid; grid-template-columns: minmax(0, 8em) minmax(0, 1fr) 4.5em; gap: 8px; align-items: center; font-size: 13px; }
