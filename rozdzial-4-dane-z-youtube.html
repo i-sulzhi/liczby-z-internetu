@@ -14990,8 +14990,8 @@ __modules["src/book/book.js"] = { "FIGURES": FIGURES, "ANSWERS": ANSWERS, "RESTO
 
 /**
  * The questions about the student's own data: the conclusion of the chapter, shown without fields
- * (author, 2026-11-11). The answers go into the report task the student downloads (figure
- * `ytassign`), not into the page. Each has one line from this chapter as an example.
+ * (author, 2026-11-11). They are talked over in pairs; the only thing handed in is the report the
+ * page builds from the solved steps (D52). Each has one line from this chapter as an example.
  */
 const QUESTIONS4 = [
   { q: 'Zapytanie i okres. Czego szukasz i w jakim czasie?', here: 'Tu jedno słowo, „manosfera”, i jeden miesiąc, kwiecień 2026 r.' },
@@ -15177,7 +15177,7 @@ const CHAPTER = {
         { figure: 'ytjoin' },
         step('yk7', 'Krok 12', 'Jedna tabela filmu', 'Krok 12. Jedna tabela'),
         { figure: 'ytprofile' },
-        P('To jest **profil danych**. Mówi, ile masz wierszy, co jest jednym wierszem, jaki klucz je łączy i gdzie brakuje wartości. Ten krok dopisał też regułę o kluczach do twojego AGENTS.md. Taki sam profil zrobisz dla swojego projektu w zadaniu do raportu.'),
+        P('To jest **profil danych**. Mówi, ile masz wierszy, co jest jednym wierszem, jaki klucz je łączy i gdzie brakuje wartości. Ten krok dopisał też regułę o kluczach do twojego AGENTS.md. Taki sam profil zrób dla danych w swoim projekcie.'),
       ],
     },
     {
@@ -15186,8 +15186,6 @@ const CHAPTER = {
       blocks: [
         P('Te same pytania zadasz danym w swoim projekcie. Pod każdym jest przykład z tego rozdziału.'),
         { label: 'Pytania do twoich danych', cards: QUESTIONS4.map((x, i) => ({ title: `${i + 1}. ${x.q}`, text: x.here })) },
-        P('Odpowiedzi nie wpisujesz na stronie. Pobierz zadanie do raportu. Jest w nim też profil danych. Oddaj je razem z raportem z tej strony i swoim AGENTS.md.'),
-        { figure: 'ytassign' },
         { discuss: { who: 'w parach, po 3 minuty', prompts: [
           'Przeczytajcie sobie nawzajem odpowiedź na pytanie 5. Czy każda liczba ma mianownik?',
           'Którą regułę z AGENTS.md dopiszecie dla własnego źródła danych? Jaką liczbę ma wypisać agent?',
@@ -15858,8 +15856,7 @@ const { fmtNum } = __modules["src/core/format.js"];
 const { download } = __modules["src/ui/download.js"];
 const { checkSheet } = __modules["src/book/figures/sheet.js"];
 const { getItem, setItem, isDone, markDone, onSaved } = __modules["src/book/store.js"];
-const { FILES, EXPECT: E, SERIES: S } = __modules["src/book/data/ch4.js"];
-const { QUESTIONS4 } = __modules["src/book/chapter4.js"];
+const { EXPECT: E, SERIES: S } = __modules["src/book/data/ch4.js"];
 const LETTERS = ['A', 'B', 'C', 'D'];
 const near = (v, x, tol = 0.15) => Number.isFinite(v) && Math.abs(v - x) < tol;
 const pl1 = (x) => fmtNum(Math.round(x * 10) / 10);
@@ -16223,59 +16220,9 @@ function pipeFigure({ num: n = 'Rysunek' } = {}) {
     el('div.fg-caption', 'Test „manosfera”, kwiecień 2026 r. Wersja 2 to wynik testu. Wersja 1 to ten sam test policzony według jej zasad. Długość paska to część wyniku wersji 2.'));
 }
 
-// ---------------------------------------------------------------- the report task (4.15)
+const FIGURES_BRIEF = { agentsmd: agentsFigure, ytrun: runFigure, ytpipe: pipeFigure };
 
-/** The task a student downloads, does with their own data and hands in with the page's report. */
-function assignText() {
-  return [
-    'Warsztat analityki internetowej. Rozdział 4. Zadanie do raportu dla prowadzącego',
-    '',
-    'Imię i nazwisko ......................................................',
-    'Źródło danych w twoim projekcie ......................................',
-    '',
-    'CO ODDAJESZ',
-    '',
-    '1. Raport z rozdziału 4. Pobierzesz go na końcu strony rozdziału, przycisk „Pobierz plik (.txt)”.',
-    '2. Swój AGENTS.md. Pobierzesz go z rysunku w podrozdziale 4.8. Dopasuj go do swojego źródła danych',
-    '   i dopisz co najmniej dwie własne reguły. Przy każdej regule napisz, jaką liczbę ma wypisać agent.',
-    '3. Ten plik z profilem danych i odpowiedziami na sześć pytań poniżej. Na każde pytanie odpowiedz',
-    '   w dwóch lub trzech zdaniach. Gdy podajesz liczbę, napisz też, z czego ona jest.',
-    '',
-    'PROFIL DANYCH',
-    '',
-    'A. Dane z rozdziału. Połącz w jedną tabelę filmy, status komentarzy i czas komentarzy, jak w kroku 12.',
-    '   Opisz ją: ile ma wierszy, co jest jednym wierszem, który to klucz, ile pustych komórek ma',
-    '   każda kolumna i skąd się wzięły.',
-    '',
-    '',
-    'B. Pobierz youtube-trafienia.csv. Przynieś do każdego trafienia wyświetlenia filmu i zsumuj je.',
-    '   Porównaj z sumą w pliku z filmami. Która suma jest dobra i skąd różnica?',
-    '',
-    '',
-    'C. Twoje dane. Jakie pliki dostaniesz, co jest w nich jednym wierszem i jaki klucz je łączy?',
-    '',
-    '',
-    'PYTANIA DO TWOICH DANYCH',
-    '',
-    ...QUESTIONS4.flatMap((x, i) => [`${i + 1}. ${x.q}`, '', '', '']),
-    'JAK ODDAĆ',
-    '',
-    'Wyślij trzy pliki tam, gdzie prosi prowadzący, na przykład w UPeL albo w Teams.',
-    '',
-  ].join('\n');
-}
-
-function assignFigure({ num: n = 'Rysunek' } = {}) {
-  return frame(n, 'Zadanie do raportu dla prowadzącego',
-    el('pre.sh-pre.br-md', assignText()),
-    el('div.sh-bar', el('button.sh-file-btn', { type: 'button', onClick: () => download('zadanie-rozdzial-4.txt', `\ufeff${assignText()}`) }, '⬇ zadanie-rozdzial-4.txt'),
-      el('button.sh-file-btn', { type: 'button', onClick: () => download('youtube-trafienia.csv', `﻿${FILES['youtube-trafienia.csv']}`) }, '⬇ youtube-trafienia.csv')),
-    el('div.sq-read', 'Plik otworzysz w Notatniku albo w Wordzie. Odpowiedzi wpisz pod pytaniami.'));
-}
-
-const FIGURES_BRIEF = { agentsmd: agentsFigure, ytrun: runFigure, ytpipe: pipeFigure, ytassign: assignFigure };
-
-__modules["src/book/figures/brief.js"] = { "BRIEFS": BRIEFS, "checkBrief": checkBrief, "briefExercise": briefExercise, "briefExercises": briefExercises, "briefAnswer": briefAnswer, "restoreBrief": restoreBrief, "EXTRA_RULES": EXTRA_RULES, "agentsText": agentsText, "agentsFigure": agentsFigure, "runFigure": runFigure, "pipeFigure": pipeFigure, "assignText": assignText, "assignFigure": assignFigure, "FIGURES_BRIEF": FIGURES_BRIEF };
+__modules["src/book/figures/brief.js"] = { "BRIEFS": BRIEFS, "checkBrief": checkBrief, "briefExercise": briefExercise, "briefExercises": briefExercises, "briefAnswer": briefAnswer, "restoreBrief": restoreBrief, "EXTRA_RULES": EXTRA_RULES, "agentsText": agentsText, "agentsFigure": agentsFigure, "runFigure": runFigure, "pipeFigure": pipeFigure, "FIGURES_BRIEF": FIGURES_BRIEF };
 })();
 
 /* ===== src/book/figures/mechanics.js ===== */
