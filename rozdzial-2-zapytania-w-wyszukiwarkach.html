@@ -1784,6 +1784,9 @@ textarea.kc-input { resize: vertical; }
 .ap-dot.ap-dot-on { background: var(--accent); }
 @media (prefers-reduced-motion: reduce) { .ap-ask, .ap-answer, .ap-panel, .ap-meter-fill, .ap-new td { animation: none; } .ap-ask { left: 100%; transform: translateX(-100%); } .ap-answer { left: 0; } }
 
+.br-own-box { display: flex; flex-direction: column; gap: 4px; }
+.br-own { width: 100%; min-height: 3.2em; resize: vertical; font: 13px var(--sans); }
+
 /* ---- chapter 4, part B: JSON, files, features, join (figures/datapath.js) */
 .dp-json { display: flex; flex-direction: column; padding: 8px 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-sunken); font: 12px/1.55 var(--mono); max-width: 100%; overflow-x: auto; }
 .dp-line { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink-soft); min-width: 0; }
@@ -13249,7 +13252,7 @@ const queryCard = cardExercise('karta2');
  * The exercises of the chapter, for the summary, and under them the report for the teacher.
  * Items: {label, section, done(), facts(), answer()}; `course` is the report's "Kurs:" line.
  */
-function summaryBlock(items, { onRefresh, course = '', fileName = 'raport.txt', card = 'karta' } = {}) {
+function summaryBlock(items, { onRefresh, course = '', fileName = 'raport.txt', card = 'karta', extraSections = () => [] } = {}) {
   const host = el('div.sm');
   const list = el('div.sm-top');
   const report = reportPanel({
@@ -13257,7 +13260,7 @@ function summaryBlock(items, { onRefresh, course = '', fileName = 'raport.txt', 
     fileName,
     items: () => items.map((it) => ({ label: it.label, ...(it.facts?.() || { status: it.done() ? 'done' : null }), answer: it.answer?.() || null })),
     // a chapter without a card (`card: false`) sends no card section
-    extra: () => (card && CARDS[card] ? [[CARDS[card].title(), fieldsText(CARDS[card].fields, getItem(card) || {})]] : []),
+    extra: () => [...(card && CARDS[card] ? [[CARDS[card].title(), fieldsText(CARDS[card].fields, getItem(card) || {})]] : []), ...extraSections()],
   });
   const draw = () => {
     const done = items.filter((it) => it.done()).length;
@@ -14779,9 +14782,10 @@ function reportPlan(chapter, report) {
 
 /** The titles of further report sections in a chapter, where answers end (the card). */
 const reportSections = (chapter) => {
-  if (chapter.card === false) return [];
+  const extra = chapter.reportExtra ? [chapter.reportExtra.title] : [];
+  if (chapter.card === false) return extra;
   const key = chapter.card || 'karta';
-  return CARDS[key] ? [CARDS[key].title()] : [];
+  return [...(CARDS[key] ? [CARDS[key].title()] : []), ...extra];
 };
 
 const EXERCISES = {
@@ -14988,6 +14992,8 @@ class BookApp {
       course: ch.kicker,
       fileName: `raport-${ch.id}.txt`,
       card: ch.card === false ? null : ch.card || 'karta',
+      // a chapter may add one section of its own to the report (chapter 4: the student's rule)
+      extraSections: ch.reportExtra ? () => [[ch.reportExtra.title, ch.reportExtra.text()]] : () => [],
     });
     return el('section.bk-section.bk-end', { id: 'bk-end' },
       el('div.bk-sec-head', el('h2.bk-sec-title', t('bk.summary'))),
