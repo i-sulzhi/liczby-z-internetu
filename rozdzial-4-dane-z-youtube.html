@@ -15382,15 +15382,15 @@ const BRIEFS = {
   ag2: {
     id: 'ag2',
     title: 'Klucz',
-    situation: 'Do API potrzeba klucza z Google Cloud. To hasło projektu. W pierwszej wersji klucz był wpisany w plik skryptu. Plik leżał na wspólnym dysku i krążył w paczce zip. Taki klucz trzeba unieważnić i zrobić nowy. Bezpieczniej trzymać klucz w zmiennej środowiskowej. To ustawienie twojego komputera, które skrypt odczytuje, ale którego nie ma w żadnym pliku.',
+    situation: 'Klucz API to hasło projektu. W pierwszej wersji był wpisany w plik skryptu, a plik krążył w paczce zip. Taki klucz trzeba unieważnić. Bezpieczniej trzymać go w zmiennej środowiskowej. To ustawienie twojego komputera, które skrypt odczytuje, ale którego nie ma w żadnym pliku.',
     question: 'Którą regułę dopisać do AGENTS.md?',
     options: [
-      { text: 'Wpisz klucz na początku skryptu, żeby działał od razu u każdego, kto go dostanie.', why: 'Tak było w pierwszej wersji. Każdy, kto dostanie plik, dostaje też klucz i limit projektu.' },
-      { text: 'Wkleję ci klucz do czatu, zapamiętaj go i używaj, gdy skrypt go potrzebuje.', why: 'Czat to kolejne miejsce, z którego klucz może wyciec. Agent nie musi znać klucza, ma go tylko odczytać.' },
-      { text: 'Czytaj klucz ze zmiennej środowiskowej. Nie wpisuj go do kodu ani do plików.', right: true },
+      { text: 'Wpisz klucz na początku skryptu, żeby działał od razu.', why: 'Tak było w pierwszej wersji. Każdy, kto dostanie plik, dostaje też klucz i limit projektu.' },
+      { text: 'Wkleję ci klucz do czatu, zapamiętaj go i używaj.', why: 'Czat to kolejne miejsce, z którego klucz może wyciec. Agent nie musi znać klucza, ma go tylko odczytać.' },
+      { text: 'Czytaj klucz ze zmiennej środowiskowej, nie z kodu.', right: true },
     ],
     rule: '**Klucz.** Czytaj klucz API ze zmiennej środowiskowej. Nie wpisuj go do kodu, plików ani logów.',
-    success: 'Tak. Klucz zostaje na twoim komputerze, a skrypt można bezpiecznie wysłać koledze.',
+    success: 'Tak. Klucz zostaje na twoim komputerze, a skrypt można wysłać komukolwiek.',
   },
 
   ag3: {
@@ -15463,15 +15463,22 @@ const BRIEFS = {
   ag6: {
     id: 'ag6',
     title: 'Błędy',
-    situation: 'Pierwsza wersja miała też pobrać transkrypcje, czyli napisy filmów. Robiła to gotowym modułem, czyli biblioteką. Nowa wersja biblioteki nie miała już potrzebnej funkcji, więc każda próba kończyła się tym samym błędem. Skrypt zapisywał błąd i szedł dalej. Na końcu nie było ani jednej transkrypcji. Do tego komentarze trzymał w pamięci i zapisywał dopiero po ostatnim filmie. Awaria w połowie oznaczałaby utratę wszystkich. Są też błędy normalne. Część filmów ma po prostu wyłączone komentarze.',
+    situation: `Pierwsza wersja miała też pobrać transkrypcje, czyli napisy filmów. Pod każdym z ${E.a.allVideos} filmów próba kończyła się tym samym błędem. Skrypt zapisywał go w logu i szedł do następnego filmu, aż doszedł do końca. Są też błędy normalne. Część filmów ma po prostu wyłączone komentarze, a to mówi o filmie, nie o skrypcie.`,
     question: 'Którą regułę dopisać do AGENTS.md?',
     options: [
-      { text: 'Przy każdym błędzie zapisz go i idź do następnego filmu, żeby skrypt się nie zatrzymał.', why: 'Tak było w pierwszej wersji. Ten sam błąd przy każdym filmie to błąd skryptu, a nie filmu.' },
+      { text: 'Przy każdym błędzie zapisz go i idź do następnego filmu, żeby skrypt się nie zatrzymał.', why: 'Tak było w pierwszej wersji. Ten sam błąd pod każdym filmem to błąd skryptu, a nie filmu.' },
       { text: 'Nie zbieraj napisów, bo sprawiają kłopoty. Filmy i komentarze w zupełności wystarczą.', why: 'Rezygnacja z części danych to decyzja badacza. Agent ma pokazać problem, a nie go ominąć.' },
-      { text: 'Rozróżniaj błędy. Ten sam błąd przy kolejnych filmach to stop. Zapisuj postęp na bieżąco.', right: true },
+      { text: 'Rozróżniaj błędy. Wyłączone komentarze zapisz i idź dalej, ten sam błąd pod kolejnymi filmami to stop.', right: true },
     ],
-    rule: '**Błędy.** Rozróżniaj błędy. Wyłączone komentarze zapisz i idź dalej. Ten sam błąd przy kolejnych filmach albo koniec limitu to stop. Zapisuj postęp na bieżąco i ustal wersje bibliotek.',
-    success: 'Tak. Filmy z wyłączonymi komentarzami to normalna rzecz, a błąd przy każdym filmie to sygnał, że coś jest nie tak ze skryptem. Agent musi je odróżniać.',
+    rule: '**Błędy.** Rozróżniaj błędy. Wyłączone komentarze zapisz i idź dalej. Ten sam błąd pod kolejnymi filmami albo koniec limitu to stop. Wypisz, ile filmów dało każdy rodzaj błędu.',
+    fields: [
+      { id: 'got', label: 'Ile transkrypcji miała pierwsza wersja na końcu? Tę liczbę powinien był wypisać jej raport.', short: 'transkrypcje', expect: E.pipe.v1.transcripts },
+    ],
+    wrong: {
+      got: (v) => (v === E.a.allVideos ? 'To liczba filmów, pod którymi skrypt próbował. Pytamy, ile transkrypcji dostał.'
+        : 'Każda próba skończyła się błędem. Policz, ile udanych prób zostało.'),
+    },
+    success: `Tak. ${E.pipe.v1.transcripts} z ${E.a.allVideos}. Jedna liczba w raporcie wystarczyłaby, żeby to zobaczyć. Filmy z wyłączonymi komentarzami to normalna rzecz, a ten sam błąd pod każdym filmem to sygnał, że coś jest nie tak ze skryptem. Agent ma je odróżniać i liczyć.`,
   },
 
   ag7: {
@@ -15803,7 +15810,7 @@ const CHAPTER = {
         P('Teraz prawdziwy przykład. Skrypt pyta YouTube przez **API** i zbiera **korpus**, czyli zbiór filmów i komentarzy. W prawdziwym projekcie doktorskim pierwszą wersję skryptu napisał asystent AI z krótkiego opisu celu. Drugą napisał agent, który dostał listę reguł. Zobacz, co każda zebrała z tego samego wyszukiwania.'),
         { figure: 'ytpipe' },
         P('Wersja 1 doszła do końca i ani razu się nie zatrzymała. Braki pokazał dopiero przegląd. W części A ułożysz reguły dla agenta, które je wyłapują. Zapiszesz je w pliku **AGENTS.md**, który wiele agentów czyta przed pracą.'),
-        { note: 'Pliki tego rozdziału mają wymyślone wiersze o tych samych sumach i udziałach co test. Filmy i kanały mają numery zamiast nazw. Komentarzy, tytułów i autorów nie pokazujemy.', tone: 'info' },
+        { note: 'Warunki YouTube API nie pozwalają przekazywać zebranych danych dalej, nawet na zajęcia, więc pliki tego rozdziału mają wymyślone wiersze o tych samych sumach i udziałach co test. Filmy i kanały mają numery zamiast nazw. Komentarzy, tytułów i autorów nie pokazujemy. W swoim projekcie sprawdź warunki platformy, zanim komuś wyślesz dane.', tone: 'info' },
       ],
     },
     {
@@ -15817,7 +15824,7 @@ const CHAPTER = {
     },
     {
       id: 's4-3', num: '4.3', title: 'Krok 2. Klucz', meeting: 8,
-      parts: [['cwiczenie', 6]],
+      parts: [['cwiczenie', 5]],
       blocks: [
         step('ag2', 'Krok 2', 'Gdzie trzymać klucz?', 'Krok 2. Klucz', false),
       ],
@@ -15849,7 +15856,7 @@ const CHAPTER = {
     },
     {
       id: 's4-7', num: '4.7', title: 'Krok 6. Ciche błędy', meeting: 8,
-      parts: [['cwiczenie', 8]],
+      parts: [['cwiczenie', 9]],
       blocks: [
         step('ag6', 'Krok 6', 'Błąd filmu czy błąd skryptu?', 'Krok 6. Ciche błędy', false),
       ],
