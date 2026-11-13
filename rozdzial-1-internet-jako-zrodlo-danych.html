@@ -14749,6 +14749,7 @@ function reportPlan(chapter, report) {
   }
   const cardKey = chapter.card === false ? null : chapter.card || 'karta';
   const cardText = cardKey && CARDS[cardKey] && (report.sections || []).find((x) => norm(x.title) === norm(CARDS[cardKey].title()))?.text;
+  const extraText = chapter.reportExtra && (report.sections || []).find((x) => norm(x.title) === norm(chapter.reportExtra.title))?.text;
   const apply = () => {
     for (const [it, line] of pairs) {
       if (it.lesson) {
@@ -14763,6 +14764,7 @@ function reportPlan(chapter, report) {
       if (line.answer) RESTORE[it.id]?.(line.answer);
       setItem(`done:${it.id}`, line.doneAt || Date.now());
     }
+    if (extraText != null && chapter.reportExtra.restore && !String(chapter.reportExtra.text() || '').trim()) chapter.reportExtra.restore(extraText);
     if (cardText) {
       const have = getItem(cardKey) || {};
       const empty = (v) => v == null || (Array.isArray(v) ? !v.length : !String(v).trim());
@@ -14779,6 +14781,9 @@ function reportPlan(chapter, report) {
     apply,
   };
 }
+
+/** What gate() needs to offer "Masz raport z innego komputera?" for a chapter (docs/decisions.md D56). */
+const restoreOptions = (chapter) => ({ restore: (report) => reportPlan(chapter, report), sections: reportSections(chapter) });
 
 /** The titles of further report sections in a chapter, where answers end (the card). */
 const reportSections = (chapter) => {
@@ -15016,7 +15021,7 @@ function exerciseHead(b, minutes = true) {
     el('h3.bk-ex-title', b.title));
 }
 
-__modules["src/book/book.js"] = { "FIGURES": FIGURES, "ANSWERS": ANSWERS, "RESTORE": RESTORE, "reportPlan": reportPlan, "reportSections": reportSections, "EXERCISES": EXERCISES, "figureNumbers": figureNumbers, "BookApp": BookApp };
+__modules["src/book/book.js"] = { "FIGURES": FIGURES, "ANSWERS": ANSWERS, "RESTORE": RESTORE, "reportPlan": reportPlan, "restoreOptions": restoreOptions, "reportSections": reportSections, "EXERCISES": EXERCISES, "figureNumbers": figureNumbers, "BookApp": BookApp };
 })();
 
 /* ===== src/book/chapter1.js ===== */
@@ -15298,12 +15303,12 @@ __modules["src/book/chapter1.js"] = { "CHAPTER": CHAPTER };
  * Entry point of the chapter-1 file: "Kim jesteś?" first (D26), then the textbook shell
  * with chapter 1 for that person.
  */
-const { BookApp } = __modules["src/book/book.js"];
+const { BookApp, restoreOptions } = __modules["src/book/book.js"];
 const { CHAPTER } = __modules["src/book/chapter1.js"];
 const { gate } = __modules["src/ui/people.js"];
 class ChapterApp {
   constructor(host) {
-    gate(host, () => { this.book = new BookApp(host, CHAPTER); });
+    gate(host, () => { this.book = new BookApp(host, CHAPTER); }, restoreOptions(CHAPTER));
   }
 }
 

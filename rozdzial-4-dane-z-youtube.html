@@ -14749,6 +14749,7 @@ function reportPlan(chapter, report) {
   }
   const cardKey = chapter.card === false ? null : chapter.card || 'karta';
   const cardText = cardKey && CARDS[cardKey] && (report.sections || []).find((x) => norm(x.title) === norm(CARDS[cardKey].title()))?.text;
+  const extraText = chapter.reportExtra && (report.sections || []).find((x) => norm(x.title) === norm(chapter.reportExtra.title))?.text;
   const apply = () => {
     for (const [it, line] of pairs) {
       if (it.lesson) {
@@ -14763,6 +14764,7 @@ function reportPlan(chapter, report) {
       if (line.answer) RESTORE[it.id]?.(line.answer);
       setItem(`done:${it.id}`, line.doneAt || Date.now());
     }
+    if (extraText != null && chapter.reportExtra.restore && !String(chapter.reportExtra.text() || '').trim()) chapter.reportExtra.restore(extraText);
     if (cardText) {
       const have = getItem(cardKey) || {};
       const empty = (v) => v == null || (Array.isArray(v) ? !v.length : !String(v).trim());
@@ -14779,6 +14781,9 @@ function reportPlan(chapter, report) {
     apply,
   };
 }
+
+/** What gate() needs to offer "Masz raport z innego komputera?" for a chapter (docs/decisions.md D56). */
+const restoreOptions = (chapter) => ({ restore: (report) => reportPlan(chapter, report), sections: reportSections(chapter) });
 
 /** The titles of further report sections in a chapter, where answers end (the card). */
 const reportSections = (chapter) => {
@@ -15016,7 +15021,7 @@ function exerciseHead(b, minutes = true) {
     el('h3.bk-ex-title', b.title));
 }
 
-__modules["src/book/book.js"] = { "FIGURES": FIGURES, "ANSWERS": ANSWERS, "RESTORE": RESTORE, "reportPlan": reportPlan, "reportSections": reportSections, "EXERCISES": EXERCISES, "figureNumbers": figureNumbers, "BookApp": BookApp };
+__modules["src/book/book.js"] = { "FIGURES": FIGURES, "ANSWERS": ANSWERS, "RESTORE": RESTORE, "reportPlan": reportPlan, "restoreOptions": restoreOptions, "reportSections": reportSections, "EXERCISES": EXERCISES, "figureNumbers": figureNumbers, "BookApp": BookApp };
 })();
 
 /* ===== src/book/figures/sheet.js ===== */
@@ -15592,6 +15597,8 @@ const ALL_RULES = () => [...Object.values(BRIEFS), ...EXTRA_RULES];
 
 /** The rule the student writes for their own source of data (stored as `rule:own`). */
 const ownRule = () => String(getItem('rule:own') || '').replace(/\s+/g, ' ').trim();
+/** Back from a report on another computer (book.js reportPlan). */
+const restoreOwnRule = (text) => setItem('rule:own', String(text).trim());
 const OWN_RULE_TITLE = 'Twoja reguła do AGENTS.md';
 
 function agentsText(done = isDone, own = ownRule()) {
@@ -15733,7 +15740,7 @@ function pipeFigure({ num: n = 'Rysunek' } = {}) {
 
 const FIGURES_BRIEF = { agentsmd: agentsFigure, ytrun: runFigure, ytpipe: pipeFigure };
 
-__modules["src/book/figures/brief.js"] = { "BRIEFS": BRIEFS, "checkBrief": checkBrief, "briefExercise": briefExercise, "briefExercises": briefExercises, "briefAnswer": briefAnswer, "restoreBrief": restoreBrief, "EXTRA_RULES": EXTRA_RULES, "ownRule": ownRule, "OWN_RULE_TITLE": OWN_RULE_TITLE, "agentsText": agentsText, "agentsFigure": agentsFigure, "runFigure": runFigure, "pipeFigure": pipeFigure, "FIGURES_BRIEF": FIGURES_BRIEF };
+__modules["src/book/figures/brief.js"] = { "BRIEFS": BRIEFS, "checkBrief": checkBrief, "briefExercise": briefExercise, "briefExercises": briefExercises, "briefAnswer": briefAnswer, "restoreBrief": restoreBrief, "EXTRA_RULES": EXTRA_RULES, "ownRule": ownRule, "restoreOwnRule": restoreOwnRule, "OWN_RULE_TITLE": OWN_RULE_TITLE, "agentsText": agentsText, "agentsFigure": agentsFigure, "runFigure": runFigure, "pipeFigure": pipeFigure, "FIGURES_BRIEF": FIGURES_BRIEF };
 })();
 
 /* ===== src/book/chapter4.js ===== */
@@ -15764,7 +15771,7 @@ const QUESTIONS4 = [
   { q: 'Dwie liczby o twoim korpusie. Z czego jest każda z nich?', here: 'Tu kilka filmów zbierało połowę wyświetleń, a korpus i typowy film miały inne zaangażowanie.' },
   { q: 'Czego twój korpus nie powie?', here: 'Tu nic o ludziach, którzy oglądają i nie komentują.' },
 ];
-const { ownRule, OWN_RULE_TITLE } = __modules["src/book/figures/brief.js"];
+const { ownRule, OWN_RULE_TITLE, restoreOwnRule } = __modules["src/book/figures/brief.js"];
 const P = (text) => ({ p: text });
 const remind = (text) => ({ note: `**Przypomnienie.** ${text}`, tone: 'info' });
 // `reveal`: what follows the step in its section (a figure with the answer) waits for the check
@@ -15777,7 +15784,7 @@ const CHAPTER = {
   intro: false,
   card: false,
   // the one text the student writes: a rule of their own, a section of the report (D54)
-  reportExtra: { title: OWN_RULE_TITLE, text: ownRule },
+  reportExtra: { title: OWN_RULE_TITLE, text: ownRule, restore: restoreOwnRule },
   siteNav: ['home', 'chapter1', 'chapter2', 'chapter3', 'trainer'],
   number: 4,
   kicker: 'Warsztat analityki internetowej · Rozdział 4 z 5',
@@ -17368,7 +17375,7 @@ __modules["src/book/figures/datapath.js"] = { "CALLS": CALLS, "jsonFigure": json
  * Chapter 4 registers its figures, exercises and report answers here, not in book.js, so its
  * files for students stay out of the other chapters' files.
  */
-const { BookApp, FIGURES, EXERCISES, ANSWERS, RESTORE } = __modules["src/book/book.js"];
+const { BookApp, FIGURES, EXERCISES, ANSWERS, RESTORE, restoreOptions } = __modules["src/book/book.js"];
 const { CHAPTER } = __modules["src/book/chapter4.js"];
 const { gate } = __modules["src/ui/people.js"];
 const { FIGURES4, SHEETS, sheetExercises } = __modules["src/book/figures/youtube.js"];
@@ -17394,7 +17401,7 @@ function setUp4() {
 class ChapterApp {
   constructor(host) {
     setUp4();
-    gate(host, () => { this.book = new BookApp(host, CHAPTER); });
+    gate(host, () => { this.book = new BookApp(host, CHAPTER); }, restoreOptions(CHAPTER));
   }
 }
 
